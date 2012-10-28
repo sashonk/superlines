@@ -1,6 +1,8 @@
 package superlines.client;
 
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -38,19 +40,10 @@ public class Boot {
             @Override
             public void run() {
                 
-                              final  MainFrame frame = MainFrame.get();
-               
-                                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                                frame.setBounds(100, 100, 400, 300);                
-
-                                frame.add(new ScorePanel());
-                                frame.add(new PlayPanel());
-
-                
-                final LoginFrame loginFrame = new LoginFrame();     
-                loginFrame.setVisible(true);
-                
-                loginFrame.getAcceptBtn().addActionListener(new ActionListener() {
+                final  MainFrame frame = MainFrame.get();
+                final LoginDialog loginFrame = new LoginDialog(frame, true);    
+                      
+                loginFrame.getOkButton().addActionListener(new ActionListener() {
 
                     @Override
                     public void actionPerformed(ActionEvent ae) {
@@ -60,6 +53,19 @@ public class Boot {
                                 frame.showPlayPanel();
                     }
                 });
+                
+                loginFrame.getOfflineButton().addActionListener(new ActionListener() {
+
+                    @Override
+                    public void actionPerformed(ActionEvent ae) {
+                                loginFrame.dispose();
+                        
+                                frame.setVisible(true);
+                                frame.showPlayPanel();
+                    }
+                });
+                
+                loginFrame.setVisible(true);
                 
 
      

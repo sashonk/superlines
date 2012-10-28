@@ -4,6 +4,10 @@
  */
 package superlines.client.ui;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import javax.swing.JButton;
+
 /**
  *
  * @author Sashonk
@@ -16,6 +20,21 @@ public class LoginDialog extends javax.swing.JDialog {
     public LoginDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent evt) {
+                System.exit(0);
+            }
+        });
+    }
+    
+    public JButton getOkButton(){
+        return okBtn;
+    }
+    
+    public JButton getOfflineButton(){
+        return offlineBtn;
     }
 
     /**
@@ -87,6 +106,7 @@ public class LoginDialog extends javax.swing.JDialog {
         getContentPane().add(jPanel3);
 
         okBtn.setText("ok");
+        okBtn.setPreferredSize(new java.awt.Dimension(80, 23));
         okBtn.setRequestFocusEnabled(false);
         jPanel2.add(okBtn);
 
