@@ -4,18 +4,29 @@
  */
 package superlines.client.ui;
 
+import superlines.core.SuperlinesController;
+import superlines.core.SuperlinesListener;
+
 /**
  *
  * @author Sashonk
  */
-public class PlayPanel extends javax.swing.JPanel {
+public class PlayPanel extends javax.swing.JPanel implements SuperlinesListener{
 
+	private SuperlinesController m_controller;
     /**
      * Creates new form PlayPanel
      */
-    public PlayPanel() {
+    public PlayPanel(final SuperlinesController ctr) {
         initComponents();
+        
+        m_controller= ctr;
+        
+        SuperlinesPanel sp = (SuperlinesPanel)superlinesPanel;
+        sp.test();
     }
+    
+ 
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -26,66 +37,94 @@ public class PlayPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
+        topPanel = new javax.swing.JPanel();
         playerNameField = new javax.swing.JTextField();
         scoreLabel = new javax.swing.JLabel();
         scoreField = new javax.swing.JTextField();
         maxScoreLabel = new javax.swing.JLabel();
         maxScoreField = new javax.swing.JTextField();
-        jPanel2 = new javax.swing.JPanel();
-        jPanel3 = new javax.swing.JPanel();
+        middlePanel = new javax.swing.JPanel();
+        leftPanel = new javax.swing.JPanel();
+        superlinesPanel = new SuperlinesPanel();
+        rightPanel = new javax.swing.JPanel();
+        bottomPanel = new javax.swing.JPanel();
         toScoreBtn = new javax.swing.JButton();
         scatterButton = new javax.swing.JButton();
 
         setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.PAGE_AXIS));
 
-        jPanel1.setBackground(new java.awt.Color(255, 204, 204));
-        jPanel1.setMaximumSize(new java.awt.Dimension(32767, 80));
-        jPanel1.setName(""); // NOI18N
-        jPanel1.setPreferredSize(new java.awt.Dimension(495, 60));
+        topPanel.setBackground(new java.awt.Color(255, 204, 204));
+        topPanel.setMaximumSize(new java.awt.Dimension(32767, 80));
+        topPanel.setName(""); // NOI18N
+        topPanel.setPreferredSize(new java.awt.Dimension(495, 60));
         java.awt.FlowLayout flowLayout1 = new java.awt.FlowLayout();
         flowLayout1.setAlignOnBaseline(true);
-        jPanel1.setLayout(flowLayout1);
+        topPanel.setLayout(flowLayout1);
 
         playerNameField.setEditable(false);
         playerNameField.setText("player");
         playerNameField.setToolTipText("player name");
-        jPanel1.add(playerNameField);
+        topPanel.add(playerNameField);
 
         scoreLabel.setText("jLabel1");
-        jPanel1.add(scoreLabel);
+        topPanel.add(scoreLabel);
 
         scoreField.setEditable(false);
         scoreField.setText("1111");
-        jPanel1.add(scoreField);
+        topPanel.add(scoreField);
 
         maxScoreLabel.setText("jLabel2");
-        jPanel1.add(maxScoreLabel);
+        topPanel.add(maxScoreLabel);
 
         maxScoreField.setEditable(false);
         maxScoreField.setText("12000");
-        jPanel1.add(maxScoreField);
+        topPanel.add(maxScoreField);
 
-        add(jPanel1);
+        add(topPanel);
 
-        jPanel2.setBackground(new java.awt.Color(204, 255, 204));
+        middlePanel.setBackground(new java.awt.Color(204, 255, 204));
+        middlePanel.setLayout(new javax.swing.BoxLayout(middlePanel, javax.swing.BoxLayout.LINE_AXIS));
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 495, Short.MAX_VALUE)
+        leftPanel.setPreferredSize(new java.awt.Dimension(50, 200));
+
+        javax.swing.GroupLayout leftPanelLayout = new javax.swing.GroupLayout(leftPanel);
+        leftPanel.setLayout(leftPanelLayout);
+        leftPanelLayout.setHorizontalGroup(
+            leftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 50, Short.MAX_VALUE)
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        leftPanelLayout.setVerticalGroup(
+            leftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 245, Short.MAX_VALUE)
         );
 
-        add(jPanel2);
+        middlePanel.add(leftPanel);
 
-        jPanel3.setBackground(new java.awt.Color(204, 204, 255));
-        jPanel3.setMaximumSize(new java.awt.Dimension(32767, 100));
-        jPanel3.setPreferredSize(new java.awt.Dimension(495, 80));
+        superlinesPanel.setBackground(new java.awt.Color(153, 153, 153));
+        superlinesPanel.setPreferredSize(null);
+        superlinesPanel.setLayout(new java.awt.GridBagLayout());
+        middlePanel.add(superlinesPanel);
+
+        rightPanel.setPreferredSize(new java.awt.Dimension(50, 244));
+
+        javax.swing.GroupLayout rightPanelLayout = new javax.swing.GroupLayout(rightPanel);
+        rightPanel.setLayout(rightPanelLayout);
+        rightPanelLayout.setHorizontalGroup(
+            rightPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 50, Short.MAX_VALUE)
+        );
+        rightPanelLayout.setVerticalGroup(
+            rightPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 245, Short.MAX_VALUE)
+        );
+
+        middlePanel.add(rightPanel);
+
+        add(middlePanel);
+
+        bottomPanel.setBackground(new java.awt.Color(204, 204, 255));
+        bottomPanel.setMaximumSize(new java.awt.Dimension(32767, 100));
+        bottomPanel.setPreferredSize(new java.awt.Dimension(495, 80));
 
         toScoreBtn.setText("toScore");
         toScoreBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -93,7 +132,7 @@ public class PlayPanel extends javax.swing.JPanel {
                 toScoreBtnActionPerformed(evt);
             }
         });
-        jPanel3.add(toScoreBtn);
+        bottomPanel.add(toScoreBtn);
 
         scatterButton.setText("scatter");
         scatterButton.addActionListener(new java.awt.event.ActionListener() {
@@ -101,9 +140,9 @@ public class PlayPanel extends javax.swing.JPanel {
                 scatterButtonActionPerformed(evt);
             }
         });
-        jPanel3.add(scatterButton);
+        bottomPanel.add(scatterButton);
 
-        add(jPanel3);
+        add(bottomPanel);
     }// </editor-fold>//GEN-END:initComponents
 
     private void scatterButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_scatterButtonActionPerformed
@@ -115,15 +154,18 @@ public class PlayPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_toScoreBtnActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel bottomPanel;
+    private javax.swing.JPanel leftPanel;
     private javax.swing.JTextField maxScoreField;
     private javax.swing.JLabel maxScoreLabel;
+    private javax.swing.JPanel middlePanel;
     private javax.swing.JTextField playerNameField;
+    private javax.swing.JPanel rightPanel;
     private javax.swing.JButton scatterButton;
     private javax.swing.JTextField scoreField;
     private javax.swing.JLabel scoreLabel;
+    private javax.swing.JPanel superlinesPanel;
     private javax.swing.JButton toScoreBtn;
+    private javax.swing.JPanel topPanel;
     // End of variables declaration//GEN-END:variables
 }

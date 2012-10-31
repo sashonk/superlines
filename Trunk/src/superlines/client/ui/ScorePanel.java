@@ -4,18 +4,25 @@
  */
 package superlines.client.ui;
 
+import superlines.core.SuperlinesController;
+import superlines.core.SuperlinesListener;
+
 /**
  *
  * @author Sashonk
  */
-public class ScorePanel extends javax.swing.JPanel {
+public class ScorePanel extends javax.swing.JPanel{
+
 
     /**
      * Creates new form ScorePanel
      */
     public ScorePanel() {
         initComponents();
+
     }
+    
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -47,7 +54,8 @@ public class ScorePanel extends javax.swing.JPanel {
                 .addGap(50, 50, 50)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(tableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(toGameBtn)))
+                    .addComponent(toGameBtn))
+                .addContainerGap(215, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -55,7 +63,8 @@ public class ScorePanel extends javax.swing.JPanel {
                 .addGap(66, 66, 66)
                 .addComponent(tableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(11, 11, 11)
-                .addComponent(toGameBtn))
+                .addComponent(toGameBtn)
+                .addContainerGap(75, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 

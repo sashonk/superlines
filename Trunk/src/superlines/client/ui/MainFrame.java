@@ -5,7 +5,13 @@
 package superlines.client.ui;
 
 import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+
+import javax.swing.JFrame;
 import javax.swing.JPanel;
+
+import superlines.core.SuperlinesController;
 
 /**
  *
@@ -19,6 +25,27 @@ public class MainFrame extends javax.swing.JFrame {
      */
      MainFrame() {
         initComponents();
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        int w = getSize().width;
+        int h = getSize().height;
+        int x = (dim.width-w)/2;
+        int y = (dim.height-h)/2;
+        setLocation(x, y); 
+       setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+       
+       
+       SuperlinesController slCtrl = new SuperlinesController();
+       
+       
+       
+       add(new ScorePanel());
+       add(new PlayPanel(slCtrl));
+       
+
+        
+        
+
+  
     }
     
     
@@ -39,7 +66,7 @@ public class MainFrame extends javax.swing.JFrame {
     }   
 
     
-    void showPanel(Class cls){
+    void showPanel(Class<? extends JPanel> cls){
         for(Component c : getContentPane().getComponents()){
             if(c.getClass()==cls){
                 c.setVisible(true);                
@@ -66,6 +93,7 @@ public class MainFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(600, 400));
         getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.LINE_AXIS));
 
         pack();

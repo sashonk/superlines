@@ -6,9 +6,10 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 
-import superlines.Configuration;
-import superlines.server.ws.SuperlinesWebservice;
-import superlines.ws.artefacts.SuperlinesWebserviceImplService;
+import superlines.core.Configuration;
+import superlines.ws.InvocationContext;
+import superlines.ws.SuperlinesWebservice;
+
 
 public class ServiceAdapter {
 	private static Log log = LogFactory.getLog(ServiceAdapter.class);
@@ -38,5 +39,17 @@ public class ServiceAdapter {
 	
 	public SuperlinesWebservice getService(){
 		return webservice;
+	}
+	
+	public static void main(String[] argc){
+		System.setProperty("config.file.path", "config/client/boot.properties");
+		
+		ServiceAdapter sa = get();
+		
+		InvocationContext ctx = new InvocationContext();
+		ctx.setLogin("asd");
+		ctx.setPassword("gg");
+		boolean b = sa.getService().authorize(ctx);
+		System.out.println(b);
 	}
 }

@@ -13,9 +13,18 @@
 	</target>
 	
 	<target name="wsgen">
-		<wsimport target="2.2" wsdl="http://localhost:8080/Superlines/service?wsdl" package="superlines.ws.artefacts" xnocompile="true" destdir="${basedir}\\src">
+		<wsimport target="2.2" wsdl="http://localhost:8080/Superlines/service?wsdl" package="superlines.client.ws" xnocompile="true" destdir="${basedir}\\ws">
 
 		</wsimport>
+		
+		<copy  todir="${basedir}\\src\\superlines\\client\\ws" verbose="true">
+			<fileset dir="${basedir}\\ws\\superlines\\client\\ws">
+				
+				<filename name="SuperlinesWebserviceImplService.java"/>
+				
+			</fileset>
+		
+		</copy>
 		
 		
 	

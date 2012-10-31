@@ -4,6 +4,8 @@
  */
 package superlines.client.ui;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.JButton;
@@ -20,6 +22,13 @@ public class LoginDialog extends javax.swing.JDialog {
     public LoginDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        int w = getSize().width;
+        int h = getSize().height;
+        int x = (dim.width-w)/2;
+        int y = (dim.height-h)/2;
+        setLocation(x, y); 
         
         this.addWindowListener(new WindowAdapter() {
             @Override

@@ -17,6 +17,7 @@ import superlines.client.ui.LoginFrame;
 import superlines.client.ui.MainFrame;
 import superlines.client.ui.PlayPanel;
 import superlines.client.ui.ScorePanel;
+import superlines.client.ws.ServiceAdapter;
 
 
 public class Boot {
@@ -34,6 +35,8 @@ public class Boot {
     		PropertyConfigurator.configure(LOG_CONFIG_PATH);
     	
     		log.debug("application start");
+    		
+
         
             SwingUtilities.invokeAndWait(new Runnable(){
 
