@@ -10,6 +10,14 @@
 	
 	
 	<target name="build">
+		<mkdir dir="classes"/>
+	        <javac srcdir="src" destdir="classes" encoding="utf-8">
+	                <classpath>
+	                         <pathelement path="lib/log4j.jar"/>
+				 <pathelement path="lib/commons-logging.jar"/>
+			</classpath>
+		</javac>
+		
 	</target>
 	
 	<target name="wsgen">
