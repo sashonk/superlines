@@ -1,14 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project name="Superlines" default="build" basedir=".">
-	<property name="BUILD_LIBS" location="C:\\tomcat\\lib" />
-	<taskdef name="wsimport" classname="com.sun.tools.ws.ant.WsImport">
-			<classpath>
-	        	<pathelement location="${BUILD_LIBS}\\jaxws-tools.jar"/>
-	    	</classpath>
-	</taskdef>
-	
-	
+<project name="Superlines" default="build" basedir=".">         	
 	<target name="build">
 		<mkdir dir="classes"/>
 	        <javac srcdir="src" destdir="classes" encoding="utf-8">
@@ -19,23 +11,6 @@
 		</javac>
 		
 	</target>
-	
-	<target name="wsgen">
-		<wsimport target="2.2" wsdl="http://localhost:8080/Superlines/service?wsdl" package="superlines.client.ws" xnocompile="true" destdir="${basedir}\\ws">
-
-		</wsimport>
-		
-		<copy  todir="${basedir}\\src\\superlines\\client\\ws" verbose="true">
-			<fileset dir="${basedir}\\ws\\superlines\\client\\ws">
-				
-				<filename name="SuperlinesWebserviceImplService.java"/>
-				
-			</fileset>
-		
-		</copy>
-		
-		
-	
-	</target>
+	        
 
 </project>
