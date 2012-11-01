@@ -1,7 +1,10 @@
 package superlines.core;
 
-public class SuperlinesController {
-	public SuperlinesController(){
+public interface SuperlinesController {
 		
-	}
+	public void spotClicked(int x, int y);
+	
+	public void scatter();
+	
+	public void restart();
 }

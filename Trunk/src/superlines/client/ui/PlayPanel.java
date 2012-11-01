@@ -8,9 +8,13 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import javax.swing.JPanel;
+
+import superlines.client.util.SuperlinesHelper;
+import superlines.core.SuperlinesBall.State;
 import superlines.core.SuperlinesContext;
 import superlines.core.SuperlinesController;
 import superlines.core.SuperlinesListener;
+import superlines.core.User;
 
 /**
  *
@@ -19,6 +23,7 @@ import superlines.core.SuperlinesListener;
 public class PlayPanel extends javax.swing.JPanel implements SuperlinesListener{
 
 	private final SuperlinesController m_controller;
+	private final SuperlinesPanel m_superPanel; 
     /**
      * Creates new form PlayPanel
      */
@@ -38,18 +43,49 @@ public class PlayPanel extends javax.swing.JPanel implements SuperlinesListener{
         rightPanel.setBackground(Color.BLACK);
         
         
-        SuperlinesPanel slPanel = new SuperlinesPanel();
-        middlePanel.add(slPanel,BorderLayout.CENTER);
-        slPanel.setPreferredSize(new Dimension(200, 100));
-        slPanel.setBackground(Color.CYAN);
+        m_superPanel = new SuperlinesPanel(ctr);
+        middlePanel.add(m_superPanel,BorderLayout.CENTER);
+        m_superPanel.setPreferredSize(new Dimension(200, 100));
+        m_superPanel.setBackground(Color.CYAN);
         
         m_controller= ctr;
         
    
     }
     
-    public void init(final SuperlinesContext ctx){
+	@Override
+	public void clickedBallChanged(int newx, int newy, int oldx, int oldy) {
+		m_superPanel.getSpots()[oldx][oldy].setClicked(false);
+		m_superPanel.getSpots()[newx][newy].setClicked(true);				
+	}
+    
+	@Override
+	public void ballChangeColor(int x, int y, int newCol, int oldCol) {
+		m_superPanel.getSpots()[x][y].setBackground(SuperlinesHelper.number2Color(newCol));
+		
+	}
+
+	@Override
+	public void ballChangeState(int x, int y, State newState, State oldState) {
+		m_superPanel.getSpots()[x][y].setClicked(newState==State.CLICKED ? true : false);		
+	}
+    
+	@Override
+	public void scoreChanged(int newScore, int oldScore) {
+		scoreField.setText(Integer.valueOf(newScore).toString());
+	}
+    
+    public void init(final User profile){
+    	playerNameField.setText(profile.getUsername());
     	
+    	if(profile.getContext()!=null){
+    		scoreField.setText(Integer.valueOf(profile.getContext().getScore()).toString());
+    	}
+    	if(profile.getDetails()!=null){
+    		maxScoreField.setText(Integer.valueOf(profile.getDetails().getMaxScore()).toString());
+    	}
+    	
+    	m_superPanel.init(profile.getContext());
     }
     
  
@@ -152,4 +188,7 @@ public class PlayPanel extends javax.swing.JPanel implements SuperlinesListener{
     private javax.swing.JButton toScoreBtn;
     private javax.swing.JPanel topPanel;
     // End of variables declaration//GEN-END:variables
+
+
+
 }

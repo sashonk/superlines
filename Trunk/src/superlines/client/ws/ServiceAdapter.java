@@ -6,7 +6,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 
+import superlines.core.Authentication;
 import superlines.core.Configuration;
+import superlines.server.ws.UserResponse;
 import superlines.ws.InvocationContext;
 import superlines.ws.SuperlinesWebservice;
 
@@ -46,10 +48,10 @@ public class ServiceAdapter {
 		
 		ServiceAdapter sa = get();
 		
-		InvocationContext ctx = new InvocationContext();
-		ctx.setLogin("asd");
-		ctx.setPassword("gg");
-		boolean b = sa.getService().authorize(ctx);
-		System.out.println(b);
+		Authentication a = new Authentication();
+		a.setLogin("asd");
+		a.setPassword("pppp");
+		UserResponse r = sa.getService().getUser(a);
+		System.out.println(r.getUser().getContext());
 	}
 }

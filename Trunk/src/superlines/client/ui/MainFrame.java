@@ -12,6 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import superlines.core.SuperlinesController;
+import superlines.core.SuperlinesControllerImpl;
 
 /**
  *
@@ -34,12 +35,12 @@ public class MainFrame extends javax.swing.JFrame {
        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
        
        
-       SuperlinesController slCtrl = new SuperlinesController();
+       SuperlinesController slCtrl = new SuperlinesControllerImpl(null);
        
        
        
        add(new ScorePanel());
-       add(new PlayPanel(slCtrl));
+      add(new PlayPanel(slCtrl));
        
 
         

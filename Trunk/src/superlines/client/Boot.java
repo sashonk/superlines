@@ -1,23 +1,19 @@
 package superlines.client;
 
 
-import java.awt.Dimension;
-import java.awt.Toolkit;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 
-import javax.swing.JFrame;
+
 import javax.swing.SwingUtilities;
 import org.apache.commons.logging.*;
 import org.apache.log4j.PropertyConfigurator;
 import superlines.client.ui.LoginDialog;
-import superlines.client.ui.LoginFrame;
 import superlines.client.ui.MainFrame;
-import superlines.client.ui.PlayPanel;
-import superlines.client.ui.ScorePanel;
-import superlines.client.ws.ServiceAdapter;
+import superlines.core.SuperlinesController;
+import superlines.core.SuperlinesControllerImpl;
+
 
 
 public class Boot {
@@ -44,30 +40,9 @@ public class Boot {
             public void run() {
                 
                 final  MainFrame frame = MainFrame.get();
+             //   final SuperlinesController ctr = new SuperlinesControllerImpl(ul);
+                
                 final LoginDialog loginFrame = new LoginDialog(frame, true);    
-                      
-                loginFrame.getOkButton().addActionListener(new ActionListener() {
-
-                    @Override
-                    public void actionPerformed(ActionEvent ae) {
-                                loginFrame.dispose();
-                        
-                                frame.setVisible(true);
-                                frame.showPlayPanel();
-                    }
-                });
-                
-                loginFrame.getOfflineButton().addActionListener(new ActionListener() {
-
-                    @Override
-                    public void actionPerformed(ActionEvent ae) {
-                                loginFrame.dispose();
-                        
-                                frame.setVisible(true);
-                                frame.showPlayPanel();
-                    }
-                });
-                
                 loginFrame.setVisible(true);
                 
 

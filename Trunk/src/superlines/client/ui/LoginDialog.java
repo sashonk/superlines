@@ -6,9 +6,12 @@ package superlines.client.ui;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 
 /**
  *
@@ -16,12 +19,15 @@ import javax.swing.JButton;
  */
 public class LoginDialog extends javax.swing.JDialog {
 
+	private final MainFrame frame ;
     /**
      * Creates new form LoginDialog
      */
     public LoginDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        
+        frame = (MainFrame) parent;
         
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         int w = getSize().width;
@@ -34,6 +40,28 @@ public class LoginDialog extends javax.swing.JDialog {
             @Override
             public void windowClosing(WindowEvent evt) {
                 System.exit(0);
+            }
+        });
+        
+        okBtn.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+            	LoginDialog.this.dispose();
+                
+                   frame.setVisible(true);
+                        frame.showPlayPanel();
+            }
+        });
+        
+        offlineBtn.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+            	LoginDialog.this.dispose();
+                
+                        frame.setVisible(true);
+                        frame.showPlayPanel();
             }
         });
     }
