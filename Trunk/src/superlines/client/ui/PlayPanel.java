@@ -4,6 +4,11 @@
  */
 package superlines.client.ui;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import javax.swing.JPanel;
+import superlines.core.SuperlinesContext;
 import superlines.core.SuperlinesController;
 import superlines.core.SuperlinesListener;
 
@@ -13,17 +18,38 @@ import superlines.core.SuperlinesListener;
  */
 public class PlayPanel extends javax.swing.JPanel implements SuperlinesListener{
 
-	private SuperlinesController m_controller;
+	private final SuperlinesController m_controller;
     /**
      * Creates new form PlayPanel
      */
     public PlayPanel(final SuperlinesController ctr) {
         initComponents();
         
+        JPanel leftPanel = new JPanel();        
+        middlePanel.add(leftPanel, BorderLayout.WEST);
+        leftPanel.setPreferredSize(new Dimension(150, 100));
+        leftPanel.setBackground(Color.GREEN);
+        
+        
+        
+        JPanel rightPanel = new JPanel();
+        middlePanel.add(rightPanel, BorderLayout.EAST);
+        rightPanel.setPreferredSize(new Dimension(150, 100));
+        rightPanel.setBackground(Color.BLACK);
+        
+        
+        SuperlinesPanel slPanel = new SuperlinesPanel();
+        middlePanel.add(slPanel,BorderLayout.CENTER);
+        slPanel.setPreferredSize(new Dimension(200, 100));
+        slPanel.setBackground(Color.CYAN);
+        
         m_controller= ctr;
         
-        SuperlinesPanel sp = (SuperlinesPanel)superlinesPanel;
-        sp.test();
+   
+    }
+    
+    public void init(final SuperlinesContext ctx){
+    	
     }
     
  
@@ -44,9 +70,6 @@ public class PlayPanel extends javax.swing.JPanel implements SuperlinesListener{
         maxScoreLabel = new javax.swing.JLabel();
         maxScoreField = new javax.swing.JTextField();
         middlePanel = new javax.swing.JPanel();
-        leftPanel = new javax.swing.JPanel();
-        superlinesPanel = new SuperlinesPanel();
-        rightPanel = new javax.swing.JPanel();
         bottomPanel = new javax.swing.JPanel();
         toScoreBtn = new javax.swing.JButton();
         scatterButton = new javax.swing.JButton();
@@ -83,43 +106,7 @@ public class PlayPanel extends javax.swing.JPanel implements SuperlinesListener{
         add(topPanel);
 
         middlePanel.setBackground(new java.awt.Color(204, 255, 204));
-        middlePanel.setLayout(new javax.swing.BoxLayout(middlePanel, javax.swing.BoxLayout.LINE_AXIS));
-
-        leftPanel.setPreferredSize(new java.awt.Dimension(50, 200));
-
-        javax.swing.GroupLayout leftPanelLayout = new javax.swing.GroupLayout(leftPanel);
-        leftPanel.setLayout(leftPanelLayout);
-        leftPanelLayout.setHorizontalGroup(
-            leftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 50, Short.MAX_VALUE)
-        );
-        leftPanelLayout.setVerticalGroup(
-            leftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 245, Short.MAX_VALUE)
-        );
-
-        middlePanel.add(leftPanel);
-
-        superlinesPanel.setBackground(new java.awt.Color(153, 153, 153));
-        superlinesPanel.setPreferredSize(null);
-        superlinesPanel.setLayout(new java.awt.GridBagLayout());
-        middlePanel.add(superlinesPanel);
-
-        rightPanel.setPreferredSize(new java.awt.Dimension(50, 244));
-
-        javax.swing.GroupLayout rightPanelLayout = new javax.swing.GroupLayout(rightPanel);
-        rightPanel.setLayout(rightPanelLayout);
-        rightPanelLayout.setHorizontalGroup(
-            rightPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 50, Short.MAX_VALUE)
-        );
-        rightPanelLayout.setVerticalGroup(
-            rightPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 245, Short.MAX_VALUE)
-        );
-
-        middlePanel.add(rightPanel);
-
+        middlePanel.setLayout(new java.awt.BorderLayout());
         add(middlePanel);
 
         bottomPanel.setBackground(new java.awt.Color(204, 204, 255));
@@ -155,16 +142,13 @@ public class PlayPanel extends javax.swing.JPanel implements SuperlinesListener{
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel bottomPanel;
-    private javax.swing.JPanel leftPanel;
     private javax.swing.JTextField maxScoreField;
     private javax.swing.JLabel maxScoreLabel;
     private javax.swing.JPanel middlePanel;
     private javax.swing.JTextField playerNameField;
-    private javax.swing.JPanel rightPanel;
     private javax.swing.JButton scatterButton;
     private javax.swing.JTextField scoreField;
     private javax.swing.JLabel scoreLabel;
-    private javax.swing.JPanel superlinesPanel;
     private javax.swing.JButton toScoreBtn;
     private javax.swing.JPanel topPanel;
     // End of variables declaration//GEN-END:variables
