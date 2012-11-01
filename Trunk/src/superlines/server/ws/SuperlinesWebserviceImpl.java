@@ -14,7 +14,6 @@ import superlines.core.SuperlinesRules;
 import superlines.core.SuperlinesTable;
 import superlines.core.User;
 import superlines.core.UserDetails;
-import superlines.ws.InvocationContext;
 import superlines.ws.SuperlinesWebservice;
 
 @WebService(endpointInterface="superlines.ws.SuperlinesWebservice")

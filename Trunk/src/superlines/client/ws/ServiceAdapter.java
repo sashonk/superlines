@@ -9,7 +9,6 @@ import org.apache.commons.logging.LogFactory;
 import superlines.core.Authentication;
 import superlines.core.Configuration;
 import superlines.server.ws.UserResponse;
-import superlines.ws.InvocationContext;
 import superlines.ws.SuperlinesWebservice;
 
 
