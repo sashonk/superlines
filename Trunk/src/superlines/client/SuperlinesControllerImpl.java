@@ -2,6 +2,10 @@ package superlines.client;
 
 import java.util.LinkedList;
 import java.util.List;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import superlines.client.ws.ServiceAdapter;
 import superlines.core.RulesHelper;
 import superlines.core.SuperlinesBall;
@@ -13,25 +17,7 @@ public class SuperlinesControllerImpl implements SuperlinesController {
 	private  SuperlinesContext m_ctx;
 
 	public SuperlinesControllerImpl() throws Exception{
-            Context ctx = Context.get();            
-            SuperlinesContext slctx = ServiceAdapter.get().createSuperlinesContext(ctx.getAuth());
-            if(slctx==null){
-                throw new Exception("failed to create superlines context!");
-            }
-                        
-            m_ctx = slctx;
-            ctx.setSuperlinesContext(slctx);
-            
-            if(m_ctx.getTable()==null){
-            	SuperlinesTable t = new SuperlinesTable();
-            	t.setWidth(m_ctx.getRules().getTableWidth());
-            	m_ctx.setTable(t);
-
-            	
-            	t.setContext(m_ctx);
-            	
-            	
-            }
+		restart();
 	}
 	
         public SuperlinesContext getContext(){
@@ -92,9 +78,30 @@ public class SuperlinesControllerImpl implements SuperlinesController {
 	}
 
 	@Override
-	public void restart() {
-		//ServiceAdapter.get().getService().createContext(null)
-		
+	public void restart(){
+
+        Context ctx = Context.get();            
+        SuperlinesContext slctx = ServiceAdapter.get().createSuperlinesContext(ctx.getAuth());
+        if(slctx==null){
+        	log.error("failed to create superlines context!");
+        }
+                    
+        m_ctx = slctx;
+        ctx.setSuperlinesContext(slctx);
+        
+        if(m_ctx.getTable()==null){
+        	SuperlinesTable t = new SuperlinesTable();
+        	t.setWidth(m_ctx.getRules().getTableWidth());
+        	m_ctx.setTable(t);
+
+        	
+        	t.setContext(m_ctx);
+        	
+        	
+        }
+
 	}
+	
+	private static final Log log = LogFactory.getLog(SuperlinesControllerImpl.class);
 
 }

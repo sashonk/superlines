@@ -16,6 +16,7 @@ import superlines.client.SuperlinesController;
 import superlines.client.SuperlinesListener;
 
 import superlines.client.util.SuperlinesHelper;
+import superlines.core.RulesHelper;
 import superlines.core.SuperlinesBall.State;
 import superlines.core.SuperlinesContext;
 import superlines.core.User;
@@ -152,6 +153,7 @@ public class PlayPanel extends javax.swing.JPanel implements SuperlinesListener{
         bottomPanel = new javax.swing.JPanel();
         toScoreBtn = new javax.swing.JButton();
         scatterButton = new javax.swing.JButton();
+        restartBtn = new javax.swing.JButton();
 
         setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.PAGE_AXIS));
 
@@ -212,6 +214,15 @@ public class PlayPanel extends javax.swing.JPanel implements SuperlinesListener{
         });
         bottomPanel.add(scatterButton);
 
+        restartBtn.setText("restart");
+        restartBtn.setPreferredSize(new java.awt.Dimension(80, 23));
+        restartBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                restartBtnActionPerformed(evt);
+            }
+        });
+        bottomPanel.add(restartBtn);
+
         add(bottomPanel);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -223,12 +234,26 @@ public class PlayPanel extends javax.swing.JPanel implements SuperlinesListener{
         MainFrame.get().showScorePanel();        // TODO add your handling code here:
     }//GEN-LAST:event_toScoreBtnActionPerformed
 
+    private void restartBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_restartBtnActionPerformed
+        // TODO add your handling code here:
+
+    	m_controller.restart();
+    	SuperlinesContext ctx = m_controller.getContext();
+    	ctx.registerListener(this);
+        
+    	m_controller.scatter();
+    	
+    	RulesHelper.populateNextolors(ctx);
+        init();
+    }//GEN-LAST:event_restartBtnActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel bottomPanel;
     private javax.swing.JTextField maxScoreField;
     private javax.swing.JLabel maxScoreLabel;
     private javax.swing.JPanel middlePanel;
     private javax.swing.JTextField playerNameField;
+    private javax.swing.JButton restartBtn;
     private javax.swing.JButton scatterButton;
     private javax.swing.JTextField scoreField;
     private javax.swing.JLabel scoreLabel;
