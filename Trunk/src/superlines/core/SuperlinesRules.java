@@ -22,7 +22,7 @@ public class SuperlinesRules {
 		return m_normalAward;
 	}
 	
-	public void setNormatAward(int value){
+	public void setNormalAward(int value){
 		m_normalAward= value;
 	}
 	
@@ -74,6 +74,14 @@ public class SuperlinesRules {
 		m_countSkew = value;
 	}
 	
+	public void setShowTip(boolean value){
+		m_showTip = value;
+	}
+	
+	public boolean isShowTip(){
+		return m_showTip;
+	}
+	
 	@XmlAttribute(name="scatterBallsCount")
 	private int m_scatterBallsCount;
 	
@@ -97,5 +105,8 @@ public class SuperlinesRules {
 	
 	@XmlAttribute(name="countSkew")
 	private boolean m_countSkew;
+	
+	@XmlAttribute(name="showTip")
+	private boolean m_showTip;
 	
 }

@@ -1,7 +1,6 @@
-package superlines.server.ws;
+package superlines.ws;
 
-import java.util.LinkedList;
-import java.util.List;
+
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -12,10 +11,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class BaseResponse {
 
-	public List<String> getMessages(){
-		return messages;
+	public Message getMessage(){
+		return message;
 	}
 	
-	@XmlElement
-	private List<String > messages = new LinkedList<String>();
+	public void setMessage(final Message m){
+		message = m;
+	}
+	
+	@XmlElement(name="message")
+	private Message message;
 }

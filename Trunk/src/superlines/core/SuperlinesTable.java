@@ -7,6 +7,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import superlines.client.SuperlinesListener;
+
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class SuperlinesTable {
@@ -44,9 +46,19 @@ public class SuperlinesTable {
 	public void setClickedBall(final SuperlinesBall ball){
 		SuperlinesBall old = m_clickedBall;
 		m_clickedBall = ball;
+
 		for(SuperlinesListener l : m_ctx.getListeners()){
-			l.clickedBallChanged(m_clickedBall.getX(), m_clickedBall.getY(), old.getX(), old.getY());
+			if(old==null){
+				l.clickeBallSet(m_clickedBall.getX(), m_clickedBall.getY());
+			}
+			else if(ball==null){
+				l.clickedBallUnset(old.getX(), old.getY());
+			}
+			else{
+				l.clickedBallChanged(m_clickedBall.getX(), m_clickedBall.getY(), old.getX(), old.getY());
+			}
 		}
+		
 	}
 	
 	public void setContext(final SuperlinesContext c){
@@ -56,6 +68,20 @@ public class SuperlinesTable {
 	public SuperlinesContext getContext(){
 		return m_ctx;
 	}
+        
+        public void incColoredCount(int value){
+            m_coloredCount+=value;
+            
+            if(m_coloredCount==m_width*m_width){
+                for(SuperlinesListener l : m_ctx.getListeners()){
+                    l.tableFilled();
+                }
+            }
+        }
+        
+        public boolean isFilled(){
+            return m_coloredCount==m_width*m_width;
+        }
 	
 	@XmlElement(name="balls", nillable=true)
 	private SuperlinesBall[][] balls;
@@ -68,4 +94,9 @@ public class SuperlinesTable {
 	
 	@XmlTransient
 	private SuperlinesContext m_ctx;
+        
+        @XmlTransient
+        private int m_coloredCount = 0;
+        
+        
 }

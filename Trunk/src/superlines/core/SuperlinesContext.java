@@ -6,12 +6,16 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+
+import superlines.client.SuperlinesListener;
 
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
+
 public class SuperlinesContext {
 	
 	
@@ -51,6 +55,17 @@ public class SuperlinesContext {
 	public void setTable(final SuperlinesTable value){
 		m_table= value;
 	}
+        
+    public List<Integer> getNextColors(){
+            return m_nextColors;
+    }
+    
+    public void setNextColors(final List<Integer> nextColors){
+    	m_nextColors = nextColors;
+    	for(SuperlinesListener l : m_listeners){
+    		l.nextColorsChanged(m_nextColors);
+    	}
+    }
 	
 	@XmlElement(name="table",nillable=true)
 	private SuperlinesTable m_table;
@@ -64,4 +79,7 @@ public class SuperlinesContext {
 	@XmlTransient
 	private List<SuperlinesListener> m_listeners = new LinkedList<SuperlinesListener>();
 
+        @XmlElementWrapper(name="nextColors",nillable=true)
+        @XmlElement(name="color", nillable=true)
+        private List<Integer> m_nextColors = new LinkedList<Integer>();
 }

@@ -7,6 +7,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import superlines.client.SuperlinesListener;
+
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class SuperlinesBall {
@@ -25,10 +27,19 @@ public class SuperlinesBall {
 	public void setColor(int color){
 		int oldval = m_color;
 		m_color = color;
-		
+                                
+                if(oldval==0 && m_color!=0){
+                    m_table.incColoredCount(1);
+                }
+                else if(oldval!=0 && m_color==0){
+                     m_table.incColoredCount(-1);
+                }
+                              		
 		for(SuperlinesListener l : m_table.getContext().getListeners()){
 			l.ballChangeColor(m_x, m_y, m_color, oldval);
 		}
+                
+                
 	}
 	
 	public State getState(){

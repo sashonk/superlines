@@ -9,6 +9,7 @@ public class SuperlinesHelper {
 	
 	private final static Map<Integer, Color> m_colorMap = new HashMap<Integer, Color>();
 	static{
+		m_colorMap.put(Integer.valueOf(0), Color.black);
 		m_colorMap.put(Integer.valueOf(1), Color.red);
 		m_colorMap.put(Integer.valueOf(2), Color.green);
 		m_colorMap.put(Integer.valueOf(3), Color.yellow);

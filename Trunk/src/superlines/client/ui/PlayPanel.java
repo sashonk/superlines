@@ -7,13 +7,17 @@ package superlines.client.ui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.util.List;
+
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import superlines.client.Context;
+import superlines.client.SuperlinesController;
+import superlines.client.SuperlinesListener;
 
 import superlines.client.util.SuperlinesHelper;
 import superlines.core.SuperlinesBall.State;
 import superlines.core.SuperlinesContext;
-import superlines.core.SuperlinesController;
-import superlines.core.SuperlinesListener;
 import superlines.core.User;
 
 /**
@@ -22,12 +26,12 @@ import superlines.core.User;
  */
 public class PlayPanel extends javax.swing.JPanel implements SuperlinesListener{
 
-	private final SuperlinesController m_controller;
+	private SuperlinesController m_controller;
 	private final SuperlinesPanel m_superPanel; 
     /**
      * Creates new form PlayPanel
      */
-    public PlayPanel(final SuperlinesController ctr) {
+    public PlayPanel() {
         initComponents();
         
         JPanel leftPanel = new JPanel();        
@@ -35,23 +39,45 @@ public class PlayPanel extends javax.swing.JPanel implements SuperlinesListener{
         leftPanel.setPreferredSize(new Dimension(150, 100));
         leftPanel.setBackground(Color.GREEN);
         
-        
-        
+
         JPanel rightPanel = new JPanel();
         middlePanel.add(rightPanel, BorderLayout.EAST);
         rightPanel.setPreferredSize(new Dimension(150, 100));
         rightPanel.setBackground(Color.BLACK);
         
         
-        m_superPanel = new SuperlinesPanel(ctr);
+        m_superPanel = new SuperlinesPanel();
         middlePanel.add(m_superPanel,BorderLayout.CENTER);
         m_superPanel.setPreferredSize(new Dimension(200, 100));
         m_superPanel.setBackground(Color.CYAN);
         
-        m_controller= ctr;
-        
+ 
    
     }
+    
+    public void setController(final SuperlinesController ctr){
+        m_controller = ctr;
+        m_superPanel.setController(ctr);
+        ((TipPanel)tipPanel).setController(ctr);
+    }
+    
+    @Override
+    public void nextColorsChanged(final List<Integer> newColors){
+    	TipPanel panel = (TipPanel)tipPanel;
+    	panel.updatePanels(newColors);
+    }
+    
+	@Override
+	public void clickedBallUnset(int x, int y) {
+		m_superPanel.getSpots()[x][y].setClicked(false);	
+		
+	}
+    
+	@Override
+	public void clickeBallSet(int newx, int newy) {
+		m_superPanel.getSpots()[newx][newy].setClicked(true);	
+		
+	}
     
 	@Override
 	public void clickedBallChanged(int newx, int newy, int oldx, int oldy) {
@@ -74,18 +100,34 @@ public class PlayPanel extends javax.swing.JPanel implements SuperlinesListener{
 	public void scoreChanged(int newScore, int oldScore) {
 		scoreField.setText(Integer.valueOf(newScore).toString());
 	}
+        
+     @Override
+    public void tableFilled() {
+    	 scatterButton.setEnabled(false);
+        JOptionPane.showMessageDialog(this, "Game over!");
+    }
     
-    public void init(final User profile){
+    public void init(){
+            Context ctx = Context.get();
+            User profile = ctx.getUser();
+            SuperlinesContext c = m_controller.getContext();
+        
     	playerNameField.setText(profile.getUsername());
     	
-    	if(profile.getContext()!=null){
-    		scoreField.setText(Integer.valueOf(profile.getContext().getScore()).toString());
+    	if(ctx!=null){
+    		scoreField.setText(Integer.valueOf(c.getScore()).toString());
     	}
-    	if(profile.getDetails()!=null){
-    		maxScoreField.setText(Integer.valueOf(profile.getDetails().getMaxScore()).toString());
+    	if(ctx!=null){
+    		maxScoreField.setText(Integer.valueOf(0).toString());
     	}
     	
-    	m_superPanel.init(profile.getContext());
+    	m_superPanel.init();
+        ((TipPanel)tipPanel).init();
+        if(!c.getRules().isShowTip()){
+        	tipPanel.setVisible(false);
+        }
+        
+        //m_controller.scatter();
     }
     
  
@@ -105,6 +147,7 @@ public class PlayPanel extends javax.swing.JPanel implements SuperlinesListener{
         scoreField = new javax.swing.JTextField();
         maxScoreLabel = new javax.swing.JLabel();
         maxScoreField = new javax.swing.JTextField();
+        tipPanel = new TipPanel();
         middlePanel = new javax.swing.JPanel();
         bottomPanel = new javax.swing.JPanel();
         toScoreBtn = new javax.swing.JButton();
@@ -123,6 +166,7 @@ public class PlayPanel extends javax.swing.JPanel implements SuperlinesListener{
         playerNameField.setEditable(false);
         playerNameField.setText("player");
         playerNameField.setToolTipText("player name");
+        playerNameField.setPreferredSize(null);
         topPanel.add(playerNameField);
 
         scoreLabel.setText("jLabel1");
@@ -130,6 +174,7 @@ public class PlayPanel extends javax.swing.JPanel implements SuperlinesListener{
 
         scoreField.setEditable(false);
         scoreField.setText("1111");
+        scoreField.setPreferredSize(new java.awt.Dimension(60, 20));
         topPanel.add(scoreField);
 
         maxScoreLabel.setText("jLabel2");
@@ -137,9 +182,11 @@ public class PlayPanel extends javax.swing.JPanel implements SuperlinesListener{
 
         maxScoreField.setEditable(false);
         maxScoreField.setText("12000");
+        maxScoreField.setPreferredSize(new java.awt.Dimension(60, 20));
         topPanel.add(maxScoreField);
 
         add(topPanel);
+        add(tipPanel);
 
         middlePanel.setBackground(new java.awt.Color(204, 255, 204));
         middlePanel.setLayout(new java.awt.BorderLayout());
@@ -169,7 +216,7 @@ public class PlayPanel extends javax.swing.JPanel implements SuperlinesListener{
     }// </editor-fold>//GEN-END:initComponents
 
     private void scatterButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_scatterButtonActionPerformed
-        // TODO add your handling code here:
+        m_controller.scatter();
     }//GEN-LAST:event_scatterButtonActionPerformed
 
     private void toScoreBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toScoreBtnActionPerformed
@@ -185,9 +232,14 @@ public class PlayPanel extends javax.swing.JPanel implements SuperlinesListener{
     private javax.swing.JButton scatterButton;
     private javax.swing.JTextField scoreField;
     private javax.swing.JLabel scoreLabel;
+    private javax.swing.JPanel tipPanel;
     private javax.swing.JButton toScoreBtn;
     private javax.swing.JPanel topPanel;
     // End of variables declaration//GEN-END:variables
+
+
+
+
 
 
 

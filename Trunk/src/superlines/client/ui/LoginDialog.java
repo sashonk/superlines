@@ -12,6 +12,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import superlines.core.Authentication;
 
 /**
  *
@@ -36,34 +37,16 @@ public class LoginDialog extends javax.swing.JDialog {
         int y = (dim.height-h)/2;
         setLocation(x, y); 
         
-        this.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent evt) {
-                System.exit(0);
-            }
-        });
-        
-        okBtn.addActionListener(new ActionListener() {
 
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-            	LoginDialog.this.dispose();
-                
-                   frame.setVisible(true);
-                        frame.showPlayPanel();
-            }
-        });
-        
-        offlineBtn.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-            	LoginDialog.this.dispose();
-                
-                        frame.setVisible(true);
-                        frame.showPlayPanel();
-            }
-        });
+    }
+    
+    public void setErrorMessage(final String error){
+        errorLabel.setText(error);
+    }
+    
+    public void writeData(final Authentication auth){
+        auth.setLogin(loginField.getText());
+        auth.setPassword(passwordField.getPassword());
     }
     
     public JButton getOkButton(){
@@ -89,6 +72,7 @@ public class LoginDialog extends javax.swing.JDialog {
         loginField = new javax.swing.JTextField();
         passwordLabel = new javax.swing.JLabel();
         passwordField = new javax.swing.JPasswordField();
+        errorLabel = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         okBtn = new javax.swing.JButton();
         offlineBtn = new javax.swing.JButton();
@@ -108,8 +92,9 @@ public class LoginDialog extends javax.swing.JDialog {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
+        gridBagConstraints.ipadx = 10;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(33, 57, 0, 0);
+        gridBagConstraints.insets = new java.awt.Insets(33, 25, 0, 0);
         jPanel3.add(loginLabel, gridBagConstraints);
 
         loginField.setPreferredSize(new java.awt.Dimension(120, 20));
@@ -119,7 +104,7 @@ public class LoginDialog extends javax.swing.JDialog {
         gridBagConstraints.gridheight = 2;
         gridBagConstraints.ipadx = 134;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(30, 10, 0, 35);
+        gridBagConstraints.insets = new java.awt.Insets(30, 10, 0, 22);
         jPanel3.add(loginField, gridBagConstraints);
 
         passwordLabel.setText("Пароль");
@@ -127,7 +112,7 @@ public class LoginDialog extends javax.swing.JDialog {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(21, 39, 0, 0);
+        gridBagConstraints.insets = new java.awt.Insets(21, 17, 0, 0);
         jPanel3.add(passwordLabel, gridBagConstraints);
 
         passwordField.setPreferredSize(new java.awt.Dimension(120, 20));
@@ -137,8 +122,19 @@ public class LoginDialog extends javax.swing.JDialog {
         gridBagConstraints.gridheight = 2;
         gridBagConstraints.ipadx = 134;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(18, 10, 38, 35);
+        gridBagConstraints.insets = new java.awt.Insets(18, 10, 0, 22);
         jPanel3.add(passwordField, gridBagConstraints);
+
+        errorLabel.setPreferredSize(new java.awt.Dimension(180, 14));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.ipadx = 187;
+        gridBagConstraints.ipady = 14;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(18, 17, 6, 22);
+        jPanel3.add(errorLabel, gridBagConstraints);
 
         getContentPane().add(jPanel3);
 
@@ -198,6 +194,7 @@ public class LoginDialog extends javax.swing.JDialog {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel errorLabel;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JTextField loginField;

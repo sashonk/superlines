@@ -1,4 +1,6 @@
-package superlines.core;
+package superlines.client;
+
+import superlines.core.SuperlinesContext;
 
 public interface SuperlinesController {
 		
@@ -7,4 +9,6 @@ public interface SuperlinesController {
 	public void scatter();
 	
 	public void restart();
+        
+        public SuperlinesContext getContext();
 }

@@ -1,4 +1,6 @@
-package superlines.server.ws;
+package superlines.ws;
+
+import javax.xml.bind.annotation.XmlElement;
 
 import superlines.core.User;
 
@@ -12,5 +14,6 @@ public class UserResponse extends BaseResponse{
 		user = u;
 	}
 	
+	@XmlElement(name="user")
 	private User user;
 }

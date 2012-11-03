@@ -4,8 +4,8 @@
  */
 package superlines.client.ui;
 
-import superlines.core.SuperlinesController;
-import superlines.core.SuperlinesListener;
+import superlines.client.SuperlinesController;
+import superlines.client.SuperlinesListener;
 
 /**
  *

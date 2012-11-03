@@ -6,9 +6,11 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name="User")
 public class User {
 
 	public Authentication getAuth(){
@@ -30,21 +32,21 @@ public class User {
 	
 
 	
-	public UserDetails getDetails(){
-		return m_details;
-	}
-	
-	public void setDetails(final UserDetails val){
-		m_details = val;
-	}
-	
-	public SuperlinesContext getContext(){
-		return m_ctx;
-	}
-	
-	public void  setContext(final SuperlinesContext value){
-		m_ctx = value;
-	}
+//	public UserDetails getDetails(){
+//		return m_details;
+//	}
+//	
+//	public void setDetails(final UserDetails val){
+//		m_details = val;
+//	}
+//	
+//	public SuperlinesContext getContext(){
+//		return m_ctx;
+//	}
+//	
+//	public void  setContext(final SuperlinesContext value){
+//		m_ctx = value;
+//	}
 	
 	@XmlElement(name="auth", nillable=true)
 	private Authentication m_auth;
@@ -52,10 +54,10 @@ public class User {
 	@XmlElement(name="username")
 	private String m_username;
 	
-	@XmlElement(name="details")
-	private UserDetails m_details;
-	
-	@XmlElement(name="context")
-	private SuperlinesContext m_ctx;
+//	@XmlElement(name="details")
+//	private UserDetails m_details;
+//	
+//	@XmlElement(name="context")
+//	private SuperlinesContext m_ctx;
 	
 }
