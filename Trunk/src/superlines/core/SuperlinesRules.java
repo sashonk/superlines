@@ -82,6 +82,14 @@ public class SuperlinesRules {
 		return m_showTip;
 	}
 	
+	public void setAllowLeap(boolean value){
+		m_allowLeap = value;
+	}
+	
+	public boolean isAllowLeap(){
+		return m_allowLeap;
+	}
+	
 	@XmlAttribute(name="scatterBallsCount")
 	private int m_scatterBallsCount;
 	
@@ -108,5 +116,8 @@ public class SuperlinesRules {
 	
 	@XmlAttribute(name="showTip")
 	private boolean m_showTip;
+	
+	@XmlAttribute(name="allowJump")
+	private boolean m_allowLeap;
 	
 }

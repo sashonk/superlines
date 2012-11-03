@@ -49,15 +49,23 @@ public class SuperlinesControllerImpl implements SuperlinesController {
 				return;
 			}
 			
+
+        	if(!m_ctx.getRules().isAllowLeap()){
+            	List<SuperlinesBall> way = new LinkedList<SuperlinesBall>();
+            	boolean checked = RulesHelper.checkWay(m_ctx, clickedBall, targetBall, way);
+            	
+            	if(!checked){
+            		return;
+            	}
+        	}
+
 			targetBall.setColor(clickedBall.getColor());
 			clickedBall.setColor(0);
 			m_ctx.getTable().setClickedBall(null);
 			
                         List<SuperlinesBall> winBalls = new LinkedList<>();
                         int win = RulesHelper.countWin(m_ctx, targetBall, winBalls);
-                        
 
-                        
                         int score = m_ctx.getScore();
                         if(win>0){
                             m_ctx.setScore(score+win);
@@ -70,7 +78,10 @@ public class SuperlinesControllerImpl implements SuperlinesController {
                         }
 		}
         else{
-                    m_ctx.getTable().setClickedBall(targetBall);                    
+        	
+        	m_ctx.getTable().setClickedBall(targetBall);
+        	
+
         }
 		
 	}

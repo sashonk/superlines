@@ -72,8 +72,11 @@ public class SuperlinesWebserviceImpl implements SuperlinesWebservice{
            rules.setScatterBallsCount(5);
            rules.setTableWidth(9);
            rules.setShowTip(true);
+           rules.setAllowLeap(false);
+           
            ctx.setRules(rules);
            ctx.setScore(0);
+           
            
            response.setContext(ctx);           
        }

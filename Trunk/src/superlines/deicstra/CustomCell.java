@@ -11,7 +11,7 @@ package superlines.deicstra;
 *
 * @author _shef_
 */
-import java.awt.*;
+import java.awt.Point;
 
 public class CustomCell {
 
@@ -27,10 +27,10 @@ public CustomCell() {
 */
 public CustomCell(int cost, int x, int y) {
 this.Cost = Math.abs(cost);
-this.setColor(new Color(100,100,(int)(255/Cost)));
+
 if (cost < 0) {
 this.Passableness = false;
-this.setColor(Color.BLACK);
+
 } else {
 this.Passableness = true;
 }
@@ -86,14 +86,7 @@ public int getY(){
 return this.Position.y;
 }
 
-/**Метод отображает клетку на переданном контексте
-*/
-public void paint(Graphics g){
-int x = g.getClipBounds().x + 20;
-int y = g.getClipBounds().y + 20;
-g.setColor(this.Color);
-g.fillRect(x+getX()*2, y+getY()*2, 2, 2);
-}
+
 
 public String toString(){
 return ("("+ getX() + ";" + getY() +"):\n"
@@ -101,10 +94,6 @@ return ("("+ getX() + ";" + getY() +"):\n"
 );
 }
 
-//Цвет клетки
-private Color Color = new Color(255,255,255);
-public void setColor(Color Color){
-this.Color = Color;
-}
-public Color getColor() {return this.Color;}
+
+
 }

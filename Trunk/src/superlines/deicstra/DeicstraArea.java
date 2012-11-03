@@ -11,24 +11,22 @@ package superlines.deicstra;
 *
 * @author 222
 */
-import java.awt.*;
+import java.awt.Point;
 import java.util.*;
 import java.lang.*;
 
 public class DeicstraArea {
 
-/** Creates a new instance of DeicstraArea */
-private DeicstraArea() { 
-}
 
 
+/*
 private static DeicstraArea instance = null;
-/** Метод необходим для реализации шаблона Singletton
-*/
+*//** Метод необходим для реализации шаблона Singletton
+*//*
 public static DeicstraArea getInstance(){
 if (instance == null) instance = new DeicstraArea();
 return instance;
-}
+}*/
 /** Метод создает внутренний образ карты переданной
 * в виде массива значений стоимости прохождения клети
 * без вызова этого метода работа с данным класом
@@ -49,6 +47,8 @@ CustomCell cell = new CustomCell(area[x][y], x, y);
 this.area.add(cell);
 } 
 }
+
+
 
 /** Метод возвращает ссылку на клетку внутреннего
 * образа карты по переданным координатам x и y
@@ -221,15 +221,15 @@ return outAL;
 * @return возвращает ArrayList состоящий из обьектов Point
 * если путь не найден возвращает null 
 */
-public ArrayList findWay(Point startPoint, Point finishPoint) throws NoWayException {
+public List<Point> findWay(int xbegin, int ybegin, int xend, int yend)  {
 //Создаем временные области
 ArrayList <DeicstraCell> tempArea = new ArrayList <DeicstraCell> ();
 ArrayList <DeicstraCell> BarrierList = new ArrayList <DeicstraCell> ();
 DeicstraCell STARTCELL = null;
 DeicstraCell FINISHCELL = null;
 //Получаем ссылки на начальную и конечные клетки
-CustomCell startCell = getCell(startPoint.x, startPoint.y);
-CustomCell finishCell = getCell(finishPoint.x, finishPoint.y);
+CustomCell startCell = getCell(xbegin, ybegin);
+CustomCell finishCell = getCell(xend, yend);
 //Производим создание вектора образа карты состоящий из обьектов
 // класса DeicstraCell
 for(CustomCell TEMPCELL : area){
@@ -239,7 +239,7 @@ if (TEMPCELL == finishCell) FINISHCELL = tempDC;
 tempArea.add(tempDC);
 }
 //Обьявляем обект ссылку на который метод вернет в результате
-ArrayList retAL = new ArrayList();
+ArrayList<Point> retAL = new ArrayList<Point>();
 //Для начальной точки делаем предшественника её саму
 STARTCELL.setPredecessor(STARTCELL);
 //Пройденый путь начальной точки равен ее стоимости
@@ -255,7 +255,7 @@ BarrierList.clear();
 //Помещаем в него начальную точку
 BarrierList.add(STARTCELL);
 DeicstraCell minCC = null;
-DeicstraCell tempCC = null;
+
 
 while(!BarrierList.isEmpty()){
 //Среди всех граничных точек находим Клетку1 - клетку с минимальной суммой оценки 
@@ -429,15 +429,7 @@ continue;
 return way;
 }
 
-/** Метод отображает все клетки на переданном
-* в качестве параметра контексте
-*
-*/ 
-public void paint(Graphics g){
-for (CustomCell tempCC : this.area){
-tempCC.paint(g);
-}
-}
+
 
 //Модели окружения
 public final int ENVIROMENT_MODEL_SNOWFLAKE = 1;

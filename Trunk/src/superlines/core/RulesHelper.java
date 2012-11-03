@@ -1,10 +1,49 @@
 package superlines.core;
 
+import java.awt.Point;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
+import superlines.deicstra.DeicstraArea;
+import superlines.deicstra.NoWayException;
+
 public class RulesHelper {
+	
+		public static boolean checkWay(final SuperlinesContext ctx, final SuperlinesBall begin, final SuperlinesBall end, final List<SuperlinesBall> way){
+			if(ctx.getRules().isAllowLeap()){
+				return true;
+			}
+			
+			int[][] area = new int[ctx.getTable().getSize()][ctx.getTable().getSize()];
+			for(int i = 0; i<ctx.getTable().getSize(); i++){
+				for(int j = 0; j<ctx.getTable().getSize(); j++){
+					if(ctx.getTable().getBall(i, j).getColor()!=0){
+						area[i][j] = -1;
+					}
+					else{
+						area[i][j] = 0;
+					}
+				}				
+			}
+			
+			DeicstraArea da = new DeicstraArea();
+			da.makeArea(area);
+			
+	
+				List<Point> path = da.findWay(begin.getX(), begin.getY(), end.getX(), end.getY());
+				if(path==null){
+					return false;
+				}
+				
+				for(Point p : path){
+					way.add(ctx.getTable().getBall(p.x, p.y));
+				}
+				
+				return true;
+
+			
+		}
     
         public static void scatter(final SuperlinesContext ctx){
 		SuperlinesTable t = ctx.getTable();
