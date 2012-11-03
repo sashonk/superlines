@@ -1,4 +1,4 @@
-package superlines.client;
+package superlines.client.boot;
 
 
 
@@ -14,6 +14,10 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import org.apache.commons.logging.*;
 import org.apache.log4j.PropertyConfigurator;
+
+import superlines.client.Context;
+import superlines.client.SuperlinesController;
+import superlines.client.SuperlinesControllerImpl;
 import superlines.client.ui.LoginDialog;
 import superlines.client.ui.MainFrame;
 import superlines.client.ui.PlayPanel;

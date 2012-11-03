@@ -69,9 +69,9 @@ public class SuperlinesControllerImpl implements SuperlinesController {
                             scatter();
                         }
 		}
-                else{
+        else{
                     m_ctx.getTable().setClickedBall(targetBall);                    
-                }
+        }
 		
 	}
 
