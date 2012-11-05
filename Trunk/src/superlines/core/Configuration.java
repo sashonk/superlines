@@ -13,6 +13,7 @@ public class Configuration {
 	private final static Log log = LogFactory.getLog(Configuration.class); 
 	private static Configuration instance;
 	private Properties m_props;
+	private File m_dataFolder;
 	
 	public static Configuration get(){
 		if(instance == null){
@@ -39,6 +40,21 @@ public class Configuration {
 	
 	public String getProperty(String key){
 		return m_props.getProperty(key);
+	}
+	
+	public Properties getConfig(){
+		return m_props;
+	}
+	
+	public File getDataFolder(){
+		if(m_dataFolder==null){
+			String prop = System.getProperty("data.folder");
+			if(prop!=null){
+				m_dataFolder = new File(prop);
+			}
+		}
+		
+		return m_dataFolder;
 	}
 
 }

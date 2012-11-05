@@ -1,13 +1,27 @@
 package superlines.server.ws;
 
+import superlines.Util;
 import superlines.ws.UserResponse;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.sql.Connection;
 
 
+import javax.annotation.Resource;
+import javax.annotation.Resource.AuthenticationType;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.ws.WebServiceContext;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import superlines.core.Authentication;
 import superlines.core.SuperlinesContext;
@@ -18,17 +32,41 @@ import superlines.core.User;
 import superlines.ws.Message;
 import superlines.ws.Messages;
 import superlines.ws.Response;
+import superlines.ws.ScoreData;
+import superlines.ws.ScoreParameters;
+import superlines.ws.ScoreResponse;
 import superlines.ws.SuperlinesContextResponse;
 import superlines.ws.SuperlinesWebservice;
 
 @WebService(endpointInterface="superlines.ws.SuperlinesWebservice")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class SuperlinesWebserviceImpl implements SuperlinesWebservice{
+	
+	private final static Log log = LogFactory.getLog(SuperlinesWebserviceImpl.class);
 
+	//@Resource(name="jdbc/mysql")
+ 	private DataSource m_dataSource;
+	
+	public SuperlinesWebserviceImpl(){
+		  try {
+				Context ctx = new InitialContext();
+				m_dataSource = (DataSource)ctx.lookup("java:comp/env/jdbc/mysql");
+				
+			  } catch (NamingException e) {
+				  log.error(e);
+			 }
+	}
+	
 	@Override
 	@WebMethod
 	public UserResponse getUser(@WebParam Authentication ctx) {
 		UserResponse r = new UserResponse();		
 		try{
+			
+
+			
+		Connection c = m_dataSource.getConnection();
+			
 		User user = new User();
 		user.setAuth(ctx);
 		user.setUsername("SUPER USER");
@@ -38,7 +76,7 @@ public class SuperlinesWebserviceImpl implements SuperlinesWebservice{
 		catch(Exception ex){
                     Message m = new Message();
                     m.setText(Messages.GENERIC_ERROR);
-                    m.setDetails(toString(ex));
+                    m.setDetails(Util.toString(ex));
                     r.setMessage(m);
                     
 		}
@@ -46,12 +84,7 @@ public class SuperlinesWebserviceImpl implements SuperlinesWebservice{
 		return r;
 	}
 	
-	private static String toString(final Exception e){
-		StringWriter sw = new StringWriter();
-		PrintWriter pw = new PrintWriter(sw);
-		 e.printStackTrace(pw);
-		 return sw.toString();
-	}
+
 
     @Override
     public SuperlinesContextResponse createSuperlinesContext(Authentication auth) {
@@ -91,7 +124,7 @@ public class SuperlinesWebserviceImpl implements SuperlinesWebservice{
        catch(Exception ex){
            Message m = new Message();
            m.setText("failed to create context");
-           m.setDetails(toString(ex));
+           m.setDetails(Util.toString(ex));
            response.setMessage(m);
        }
        
@@ -106,4 +139,34 @@ public class SuperlinesWebserviceImpl implements SuperlinesWebservice{
     private boolean authorize(final Authentication auth){
         return true;
     }
+
+	@Override
+	@WebMethod
+	public ScoreResponse getScore(@WebParam Authentication auth,
+			@WebParam ScoreParameters params) {
+		ScoreResponse response = new ScoreResponse();
+		try{
+			
+			for(int i = 0; i<5; i++){
+				ScoreData data = new ScoreData();
+				data.setName("some user");
+				data.setScore(1555+i*10);
+				response.getData().add(data);
+			}
+			
+			
+		}
+		catch(Exception ex){
+			Message m = new Message();
+			m.setText("error getting score");
+			m.setDetails(Util.toString(ex));
+			response.setMessage(m);
+			return response;
+		}
+		
+		
+		return response;
+	}
+
+
 }

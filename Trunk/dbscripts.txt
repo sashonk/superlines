@@ -1,0 +1,40 @@
+	
+CREATE TABLE IF NOT EXISTS users  (
+	user_name VARCHAR(30) NOT NULL PRIMARY KEY,
+	user_password VARCHAR(30) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS roles(
+	role_name VARCHAR(15) NOT NULL PRIMARY KEY
+);
+    
+CREATE TABLE IF NOT EXISTS user_roles
+(
+	user_name VARCHAR(15) NOT NULL,
+	role_name VARCHAR(15) NOT NULL,
+	PRIMARY KEY (user_name, role_name)
+);
+
+
+CREATE TABLE IF NOT EXISTS profiles (
+	id INT PRIMARY KEY AUTO_INCREMENT, 
+	name VARCHAR(100) NOT NULL, 
+	crts TIMESTAMP, 
+	accountid VARCHAR(30), 
+	rankid INT, 
+	FOREIGN KEY(accountid) REFERENCES USERS(user_name) ON DELETE SET NULL
+);
+
+CREATE TABLE IF NOT EXISTS scoredata(
+	userid INT,
+	score INT NOT NULL,
+	crts TIMESTAMP,	
+	FOREIGN KEY(userid) REFERENCES PROFILES(id) ON DELETE CASCADE
+);
+
+
+INSERT INTO roles (role_name) values ('user');
+INSERT INTO roles (role_name) values ('test');
+INSERT INTO roles (role_name) values ('admin');
+
+

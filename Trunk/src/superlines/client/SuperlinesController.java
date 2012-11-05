@@ -10,5 +10,5 @@ public interface SuperlinesController {
 	
 	public void restart();
         
-        public SuperlinesContext getContext();
+    public SuperlinesContext getContext();
 }

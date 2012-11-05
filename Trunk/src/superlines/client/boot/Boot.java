@@ -16,6 +16,9 @@ import org.apache.commons.logging.*;
 import org.apache.log4j.PropertyConfigurator;
 
 import superlines.client.Context;
+import superlines.client.ScoreController;
+import superlines.client.ScoreControllerImpl;
+import superlines.client.ScorePanelModel;
 import superlines.client.SuperlinesController;
 import superlines.client.SuperlinesControllerImpl;
 import superlines.client.ui.LoginDialog;
@@ -36,14 +39,14 @@ public class Boot {
 	
 	private static final String LOG_CONFIG_PATH = "config/client/log4j.properties";
 	private static final String APPLICATION_CONFIG_PATH = "config/client/boot.properties";
+	private static final String DATA_FOLDER = "data/client";
 	
 	private static final Log log = LogFactory.getLog(Boot.class);
     
     public static void main(String[] argc) throws Exception{
         	Thread.currentThread().setName("main-thread");    	
     		System.setProperty("config.file.path",APPLICATION_CONFIG_PATH);
-    	
-    	
+    		System.setProperty("data.folder", DATA_FOLDER);    	    	
     		PropertyConfigurator.configure(LOG_CONFIG_PATH);
     	
     		log.debug("application start");
@@ -65,6 +68,7 @@ public class Boot {
                         loginFrame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent evt) {
+            	log.debug("application terminate");
                 System.exit(0);
             }
         });
@@ -95,7 +99,8 @@ public class Boot {
                 Context ctx = Context.get();
                 ctx.setOffline(false);
                 ctx.setUser(userRes.getUser());
-                SuperlinesController ctr = new SuperlinesControllerImpl();       
+                SuperlinesController ctr = new SuperlinesControllerImpl();
+                ctr.restart();
                 ctr.scatter();
                                             
                 SuperlinesContext c = ctr.getContext();
@@ -107,6 +112,14 @@ public class Boot {
                 RulesHelper.populateNextolors(ctr.getContext());    
                 frame.setVisible(true);
                 frame.showPlayPanel();
+                
+                ScorePanelModel scoreModel = new ScorePanelModel();
+                scoreModel.registerListener(scorePanel);
+                ScoreController scoreCtr = new ScoreControllerImpl();
+                scoreCtr.setModel(scoreModel);
+                scorePanel.setController(scoreCtr);
+                scoreCtr.update();
+                
                 d.dispose();
                 }
                 catch(Exception ex){
@@ -120,15 +133,22 @@ public class Boot {
 
             @Override
             public void actionPerformed(ActionEvent ae) {
-            	JButton j = (JButton) ae.getSource();
-                JDialog d = (JDialog) j.getParent();
-                d.dispose();
+            	
+            	try{
+
+          
                 
                 Context ctx = Context.get();
                 ctx.setOffline(true);
                 
+                loginFrame.dispose();
                 frame.setVisible(true);
                 frame.showPlayPanel();
+            
+            	}
+            	catch(Exception e){
+            		log.error(e);
+            	}
             }
         });
                 
@@ -142,7 +162,7 @@ public class Boot {
             });
             
             
-    	log.debug("application terminate");
+
     }
     
 

@@ -4,24 +4,105 @@
  */
 package superlines.client.ui;
 
-import superlines.client.SuperlinesController;
-import superlines.client.SuperlinesListener;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
+import java.util.List;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+
+import superlines.Util;
+import superlines.client.ScoreController;
+import superlines.client.ScoreControllerImpl;
+import superlines.client.ScoreListener;
+import superlines.ws.ScoreData;
 
 /**
  *
  * @author Sashonk
  */
-public class ScorePanel extends javax.swing.JPanel{
+public class ScorePanel extends javax.swing.JPanel implements ScoreListener{
 
-
+	private static final Log log = LogFactory.getLog(ScorePanel.class);
+	private final StringBuilder m_template = new StringBuilder();
+	private  ScoreController m_ctr = new ScoreControllerImpl();
+	
+	public void setController(final ScoreController ctr){
+		m_ctr = ctr;
+	}
+	
     /**
      * Creates new form ScorePanel
      */
     public ScorePanel() {
         initComponents();
-
+        
+        File folder = superlines.core.Configuration.get().getDataFolder();
+        File templateFile = new File(folder, "score.html");
+        
+        BufferedReader br = null;
+        try{
+	         br = new BufferedReader(new InputStreamReader(new FileInputStream(templateFile)));
+	        String line;
+	        do{
+	        	line = br.readLine();
+	        	m_template.append(line);
+	        }while(line!=null);
+        }
+        catch(Exception ex){
+        	log.error(Util.toString(ex));
+        }
+        finally{
+        	if(br!=null){
+        		try{
+        			br.close();
+        		}
+        		catch(Exception e){
+        			log.error(Util.toString(e));
+        		}
+        	}
+        }
+        
     }
     
+    @Override
+    public void updateData(final List<ScoreData> score){
+    	
+    	String html = m_template.replace(m_template.lastIndexOf("["), m_template.lastIndexOf("]")+1, buildTableBody(score)).toString();
+    	tableEditorPane.setText(html);
+    }
+    
+    
+    private String buildTableBody(final List<ScoreData> score){
+    	StringBuilder sb= new StringBuilder();
+    	
+    	int id = 1;
+    	for(ScoreData data :score){
+    		sb.append("<tr>");
+    		
+    		sb.append("<td>");
+    		sb.append(id);
+    		sb.append("</td>");
+    		
+    		sb.append("<td>");
+    		sb.append(data.getName());
+    		sb.append("</td>"); 
+    		
+    		sb.append("<td>");
+    		sb.append(data.getScore());
+    		sb.append("</td>"); 
+
+    		
+    		sb.append("</tr>");
+    		
+    		id++;
+    	}
+    	
+    	return sb.toString();
+    }
 
 
     /**
@@ -32,12 +113,31 @@ public class ScorePanel extends javax.swing.JPanel{
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
         tableScrollPane = new javax.swing.JScrollPane();
         tableEditorPane = new javax.swing.JEditorPane();
         toGameBtn = new javax.swing.JButton();
 
+        setLayout(new java.awt.GridBagLayout());
+
+        tableEditorPane.setEditable(false);
+        tableEditorPane.setBorder(null);
+        tableEditorPane.setContentType("text/html"); // NOI18N
         tableScrollPane.setViewportView(tableEditorPane);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.ipadx = 331;
+        gridBagConstraints.ipady = 274;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(11, 10, 0, 10);
+        add(tableScrollPane, gridBagConstraints);
 
         toGameBtn.setText("toGame");
         toGameBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -45,27 +145,12 @@ public class ScorePanel extends javax.swing.JPanel{
                 toGameBtnActionPerformed(evt);
             }
         });
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(50, 50, 50)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(tableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(toGameBtn))
-                .addContainerGap(215, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(66, 66, 66)
-                .addComponent(tableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(11, 11, 11)
-                .addComponent(toGameBtn)
-                .addContainerGap(75, Short.MAX_VALUE))
-        );
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(6, 10, 11, 0);
+        add(toGameBtn, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
 
     private void toGameBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toGameBtnActionPerformed

@@ -17,7 +17,7 @@ public class SuperlinesControllerImpl implements SuperlinesController {
 	private  SuperlinesContext m_ctx;
 
 	public SuperlinesControllerImpl() throws Exception{
-		restart();
+		//restart();
 	}
 	
         public SuperlinesContext getContext(){

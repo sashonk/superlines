@@ -7,9 +7,14 @@ package superlines.client.ui;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import superlines.client.SuperlinesController;
 import superlines.client.SuperlinesControllerImpl;
@@ -19,6 +24,8 @@ import superlines.client.SuperlinesControllerImpl;
  * @author Sashonk
  */
 public class MainFrame extends javax.swing.JFrame {
+	
+	private final static Log log = LogFactory.getLog(MainFrame.class);
 
     private static MainFrame instance ;
     /**
@@ -34,17 +41,13 @@ public class MainFrame extends javax.swing.JFrame {
         setLocation(x, y); 
        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
        
-       
-    //   SuperlinesController slCtrl = new SuperlinesControllerImpl(null);
-       
-       
-       
-    //   add(new ScorePanel());
-    //  add(new PlayPanel(slCtrl));
-       
-
-        
-        
+       this.addWindowListener(new WindowAdapter() {
+				@Override
+				public void windowClosing(WindowEvent evt) {
+				log.debug("application terminate");
+				System.exit(0);
+				}
+		});
 
   
     }

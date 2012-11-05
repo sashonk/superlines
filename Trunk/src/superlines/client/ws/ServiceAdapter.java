@@ -1,7 +1,12 @@
 package superlines.client.ws;
 
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.Arrays;
+import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -13,6 +18,9 @@ import superlines.core.SuperlinesContext;
 import superlines.core.SuperlinesRules;
 import superlines.core.User;
 import superlines.ws.Response;
+import superlines.ws.ScoreData;
+import superlines.ws.ScoreParameters;
+import superlines.ws.ScoreResponse;
 import superlines.ws.SuperlinesContextResponse;
 import superlines.ws.SuperlinesWebservice;
 import superlines.ws.UserResponse;
@@ -74,16 +82,24 @@ public class ServiceAdapter {
             
             return res.getContext();          
         }
+        
+        public List<ScoreData> getScore(final Authentication auth, final ScoreParameters params){
+        	ScoreResponse res = webservice.getScore(auth, params);
+            if(res.getMessage()!=null){
+                log.error(res.getMessage());                
+            }
+            
+            return res.getData();     	
+        }
 	
-	public static void main(String[] argc){
-		System.setProperty("config.file.path", "config/client/boot.properties");
-		
-		ServiceAdapter sa = get();
-		
-		Authentication a = new Authentication();
-		a.setLogin("asd");
-		//a.setPassword("pppp");
-		//UserResponse r = sa.getService().getUser(a);
-		//System.out.println(r.getUser().getContext());
+	public static void main(String[] argc) throws Exception{
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection c = DriverManager.getConnection("jdbc:mysql://localhost:3306/superlines", "root", "8926sas");
+			
+			Statement st = c.createStatement();
+			ResultSet dataSet = st.executeQuery("select * from roles");
+			while(dataSet.next()){
+				System.out.println(dataSet.getString("role_name"));
+			}
 	}
 }
