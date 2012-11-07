@@ -1,6 +1,12 @@
 package superlines.client;
 
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+
+import javax.swing.SwingUtilities;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -29,6 +35,36 @@ public class ScoreControllerImpl implements ScoreController{
 		}
 			
 		m_model.setData(data);		
+	}
+	
+	public ScoreControllerImpl(){
+		Thread t = new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				
+				while(true){
+					try{
+						Thread.sleep(5000);
+						SwingUtilities.invokeAndWait(new Runnable() {
+							
+							@Override
+							public void run() {
+								ScoreControllerImpl.this.update();
+								
+							}
+						});
+					}
+					catch(Exception ex){
+						
+					}
+
+				}
+				
+			}
+		});
+		
+		t.start();
 	}
 
 }

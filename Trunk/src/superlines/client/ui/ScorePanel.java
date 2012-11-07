@@ -28,7 +28,7 @@ public class ScorePanel extends javax.swing.JPanel implements ScoreListener{
 
 	private static final Log log = LogFactory.getLog(ScorePanel.class);
 	private final StringBuilder m_template = new StringBuilder();
-	private  ScoreController m_ctr = new ScoreControllerImpl();
+	private  ScoreController m_ctr;
 	
 	public void setController(final ScoreController ctr){
 		m_ctr = ctr;
@@ -70,8 +70,8 @@ public class ScorePanel extends javax.swing.JPanel implements ScoreListener{
     
     @Override
     public void updateData(final List<ScoreData> score){
-    	
-    	String html = m_template.replace(m_template.lastIndexOf("["), m_template.lastIndexOf("]")+1, buildTableBody(score)).toString();
+    	StringBuilder sb = new StringBuilder(m_template.toString());
+    	String html = sb.replace(sb.lastIndexOf("["), sb.lastIndexOf("]")+1, buildTableBody(score)).toString();
     	tableEditorPane.setText(html);
     }
     
@@ -139,7 +139,8 @@ public class ScorePanel extends javax.swing.JPanel implements ScoreListener{
         gridBagConstraints.insets = new java.awt.Insets(11, 10, 0, 10);
         add(tableScrollPane, gridBagConstraints);
 
-        toGameBtn.setText("toGame");
+        toGameBtn.setText(Buttons.TOGAME.toString());
+        toGameBtn.setPreferredSize(new java.awt.Dimension(80, 23));
         toGameBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 toGameBtnActionPerformed(evt);

@@ -46,7 +46,7 @@ public class LoginDialog extends javax.swing.JDialog {
     
     public void writeData(final Authentication auth){
         auth.setLogin(loginField.getText());
-        auth.setPassword(passwordField.getPassword());
+        auth.setPassword(String.valueOf(passwordField.getPassword()));
     }
     
     public JButton getOkButton(){
@@ -65,13 +65,13 @@ public class LoginDialog extends javax.swing.JDialog {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
 
         jPanel3 = new javax.swing.JPanel();
         loginLabel = new javax.swing.JLabel();
         loginField = new javax.swing.JTextField();
         passwordLabel = new javax.swing.JLabel();
         passwordField = new javax.swing.JPasswordField();
+        jPanel1 = new javax.swing.JPanel();
         errorLabel = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         okBtn = new javax.swing.JButton();
@@ -83,68 +83,67 @@ public class LoginDialog extends javax.swing.JDialog {
         setResizable(false);
         getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.Y_AXIS));
 
-        jPanel3.setPreferredSize(new java.awt.Dimension(294, 126));
-        jPanel3.setLayout(new java.awt.GridBagLayout());
-
+        loginLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         loginLabel.setLabelFor(loginField);
-        loginLabel.setText("Имя");
+        loginLabel.setText(Buttons.LOGIN_LABEL.toString());
         loginLabel.setToolTipText("");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.ipadx = 10;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(33, 25, 0, 0);
-        jPanel3.add(loginLabel, gridBagConstraints);
+        loginLabel.setPreferredSize(new java.awt.Dimension(60, 14));
 
         loginField.setPreferredSize(new java.awt.Dimension(120, 20));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridheight = 2;
-        gridBagConstraints.ipadx = 134;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(30, 10, 0, 22);
-        jPanel3.add(loginField, gridBagConstraints);
 
-        passwordLabel.setText("Пароль");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(21, 17, 0, 0);
-        jPanel3.add(passwordLabel, gridBagConstraints);
+        passwordLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        passwordLabel.setText(Buttons.PASSWORD_LABEL.toString());
+        passwordLabel.setPreferredSize(new java.awt.Dimension(60, 14));
 
         passwordField.setPreferredSize(new java.awt.Dimension(120, 20));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.gridheight = 2;
-        gridBagConstraints.ipadx = 134;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(18, 10, 0, 22);
-        jPanel3.add(passwordField, gridBagConstraints);
 
-        errorLabel.setPreferredSize(new java.awt.Dimension(180, 14));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.ipadx = 187;
-        gridBagConstraints.ipady = 14;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(18, 17, 6, 22);
-        jPanel3.add(errorLabel, gridBagConstraints);
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap(15, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                        .addComponent(loginLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(loginField, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                        .addComponent(passwordLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(21, 21, 21))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(29, 29, 29)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(loginField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(loginLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(20, 20, 20)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(passwordLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(30, Short.MAX_VALUE))
+        );
 
         getContentPane().add(jPanel3);
 
-        okBtn.setText("ok");
-        okBtn.setPreferredSize(new java.awt.Dimension(80, 23));
+        jPanel1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 40, 5));
+
+        errorLabel.setMaximumSize(new java.awt.Dimension(100, 0));
+        jPanel1.add(errorLabel);
+
+        getContentPane().add(jPanel1);
+
+        okBtn.setText(Buttons.OK.toString());
+        okBtn.setPreferredSize(new java.awt.Dimension(100, 23));
         okBtn.setRequestFocusEnabled(false);
         jPanel2.add(okBtn);
 
-        offlineBtn.setText("offline");
-        offlineBtn.setPreferredSize(new java.awt.Dimension(80, 23));
+        offlineBtn.setText(Buttons.OFFLINE.toString());
+        offlineBtn.setPreferredSize(new java.awt.Dimension(100, 23));
         jPanel2.add(offlineBtn);
 
         getContentPane().add(jPanel2);
@@ -195,6 +194,7 @@ public class LoginDialog extends javax.swing.JDialog {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel errorLabel;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JTextField loginField;

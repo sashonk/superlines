@@ -33,6 +33,11 @@ public class Message {
         return m_details;
     }
     
+    @Override
+    public String toString(){
+    	return String.format("message:{text=%s, details=%s}", m_text, m_details);
+    }
+    
     @XmlElement(name="details")
     private String m_details;
     

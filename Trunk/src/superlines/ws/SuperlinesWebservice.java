@@ -13,7 +13,7 @@ import superlines.core.SuperlinesRules;
 public interface SuperlinesWebservice {
 	
 	@WebMethod
-	public UserResponse getUser(@WebParam(name="auth") final Authentication auth);
+	public ProfileResponse getProfile(@WebParam(name="auth") final Authentication auth);
 	
 	@WebMethod
         public SuperlinesContextResponse createSuperlinesContext(@WebParam(name="auth") final Authentication auth);

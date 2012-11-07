@@ -18,16 +18,16 @@ public class Authentication {
 		return m_login;				
 	}
 	
-	public void setPassword(final char[] value){
+	public void setPassword(final String value){
 		m_password = value;
 	}
 	
-	public char[] getPassword(){
+	public String getPassword(){
 		return m_password;
 	}
 	
 	@XmlElement(name="password")
-	private char[] m_password;
+	private String m_password;
 	
 	@XmlElement(name="login")
 	private String m_login;

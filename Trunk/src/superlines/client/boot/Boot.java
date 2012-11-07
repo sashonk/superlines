@@ -4,16 +4,16 @@ package superlines.client.boot;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JOptionPane;
+
 
 
 import javax.swing.SwingUtilities;
 import org.apache.commons.logging.*;
 import org.apache.log4j.PropertyConfigurator;
+
 
 import superlines.client.Context;
 import superlines.client.ScoreController;
@@ -29,9 +29,8 @@ import superlines.client.ws.ServiceAdapter;
 import superlines.core.Authentication;
 import superlines.core.RulesHelper;
 import superlines.core.SuperlinesContext;
-import superlines.core.User;
-import superlines.ws.Response;
-import superlines.ws.UserResponse;
+import superlines.core.Profile;
+
 
 
 
@@ -46,7 +45,8 @@ public class Boot {
     public static void main(String[] argc) throws Exception{
         	Thread.currentThread().setName("main-thread");    	
     		System.setProperty("config.file.path",APPLICATION_CONFIG_PATH);
-    		System.setProperty("data.folder", DATA_FOLDER);    	    	
+    		System.setProperty("data.folder", DATA_FOLDER);    	    
+
     		PropertyConfigurator.configure(LOG_CONFIG_PATH);
     	
     		log.debug("application start");
@@ -72,6 +72,9 @@ public class Boot {
                 System.exit(0);
             }
         });
+                        
+                        
+
         
         loginFrame.getOkButton().addActionListener(new ActionListener() {
 
@@ -89,16 +92,24 @@ public class Boot {
                     return;
                 }
                 d.setErrorMessage("");
+                
+                ServiceAdapter adapter = ServiceAdapter.get();                
+                if(adapter==null){
+                    d.setErrorMessage(superlines.core.Messages.SERVICE_UNAVAILABLE.toString());
+                    return;
+                }
+                
                    
-                UserResponse userRes = ServiceAdapter.get().getService().getUser(auth);
-                if(userRes.getMessage()!=null){                    
-                    d.setErrorMessage(userRes.getMessage().getText());
+                Profile profile = adapter.getProfile(auth);
+                if(profile==null){                    
+                    d.setErrorMessage(superlines.core.Messages.AUTH_FAILED.toString());
                     return;
                 }
                 
                 Context ctx = Context.get();
                 ctx.setOffline(false);
-                ctx.setUser(userRes.getUser());
+                ctx.setUser(profile);
+                ctx.setAuth(profile.getAuth());
                 SuperlinesController ctr = new SuperlinesControllerImpl();
                 ctr.restart();
                 ctr.scatter();
@@ -136,8 +147,6 @@ public class Boot {
             	
             	try{
 
-          
-                
                 Context ctx = Context.get();
                 ctx.setOffline(true);
                 

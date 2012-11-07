@@ -6,7 +6,7 @@ package superlines.client;
 
 import superlines.core.Authentication;
 import superlines.core.SuperlinesContext;
-import superlines.core.User;
+import superlines.core.Profile;
 
 /**
  *
@@ -39,11 +39,11 @@ public class Context {
         m_ctx = value;
     }
     
-    public void setUser(final User value){
+    public void setUser(final Profile value){
         m_user= value;
     }
     
-    public User getUser(){
+    public Profile getUser(){
         return m_user;
     }
     
@@ -57,6 +57,6 @@ public class Context {
     
     private Authentication m_auth;
     private SuperlinesContext m_ctx;
-    private User m_user;
+    private Profile m_user;
     private boolean m_offline;
 }

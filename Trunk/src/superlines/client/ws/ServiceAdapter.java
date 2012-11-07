@@ -16,21 +16,32 @@ import superlines.core.Authentication;
 import superlines.core.Configuration;
 import superlines.core.SuperlinesContext;
 import superlines.core.SuperlinesRules;
-import superlines.core.User;
+import superlines.core.Profile;
 import superlines.ws.Response;
 import superlines.ws.ScoreData;
 import superlines.ws.ScoreParameters;
 import superlines.ws.ScoreResponse;
 import superlines.ws.SuperlinesContextResponse;
 import superlines.ws.SuperlinesWebservice;
-import superlines.ws.UserResponse;
+import superlines.ws.ProfileResponse;
 
+
+/**
+ * adapter for superlines web service. 
+ * 
+ * @author Sashonk
+ *
+ */
 
 public class ServiceAdapter {
 	private static Log log = LogFactory.getLog(ServiceAdapter.class);
 	private static ServiceAdapter instance;
 	private SuperlinesWebservice webservice;
 	
+	/**
+	 * 
+	 * @return web service adapter or <b>null</b> if web service is unavailable
+	 */
 	public static ServiceAdapter get(){
 		if(instance ==null){
 			try{
@@ -55,6 +66,16 @@ public class ServiceAdapter {
 	public SuperlinesWebservice getService(){
 		return webservice;
 	}
+
+	
+	public Profile getProfile(final Authentication auth){
+		ProfileResponse res = webservice.getProfile(auth);
+		if(res.getMessage()!=null){
+			log.error(res.getMessage());
+		}
+		
+		return res.getProfile();
+	}
         
         public SuperlinesRules getRules(final Authentication auth){
             Response<SuperlinesRules> res = webservice.getRules(auth);
@@ -65,13 +86,13 @@ public class ServiceAdapter {
             return res.getValue();
         }
         
-        public User getUser(final Authentication auth){
-            UserResponse res = webservice.getUser(auth);
+        public Profile getUser(final Authentication auth){
+            ProfileResponse res = webservice.getProfile(auth);
             if(res.getMessage()!=null){
                 log.error(res.getMessage());                
             }
             
-            return res.getUser();
+            return res.getProfile();
         }
         
         public SuperlinesContext createSuperlinesContext(final Authentication auth){

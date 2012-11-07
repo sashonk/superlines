@@ -16,10 +16,11 @@ import superlines.client.SuperlinesController;
 import superlines.client.SuperlinesListener;
 
 import superlines.client.util.SuperlinesHelper;
+import superlines.core.Localizer;
 import superlines.core.RulesHelper;
 import superlines.core.SuperlinesBall.State;
 import superlines.core.SuperlinesContext;
-import superlines.core.User;
+import superlines.core.Profile;
 
 /**
  *
@@ -110,7 +111,7 @@ public class PlayPanel extends javax.swing.JPanel implements SuperlinesListener{
     
     public void init(){
             Context ctx = Context.get();
-            User profile = ctx.getUser();
+            Profile profile = ctx.getUser();
             SuperlinesContext c = m_controller.getContext();
         
     	playerNameField.setText(profile.getUsername());
@@ -148,6 +149,8 @@ public class PlayPanel extends javax.swing.JPanel implements SuperlinesListener{
         scoreField = new javax.swing.JTextField();
         maxScoreLabel = new javax.swing.JLabel();
         maxScoreField = new javax.swing.JTextField();
+        rankLabel = new javax.swing.JLabel();
+        rankField = new javax.swing.JTextField();
         tipPanel = new TipPanel();
         middlePanel = new javax.swing.JPanel();
         bottomPanel = new javax.swing.JPanel();
@@ -171,7 +174,7 @@ public class PlayPanel extends javax.swing.JPanel implements SuperlinesListener{
         playerNameField.setPreferredSize(null);
         topPanel.add(playerNameField);
 
-        scoreLabel.setText("jLabel1");
+        scoreLabel.setText("score");
         topPanel.add(scoreLabel);
 
         scoreField.setEditable(false);
@@ -179,13 +182,22 @@ public class PlayPanel extends javax.swing.JPanel implements SuperlinesListener{
         scoreField.setPreferredSize(new java.awt.Dimension(60, 20));
         topPanel.add(scoreField);
 
-        maxScoreLabel.setText("jLabel2");
+        maxScoreLabel.setText("max");
         topPanel.add(maxScoreLabel);
 
         maxScoreField.setEditable(false);
         maxScoreField.setText("12000");
         maxScoreField.setPreferredSize(new java.awt.Dimension(60, 20));
         topPanel.add(maxScoreField);
+
+        rankLabel.setText("rank");
+        topPanel.add(rankLabel);
+
+        rankField.setEditable(false);
+        rankField.setMinimumSize(null);
+        rankField.setName(""); // NOI18N
+        rankField.setPreferredSize(new java.awt.Dimension(30, 20));
+        topPanel.add(rankField);
 
         add(topPanel);
         add(tipPanel);
@@ -198,7 +210,8 @@ public class PlayPanel extends javax.swing.JPanel implements SuperlinesListener{
         bottomPanel.setMaximumSize(new java.awt.Dimension(32767, 100));
         bottomPanel.setPreferredSize(new java.awt.Dimension(495, 80));
 
-        toScoreBtn.setText("toScore");
+        toScoreBtn.setText(Buttons.TOSCORE.toString() );
+        toScoreBtn.setPreferredSize(new java.awt.Dimension(80, 23));
         toScoreBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 toScoreBtnActionPerformed(evt);
@@ -206,7 +219,8 @@ public class PlayPanel extends javax.swing.JPanel implements SuperlinesListener{
         });
         bottomPanel.add(toScoreBtn);
 
-        scatterButton.setText("scatter");
+        scatterButton.setText(Buttons.SCATTER.toString() );
+        scatterButton.setPreferredSize(new java.awt.Dimension(80, 23));
         scatterButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 scatterButtonActionPerformed(evt);
@@ -214,7 +228,7 @@ public class PlayPanel extends javax.swing.JPanel implements SuperlinesListener{
         });
         bottomPanel.add(scatterButton);
 
-        restartBtn.setText("restart");
+        restartBtn.setText(Buttons.RESTART.toString() );
         restartBtn.setPreferredSize(new java.awt.Dimension(80, 23));
         restartBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -253,6 +267,8 @@ public class PlayPanel extends javax.swing.JPanel implements SuperlinesListener{
     private javax.swing.JLabel maxScoreLabel;
     private javax.swing.JPanel middlePanel;
     private javax.swing.JTextField playerNameField;
+    private javax.swing.JTextField rankField;
+    private javax.swing.JLabel rankLabel;
     private javax.swing.JButton restartBtn;
     private javax.swing.JButton scatterButton;
     private javax.swing.JTextField scoreField;
