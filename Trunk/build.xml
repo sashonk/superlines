@@ -3,7 +3,7 @@
 <project name="Superlines" default="build" basedir=".">         	
 	<target name="build">
 		<mkdir dir="classes"/>
-	        <javac srcdir="src" destdir="classes" encoding="utf-8">
+	        <javac srcdir="src" destdir="classes" encoding="utf-8" fork="true" executable="C:\Program Files\Java\jdk1.7.0_09\bin\javac.exe">
 	                <classpath>
 	                         <pathelement path="lib/log4j.jar"/>
 				 <pathelement path="lib/commons-logging.jar"/>

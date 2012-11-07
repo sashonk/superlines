@@ -70,7 +70,7 @@ public class RulesHelper {
         }
         
         public static void populateNextolors(final SuperlinesContext ctx){
-            List<Integer> nextColors = new LinkedList<>();
+            List<Integer> nextColors = new LinkedList<Integer>();
     
             SuperlinesRules r = ctx.getRules();
             int count =r.getScatterBallsCount();

@@ -9,8 +9,10 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 
-
+import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.SwingUtilities;
+
 import org.apache.commons.logging.*;
 import org.apache.log4j.PropertyConfigurator;
 
@@ -51,7 +53,18 @@ public class Boot {
     	
     		log.debug("application start");
     		
-
+			        try {
+            // Set cross-platform Java L&F (also called "Metal")
+     			 for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+        if ("Nimbus".equals(info.getName())) {
+            UIManager.setLookAndFeel(info.getClassName());
+            break;
+        }
+    }
+    } 
+    catch (Exception e) {
+       log.error(e);
+    }
         
             SwingUtilities.invokeAndWait(new Runnable(){
 

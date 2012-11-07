@@ -49,7 +49,7 @@ public class SuperlinesControllerImpl implements SuperlinesController {
 			clickedBall.setColor(0);
 			m_ctx.getTable().setClickedBall(null);
 			
-                        List<SuperlinesBall> winBalls = new LinkedList<>();
+                        List<SuperlinesBall> winBalls = new LinkedList<SuperlinesBall>();
                         int win = RulesHelper.countWin(m_ctx, targetBall, winBalls);
 
                         int score = m_ctx.getScore();
