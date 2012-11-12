@@ -4,6 +4,6 @@ import java.util.List;
 
 import superlines.ws.ScoreData;
 
-public interface ScoreListener {
+public interface RateListener {
 	public void updateData(final List<ScoreData> data);
 }

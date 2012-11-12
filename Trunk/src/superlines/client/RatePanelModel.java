@@ -5,9 +5,9 @@ import java.util.List;
 
 import superlines.ws.ScoreData;
 
-public class ScorePanelModel {
+public class RatePanelModel {
 	
-	public void registerListener(final ScoreListener listener){
+	public void registerListener(final RateListener listener){
 		m_listeners.add(listener);
 	}
 
@@ -17,11 +17,11 @@ public class ScorePanelModel {
 	
 	public void setData(final List<ScoreData> data){
 		m_data = data;
-		for(ScoreListener listener : m_listeners){
+		for(RateListener listener : m_listeners){
 			listener.updateData(m_data);
 		}
 	}
 	
 	private List<ScoreData> m_data;
-	private List<ScoreListener> m_listeners = new LinkedList<ScoreListener>();
+	private List<RateListener> m_listeners = new LinkedList<RateListener>();
 }

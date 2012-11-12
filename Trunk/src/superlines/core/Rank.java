@@ -37,7 +37,7 @@ public enum Rank {
 		}
 		
 	},
-	MASTER1{
+/*	MASTER1{
 		public int getRank(){
 			return 7;
 		}
@@ -48,10 +48,10 @@ public enum Rank {
 			return 8;
 		}
 		
-	},
+	},*/
 	GODLIKE{
 		public int getRank(){
-			return 9;
+			return 7;
 		}
 		
 	};
@@ -64,5 +64,15 @@ public enum Rank {
 		}
 		
 		return  str;
+	}
+	
+	public static Rank getRank(final int rank){
+		for(Rank r : Rank.values()){
+			if(r.getRank()==rank){
+				return r;
+			}
+		}
+		
+		return null;
 	}
 }

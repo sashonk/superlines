@@ -15,29 +15,30 @@ import org.apache.commons.logging.LogFactory;
 
 
 import superlines.Util;
-import superlines.client.ScoreController;
-import superlines.client.ScoreControllerImpl;
-import superlines.client.ScoreListener;
+import superlines.client.Messages;
+import superlines.client.RateController;
+import superlines.client.RateControllerImpl;
+import superlines.client.RateListener;
 import superlines.ws.ScoreData;
 
 /**
  *
  * @author Sashonk
  */
-public class ScorePanel extends javax.swing.JPanel implements ScoreListener{
+public class RatePanel extends javax.swing.JPanel implements RateListener{
 
-	private static final Log log = LogFactory.getLog(ScorePanel.class);
+	private static final Log log = LogFactory.getLog(RatePanel.class);
 	private final StringBuilder m_template = new StringBuilder();
-	private  ScoreController m_ctr;
+	private  RateController m_ctr;
 	
-	public void setController(final ScoreController ctr){
+	public void setController(final RateController ctr){
 		m_ctr = ctr;
 	}
 	
     /**
      * Creates new form ScorePanel
      */
-    public ScorePanel() {
+    public RatePanel() {
         initComponents();
         
         File folder = superlines.core.Configuration.get().getDataFolder();
@@ -92,6 +93,10 @@ public class ScorePanel extends javax.swing.JPanel implements ScoreListener{
     		sb.append("</td>"); 
     		
     		sb.append("<td>");
+    		sb.append(data.getRank().toString());
+    		sb.append("</td>"); 
+    		
+    		sb.append("<td>");
     		sb.append(data.getScore());
     		sb.append("</td>"); 
 
@@ -139,7 +144,7 @@ public class ScorePanel extends javax.swing.JPanel implements ScoreListener{
         gridBagConstraints.insets = new java.awt.Insets(11, 10, 0, 10);
         add(tableScrollPane, gridBagConstraints);
 
-        toGameBtn.setText(Buttons.TOGAME.toString());
+        toGameBtn.setText(Messages.TOGAME.toString());
         toGameBtn.setPreferredSize(new java.awt.Dimension(80, 23));
         toGameBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

@@ -1,17 +1,33 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-package superlines.core;
+package superlines.client;
 
-/**
- *
- * @author Sashonk
- */
+import superlines.core.Localizer;
+
 public enum Messages {
+	TOSCORE,
+	SCATTER,
+	RESTART,
+	TOGAME,
+	
+	OK,
+	OFFLINE,
+	
+	LOGIN_LABEL,
+	PASSWORD_LABEL,
+	
+	RATE_LABEL,
+	SCORE_LABEL,
+	RANK_LABEL,
+	
+	GAME_OVER,
+	SURE,
+	
+	CONGRATULATIONS,
+	
 	AUTH_FAILED,
 	GENERIC_ERROR,
 	SERVICE_UNAVAILABLE;
+	
+
 	
 	@Override
 	public String toString(){

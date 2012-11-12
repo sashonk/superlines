@@ -17,18 +17,22 @@ import org.apache.commons.logging.*;
 import org.apache.log4j.PropertyConfigurator;
 
 
-import superlines.client.Context;
-import superlines.client.ScoreController;
-import superlines.client.ScoreControllerImpl;
-import superlines.client.ScorePanelModel;
+import superlines.client.Messages;
+import superlines.client.ProfileController;
+import superlines.client.ProfileControllerImpl;
+import superlines.client.RateController;
+import superlines.client.RateControllerImpl;
+import superlines.client.RatePanelModel;
+import superlines.client.ScoreSender;
 import superlines.client.SuperlinesController;
 import superlines.client.SuperlinesControllerImpl;
 import superlines.client.ui.LoginDialog;
 import superlines.client.ui.MainFrame;
 import superlines.client.ui.PlayPanel;
-import superlines.client.ui.ScorePanel;
+import superlines.client.ui.RatePanel;
 import superlines.client.ws.ServiceAdapter;
 import superlines.core.Authentication;
+import superlines.core.Configuration;
 import superlines.core.RulesHelper;
 import superlines.core.SuperlinesContext;
 import superlines.core.Profile;
@@ -47,7 +51,7 @@ public class Boot {
     public static void main(String[] argc) throws Exception{
         	Thread.currentThread().setName("main-thread");    	
     		System.setProperty("config.file.path",APPLICATION_CONFIG_PATH);
-    		System.setProperty("data.folder", DATA_FOLDER);    	    
+    		System.setProperty("data.folder", DATA_FOLDER); 
 
     		PropertyConfigurator.configure(LOG_CONFIG_PATH);
     	
@@ -72,7 +76,7 @@ public class Boot {
             public void run() {
                 
                 final  MainFrame frame = MainFrame.get();
-                final ScorePanel scorePanel = new ScorePanel();
+                final RatePanel scorePanel = new RatePanel();
                 final PlayPanel playPanel = new PlayPanel();
                 frame.add(scorePanel);
                 frame.add(playPanel);
@@ -88,7 +92,7 @@ public class Boot {
                         
                         
 
-        
+   
         loginFrame.getOkButton().addActionListener(new ActionListener() {
 
             @Override
@@ -99,7 +103,7 @@ public class Boot {
                 LoginDialog d =loginFrame;                
                 Authentication auth = new Authentication();
                 d.writeData(auth);
-                //d.dispose();
+                auth.setLocale(Configuration.get().getProperty("locale"));
                 
                 if(auth.getLogin()==null || auth.getPassword()==null){
                     return;
@@ -108,38 +112,50 @@ public class Boot {
                 
                 ServiceAdapter adapter = ServiceAdapter.get();                
                 if(adapter==null){
-                    d.setErrorMessage(superlines.core.Messages.SERVICE_UNAVAILABLE.toString());
+                    d.setErrorMessage(Messages.SERVICE_UNAVAILABLE.toString());
                     return;
                 }
                 
                    
                 Profile profile = adapter.getProfile(auth);
                 if(profile==null){                    
-                    d.setErrorMessage(superlines.core.Messages.AUTH_FAILED.toString());
+                    d.setErrorMessage(Messages.AUTH_FAILED.toString());
                     return;
                 }
                 
-                Context ctx = Context.get();
-                ctx.setOffline(false);
-                ctx.setUser(profile);
-                ctx.setAuth(profile.getAuth());
-                SuperlinesController ctr = new SuperlinesControllerImpl();
-                ctr.restart();
+                
+                ProfileControllerImpl profileCtr = new ProfileControllerImpl();
+                profileCtr.setAuth(auth);
+                profileCtr.setModel(profile);
+                profile.registerListener(playPanel);
+                playPanel.setController(profileCtr);
+                playPanel.listenerInit();
+
+                SuperlinesControllerImpl ctr = new SuperlinesControllerImpl();
+                ctr.setAuth(auth);
+                ctr.start();
                 ctr.scatter();
                                             
                 SuperlinesContext c = ctr.getContext();
                 c.registerListener(playPanel);
+                c.registerListener(profileCtr);
                 playPanel.setController(ctr);               
                 playPanel.init();
+
+                
+                ScoreSender sender = new ScoreSender();
+                sender.setAuth(auth);
+                c.registerListener(sender);
                 
                 
                 RulesHelper.populateNextolors(ctr.getContext());    
                 frame.setVisible(true);
                 frame.showPlayPanel();
                 
-                ScorePanelModel scoreModel = new ScorePanelModel();
+                RatePanelModel scoreModel = new RatePanelModel();
                 scoreModel.registerListener(scorePanel);
-                ScoreController scoreCtr = new ScoreControllerImpl();
+                RateControllerImpl scoreCtr = new RateControllerImpl();
+                scoreCtr.setAuth(auth);
                 scoreCtr.setModel(scoreModel);
                 scorePanel.setController(scoreCtr);
                 scoreCtr.update();
@@ -153,39 +169,19 @@ public class Boot {
             }
         });
         
-        loginFrame.getOfflineButton().addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-            	
-            	try{
-
-                Context ctx = Context.get();
-                ctx.setOffline(true);
-                
-                loginFrame.dispose();
-                frame.setVisible(true);
-                frame.showPlayPanel();
-            
-            	}
-            	catch(Exception e){
-            		log.error(e);
-            	}
+        loginFrame.setVisible(true);
+        
             }
-        });
-                
-                
-                loginFrame.setVisible(true);
-                
-
-     
-            }
+            } );
             
-            });
+    }}
+
+            
+        
             
             
 
-    }
+
     
 
-}
+

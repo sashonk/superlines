@@ -9,6 +9,8 @@ public interface SuperlinesController {
 	public void scatter();
 	
 	public void restart();
-        
+	
     public SuperlinesContext getContext();
+    
+    public void persist();
 }

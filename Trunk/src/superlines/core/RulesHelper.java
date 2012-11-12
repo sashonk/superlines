@@ -1,6 +1,7 @@
 package superlines.core;
 
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -45,10 +46,11 @@ public class RulesHelper {
 			
 		}
     
-        public static void scatter(final SuperlinesContext ctx){
-		SuperlinesTable t = ctx.getTable();
-		SuperlinesRules r = ctx.getRules(); 
-                List<SuperlinesBall> balls = getEmptyBalls(t);
+        public static List<SuperlinesBall> scatter(final SuperlinesContext ctx){
+			SuperlinesTable t = ctx.getTable();
+			SuperlinesRules r = ctx.getRules(); 
+	        List<SuperlinesBall> balls = getEmptyBalls(t);
+	        List<SuperlinesBall> newBalls = new ArrayList<>(r.getScatterBallsCount());
                 
                 if(ctx.getNextColors().size()==0){
                     populateNextolors(ctx);
@@ -63,10 +65,13 @@ public class RulesHelper {
                     int value = rnd.nextInt(balls.size());                    
                     SuperlinesBall b = balls.get(value);
                     b.setColor(ctx.getNextColors().get(i).intValue());
+                    newBalls.add(b);
                     balls.remove(b);
                 }
                 
                 populateNextolors(ctx);
+
+                return newBalls;
         }
         
         public static void populateNextolors(final SuperlinesContext ctx){
@@ -109,13 +114,11 @@ public class RulesHelper {
                 if(r.isCountFlat()){
                     collected = collect(t,b, 0, 1);
                     if(collected.size()>=r.getMinWinBalls()){
-                      //  totalScore += calculateWin(collected, r);
                     	winBalls.addAll(collected);
                     }
                     
                     collected=collect(t,b, -1, 0);
                     if(collected.size()>=r.getMinWinBalls()){
-                    	//totalScore += calculateWin(collected, r);                    
                     	winBalls.addAll(collected);    
                     }
                 }
@@ -123,13 +126,11 @@ public class RulesHelper {
                 if(r.isCountSkew()){    
                     collected = collect(t,b , -1,1);
                     if(collected.size()>=r.getMinWinBalls()){
-                    	//totalScore += calculateWin(collected, r);                    
                     	winBalls.addAll(collected);    
                     }
                     
                      collected = collect(t,b, -1, -1);
                      if(collected.size()>=r.getMinWinBalls()){
-                     //	totalScore += calculateWin(collected, r);                    
                      	winBalls.addAll(collected);    
                      }             
                 }
@@ -138,6 +139,16 @@ public class RulesHelper {
 		if(winBalls.size()>=r.getMinWinBalls()){
 			totalScore +=r.getNormalAward();
 			totalScore += r.getExtraAward()* (winBalls.size()-r.getMinWinBalls());
+		}
+		
+		if(r.isProgressiveEnabled()){
+			int currentScore = ctx.getScore();
+			if(currentScore>r.getProgressiveThreshold2()){
+				totalScore*=3;
+			}
+			else if(currentScore>r.getProgressiveThreshold1()){
+				totalScore*=2;
+			}
 		}
 								
 		return totalScore;

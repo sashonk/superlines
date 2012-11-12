@@ -26,9 +26,20 @@ public class Authentication {
 		return m_password;
 	}
 	
+	public String getLocale(){
+		return m_locale;
+	}
+	
+	public void setLocale(final String locale){
+		m_locale = locale;
+	}
+	
 	@XmlElement(name="password")
 	private String m_password;
 	
 	@XmlElement(name="login")
 	private String m_login;
+	
+	@XmlElement(name="locale")
+	private String m_locale;
 }

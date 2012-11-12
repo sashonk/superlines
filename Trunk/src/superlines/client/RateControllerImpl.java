@@ -13,22 +13,23 @@ import org.apache.commons.logging.LogFactory;
 
 
 import superlines.client.ws.ServiceAdapter;
+import superlines.core.Authentication;
 import superlines.ws.ScoreData;
 
 
-public class ScoreControllerImpl implements ScoreController{
-	private final static Log log = LogFactory.getLog(ScoreControllerImpl.class);
-	private ScorePanelModel m_model;
+public class RateControllerImpl implements RateController{
+	private final static Log log = LogFactory.getLog(RateControllerImpl.class);
+	private RatePanelModel m_model;
+	private Authentication m_auth;
 	
 	@Override
-	public void setModel(final ScorePanelModel model){
+	public void setModel(final RatePanelModel model){
 		m_model = model;
 	}
 	
 	@Override
 	public void update() {
-		Context ctx = Context.get();
-		List<ScoreData> data = ServiceAdapter.get().getScore(ctx.getAuth(), null);
+		List<ScoreData> data = ServiceAdapter.get().getScore(m_auth, null);
 		if(data==null){
 			log.error("failed get score data");
 			return;
@@ -37,7 +38,11 @@ public class ScoreControllerImpl implements ScoreController{
 		m_model.setData(data);		
 	}
 	
-	public ScoreControllerImpl(){
+	public void setAuth(final Authentication auth){
+		m_auth = auth;
+	}
+	
+	public RateControllerImpl(){
 		Thread t = new Thread(new Runnable() {
 			
 			@Override
@@ -50,7 +55,7 @@ public class ScoreControllerImpl implements ScoreController{
 							
 							@Override
 							public void run() {
-								ScoreControllerImpl.this.update();
+								RateControllerImpl.this.update();
 								
 							}
 						});

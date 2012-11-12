@@ -1,5 +1,7 @@
 package superlines.core;
 
+import java.io.Serializable;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -8,8 +10,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class SuperlinesRules {
+public class SuperlinesRules  implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5525477302453330627L;
+
 	public int getExtraAward(){
 		return m_extraAward;
 	}
@@ -90,6 +97,30 @@ public class SuperlinesRules {
 		return m_allowLeap;
 	}
 	
+	public boolean isProgressiveEnabled(){
+		return m_progressiveEnabled;
+	}
+	
+	public void setProgressiveEnabled(final boolean value){
+		m_progressiveEnabled = value;
+	}
+	
+	public int getProgressiveThreshold1(){
+		return m_progressiveThreshold1;
+	}
+	
+	public void setProgressiveThreshold1(final int value){
+		m_progressiveThreshold1 = value;
+	}
+	
+	public int getProgressiveThreshold2(){
+		return m_progressiveThreshold2;
+	}
+	
+	public void setProgressiveThreshold2(final int value){
+		m_progressiveThreshold2 = value;
+	}
+	
 	@XmlAttribute(name="scatterBallsCount")
 	private int m_scatterBallsCount;
 	
@@ -119,5 +150,14 @@ public class SuperlinesRules {
 	
 	@XmlAttribute(name="allowJump")
 	private boolean m_allowLeap;
+	
+	@XmlAttribute(name="progressiveEnabled")
+	private boolean m_progressiveEnabled;
+	
+	@XmlAttribute(name="progressiveThreshold1")
+	private int m_progressiveThreshold1;
+	
+	@XmlAttribute(name="progressiveThreshold2")
+	private int m_progressiveThreshold2;
 	
 }

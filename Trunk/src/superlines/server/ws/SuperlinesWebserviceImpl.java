@@ -1,13 +1,20 @@
 package superlines.server.ws;
 
 import superlines.Util;
+import superlines.server.Messages;
+import superlines.server.PromotionHelper;
+import superlines.server.RulesHelper;
 import superlines.ws.ProfileResponse;
+
+import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -19,22 +26,27 @@ import javax.jws.WebService;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import javax.servlet.ServletContext;
 import javax.sql.DataSource;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.ws.WebServiceContext;
+import javax.xml.ws.handler.MessageContext;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import superlines.core.Authentication;
-import superlines.core.Messages;
+import superlines.core.Localizer;
+import superlines.core.Rank;
 import superlines.core.SuperlinesContext;
 import superlines.core.SuperlinesRules;
 
 import superlines.core.Profile;
 
+import superlines.ws.BaseResponse;
 import superlines.ws.Message;
+import superlines.ws.PromotionResponse;
 import superlines.ws.Response;
 import superlines.ws.ScoreData;
 import superlines.ws.ScoreParameters;
@@ -50,6 +62,10 @@ public class SuperlinesWebserviceImpl implements SuperlinesWebservice{
 
 	//@Resource(name="jdbc/mysql")
  	private DataSource m_dataSource;
+ 	
+
+	@Resource
+	private WebServiceContext m_wsCtx;
 	
 	public SuperlinesWebserviceImpl(){
 		  try {
@@ -59,6 +75,8 @@ public class SuperlinesWebserviceImpl implements SuperlinesWebservice{
 			  } catch (NamingException e) {
 				  log.error(e);
 			 }
+
+		  
 	}
 	
 	@Override
@@ -74,7 +92,7 @@ public class SuperlinesWebserviceImpl implements SuperlinesWebservice{
 
 		 c = m_dataSource.getConnection();
 		 
-		st = c.prepareStatement("select name, crts, rankid from profiles where accountid = ?");
+		st = c.prepareStatement("select p.id, p.name as name, p.rankid as rankid, p.crts as crts, (select sum(s.score) from scoredata as s where s.userid = p.id and s.rankid = p.rankid) as rate from profiles as p where accountid = ?");
 		st.setString(1, ctx.getLogin());
 		rs = st.executeQuery();
 		
@@ -82,8 +100,9 @@ public class SuperlinesWebserviceImpl implements SuperlinesWebservice{
 			Profile profile = new Profile();
 			profile.setAuth(ctx);
 			profile.setUsername(rs.getString("name"));
-			profile.setRank(rs.getInt("rankid"));
-			profile.setCreateDate(rs.getTimestamp("crts"));			
+			profile.setRank(Rank.getRank(rs.getInt("rankid")));
+			profile.setCreateDate(rs.getTimestamp("crts"));		
+			profile.setRate(rs.getInt("rate"));
 			r.setProfile(profile);
 		}
 		else{
@@ -119,36 +138,50 @@ public class SuperlinesWebserviceImpl implements SuperlinesWebservice{
 		return r;
 	}
 	
+	
+	
+	@Override
+	@WebMethod
+	public PromotionResponse getPromotionMessage(
+			final Authentication auth,
+			final Rank rank, final String locale) {
+		
+		PromotionResponse response = new PromotionResponse();
+		try{
+			String message = PromotionHelper.getPromotionMessage(rank, locale);
+			response.setPromotionMessage(message);
+			
+		}
+		catch(Exception x){
+			Message m = new Message();
+			m.setText("get promotion msg failed");
+			m.setDetails(Util.toString(x));
+			response.setMessage(m);
+		}
+		
+		return response;
+		
+	}
+	
 
 
     @Override
     public SuperlinesContextResponse createSuperlinesContext(Authentication auth) {
     	SuperlinesContextResponse response = new SuperlinesContextResponse();
        try{
-    	   auth(auth);
-
-
+    	   ProfileResponse p = getProfile(auth);
+    	   Profile profile = p.getProfile();
+    	   
+    	   SuperlinesRules rules =  RulesHelper.createRules(profile.getRank());
+    	   
            SuperlinesContext ctx = new SuperlinesContext();
-           
-           SuperlinesRules rules = new SuperlinesRules();
-           rules.setColorCount(6);
-           rules.setCountFlat(true);
-           rules.setCountSkew(true);
-           rules.setExtraAward(50);
-           rules.setMinWinBalls(5);
-           rules.setNormalAward(100);
-           rules.setScatterBallsCount(5);
-           rules.setTableWidth(9);
-           rules.setShowTip(true);
-           rules.setAllowLeap(false);
-           
            ctx.setRules(rules);
            ctx.setScore(0);
            
            
+           
            response.setContext(ctx);           
 
-       
        }
        catch(Exception ex){
            Message m = new Message();
@@ -164,7 +197,107 @@ public class SuperlinesWebserviceImpl implements SuperlinesWebservice{
     public Response<SuperlinesRules> getRules(Authentication auth){
         throw new UnsupportedOperationException("Not supported yet.");
     }
+ 
 
+	@Override
+	@WebMethod
+	public BaseResponse acceptResult(final Authentication auth,
+			final int score) {
+		BaseResponse response = new BaseResponse();
+		
+		Connection c = null;
+		PreparedStatement st= null;
+		
+
+		
+		try{
+			auth(auth);
+				
+				c = m_dataSource.getConnection();
+				
+				
+				ResultSet rs;
+				c.setAutoCommit(false);				
+				st =c.prepareStatement("select id, rankid from profiles where accountid = ?");
+				st.setString(1, auth.getLogin());
+				rs = st.executeQuery();
+				
+				int id, rank;
+				if(rs.next()){
+					id = rs.getInt("id");
+					rank = rs.getInt("rankid");
+				}
+				else{
+					throw new Exception(String.format("profile not found for %s", auth.getLogin()));
+				}
+				st.close();
+				
+				int acceptableScore = RulesHelper.getAcceptableResult(Rank.getRank(rank));
+				if(acceptableScore>score){
+					Message m = new Message();
+					m.setText(String.format("%s %d", Localizer.getLocalizedString(superlines.server.Messages.NOT_ENOUGH_SCORE, auth.getLocale()), acceptableScore));
+					response.setMessage(m);
+					return response;
+				}
+				
+				
+				st = c.prepareStatement("insert into scoredata (userid ,score, crts, rankid) values (?, ?, CURRENT_TIMESTAMP, ? )");
+				st.setInt(1, id);
+				st.setInt(2, score);
+				st.setInt(3, rank);
+				st.executeUpdate();
+				st.close();
+				
+				
+				st = c.prepareStatement("select sum(score) as total from scoredata where userid = ? and rankid = ?");
+				st.setInt(1, id);
+				st.setInt(2, rank);
+				rs = st.executeQuery();
+				rs.next();			
+				int total = rs.getInt("total");
+				st.close();
+				
+				Rank qualifiedRank = PromotionHelper.getQualifiedRank(total, Rank.getRank(rank));
+				
+				if(qualifiedRank.getRank()!=rank){
+					st = c.prepareStatement("update profiles set rankid = ? where id = ?");
+					st.setInt(1, qualifiedRank.getRank());
+					st.setInt(2, id);
+					st.executeUpdate();
+				}
+				
+
+				c.commit();
+		}
+		catch(Exception ex){
+			try{
+				c.rollback();
+			}
+			catch(Exception e){
+				log.error(e);
+			}
+			
+			Message m = new Message();
+			m.setText("accept result failed");
+			m.setDetails(Util.toString(ex));
+			response.setMessage(m);
+		}
+		finally{
+			try{
+				if(st!=null){
+					st.close();
+				}
+				if(c!=null){
+					c.close();
+				}
+			}catch(Exception ex){
+				log.error(ex);
+			}
+		}
+		
+		return response;
+		
+	}
 
 
 	@Override
@@ -181,11 +314,19 @@ public class SuperlinesWebserviceImpl implements SuperlinesWebservice{
 
 			c = m_dataSource.getConnection();
 			st = c.createStatement();
-			rs = st.executeQuery("select s.score as score, (select p.name from profiles as p) as name from scoredata as s order by s.score desc limit 20;");
+			String sql = "select sum(s.score) sum, " +
+					"p.name name, p.rankid rank from profiles p, " +
+					"scoredata s where s.userid = p.id " +
+					"and s.rankid = p.rankid " +
+					"group by name order by sum desc limit 10";
+			
+															
+			rs = st.executeQuery(sql);
 			while(rs.next()){
 				ScoreData  data = new ScoreData();
 				data.setName(rs.getString("name"));
-				data.setScore(rs.getInt("score"));
+				data.setScore(rs.getInt("sum"));
+				data.setRank(Rank.getRank(rs.getInt("rank")));
 				response.getData().add(data);
 			}
 					
@@ -219,6 +360,9 @@ public class SuperlinesWebserviceImpl implements SuperlinesWebservice{
 	}
 	
 	private void auth(final Authentication auth) throws Exception{
+
+
+		
 		Connection c = null;
 		PreparedStatement st = null;
 		ResultSet rs = null;
@@ -236,7 +380,7 @@ public class SuperlinesWebserviceImpl implements SuperlinesWebservice{
 			}
 			 
 			if(count != 1){
-				throw new Exception("not authorized");
+				throw new Exception("authentication failed");
 			}
 		}
 
@@ -254,6 +398,7 @@ public class SuperlinesWebserviceImpl implements SuperlinesWebservice{
 				}
 		}		
 	}
+
 
 
 }

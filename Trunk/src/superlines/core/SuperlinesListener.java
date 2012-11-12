@@ -1,13 +1,9 @@
-package superlines.client;
+package superlines.core;
 
 import java.util.List;
 
-import superlines.core.SuperlinesBall;
-import superlines.core.SuperlinesBall.State;
 
 public interface SuperlinesListener {
-	
-
 	
 	public void scoreChanged(int newScore, int oldScore);
 
@@ -21,7 +17,11 @@ public interface SuperlinesListener {
 	
 	public void clickedBallUnset(int x, int y);
         
-    public void tableFilled();
+    public void tableFilled(final int score);
+    
+    public void postTableFilled();
     
     public void nextColorsChanged(final List<Integer> data);
+    
+    public void init();
 }

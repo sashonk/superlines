@@ -12,6 +12,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+
+import superlines.client.Messages;
 import superlines.core.Authentication;
 
 /**
@@ -37,7 +39,7 @@ public class LoginDialog extends javax.swing.JDialog {
         int y = (dim.height-h)/2;
         setLocation(x, y); 
         
-
+        this.setTitle("superlines 2.0");
     }
     
     public void setErrorMessage(final String error){
@@ -85,14 +87,14 @@ public class LoginDialog extends javax.swing.JDialog {
 
         loginLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         loginLabel.setLabelFor(loginField);
-        loginLabel.setText(Buttons.LOGIN_LABEL.toString());
+        loginLabel.setText(Messages.LOGIN_LABEL.toString());
         loginLabel.setToolTipText("");
         loginLabel.setPreferredSize(new java.awt.Dimension(60, 14));
 
         loginField.setPreferredSize(new java.awt.Dimension(120, 20));
 
         passwordLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        passwordLabel.setText(Buttons.PASSWORD_LABEL.toString());
+        passwordLabel.setText(Messages.PASSWORD_LABEL.toString());
         passwordLabel.setPreferredSize(new java.awt.Dimension(60, 14));
 
         passwordField.setPreferredSize(new java.awt.Dimension(120, 20));
@@ -102,7 +104,7 @@ public class LoginDialog extends javax.swing.JDialog {
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(15, Short.MAX_VALUE)
+                .addGap(20, 20, 20)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                         .addComponent(loginLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -119,11 +121,11 @@ public class LoginDialog extends javax.swing.JDialog {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(29, 29, 29)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(loginField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(loginField, javax.swing.GroupLayout.DEFAULT_SIZE, 25, Short.MAX_VALUE)
                     .addComponent(loginLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(20, 20, 20)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(passwordField, javax.swing.GroupLayout.DEFAULT_SIZE, 25, Short.MAX_VALUE)
                     .addComponent(passwordLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(30, Short.MAX_VALUE))
         );
@@ -137,12 +139,12 @@ public class LoginDialog extends javax.swing.JDialog {
 
         getContentPane().add(jPanel1);
 
-        okBtn.setText(Buttons.OK.toString());
+        okBtn.setText(Messages.OK.toString());
         okBtn.setPreferredSize(new java.awt.Dimension(100, 23));
         okBtn.setRequestFocusEnabled(false);
         jPanel2.add(okBtn);
 
-        offlineBtn.setText(Buttons.OFFLINE.toString());
+        offlineBtn.setText(Messages.OFFLINE.toString());
         offlineBtn.setPreferredSize(new java.awt.Dimension(100, 23));
         jPanel2.add(offlineBtn);
 

@@ -20,7 +20,9 @@
         <session-timeout>120</session-timeout>
     </session-config>
     
-    
+    <listener>
+        <listener-class>superlines.server.ws.SuperlinesContextListener</listener-class>
+    </listener>
     
    <!--   <filter> 
         <filter-name>baseFilter</filter-name>

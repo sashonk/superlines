@@ -1,5 +1,6 @@
 package superlines.core;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -10,15 +11,19 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-import superlines.client.SuperlinesListener;
 
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 
-public class SuperlinesContext {
+public class SuperlinesContext implements Serializable{
 	
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5626972482701147748L;
+
 	public void registerListener(final SuperlinesListener l){
 		m_listeners.add(l);
 	}
@@ -64,6 +69,12 @@ public class SuperlinesContext {
     	m_nextColors = nextColors;
     	for(SuperlinesListener l : m_listeners){
     		l.nextColorsChanged(m_nextColors);
+    	}
+    }
+    
+    public void touch(){
+    	for(SuperlinesListener l : m_listeners){
+    		l.init();
     	}
     }
 	

@@ -28,28 +28,57 @@ public class MainFrame extends javax.swing.JFrame {
 	private final static Log log = LogFactory.getLog(MainFrame.class);
 
     private static MainFrame instance ;
+    
+    private static Settings m_settings;
     /**
      * Creates new form MainFrame
      */
-     MainFrame() {
+    public MainFrame() {
         initComponents();
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+/*        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         int w = getSize().width;
         int h = getSize().height;
         int x = (dim.width-w)/2;
         int y = (dim.height-h)/2;
-        setLocation(x, y); 
+        setLocation(x, y); */
+        try{
+        	m_settings = new Settings(MainFrame.class.getName());
+        	if(m_settings.getWidth()==0 || m_settings.getHeight()==0){
+        		setBounds(100, 100, 400, 300);
+        	}
+        	else{
+            	setBounds(m_settings.getX(), m_settings.getY(), m_settings.getWidth(), m_settings.getHeight());       		
+        	}
+        	
+    	}
+    	catch(Exception e){
+    		log.error("failed read settings", e);
+    	}
+        
        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
        
        this.addWindowListener(new WindowAdapter() {
 				@Override
 				public void windowClosing(WindowEvent evt) {
+					try{
+						m_settings.setX(MainFrame.this.getX());
+						m_settings.setWidth(MainFrame.this.getWidth());
+						m_settings.setHeight(MainFrame.this.getHeight());
+						m_settings.setY(MainFrame.this.getY());
+						m_settings.flush();
+					}
+					catch(Exception ex){
+						log.error("failed flushing settings", ex);
+					}
+					
 				log.debug("application terminate");
 				System.exit(0);
 				}
 		});
-
+       
   
+
+       this.setTitle("superlines 2.0");
     }
     
     
@@ -63,7 +92,7 @@ public class MainFrame extends javax.swing.JFrame {
     
     
     public void showScorePanel(){
-        showPanel(ScorePanel.class);
+        showPanel(RatePanel.class);
     }
      public void showPlayPanel(){
         showPanel(PlayPanel.class);
@@ -97,7 +126,6 @@ public class MainFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(600, 400));
         getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.LINE_AXIS));
 
         pack();

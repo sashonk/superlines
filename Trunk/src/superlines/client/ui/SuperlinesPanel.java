@@ -17,7 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.SpringLayout;
 
 import superlines.client.SuperlinesController;
-import superlines.client.util.SuperlinesHelper;
+import superlines.client.ColorHelper;
 import superlines.core.SuperlinesBall;
 import superlines.core.SuperlinesContext;
 
@@ -56,7 +56,8 @@ public class SuperlinesPanel extends javax.swing.JPanel {
         		m_spots[i][j] = new BallSpot(i,j);
         		m_spots[i][j].addMouseListener(new MouseAdapter(){
         			public void mousePressed(MouseEvent e){
-        				e.getComponent().setBackground(Color.black);
+        				BallSpot spot = (BallSpot) e.getComponent();
+        				m_ctr.spotClicked(spot.getXCoor(), spot.getYCoor());
         			}
         		});
         		m_spots[i][j].setBackground(Color.pink);
@@ -104,7 +105,8 @@ public class SuperlinesPanel extends javax.swing.JPanel {
     	for(int i = 0; i<size; i++){
     		for(int j = 0 ; j<size; j++){
     			SuperlinesBall ball = ctx.getTable().getBalls()[i][j];
-    			m_spots[i][j].setBackground(SuperlinesHelper.number2Color(ball.getColor()));
+    			m_spots[i][j].setBackground(ColorHelper.number2Color(ball.getColor()));
+    			m_spots[i][j].setClicked(false);
     		}
     	}
     	

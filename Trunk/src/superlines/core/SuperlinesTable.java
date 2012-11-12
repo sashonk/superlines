@@ -1,5 +1,7 @@
 package superlines.core;
 
+import java.io.Serializable;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -7,12 +9,16 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-import superlines.client.SuperlinesListener;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class SuperlinesTable {
+public class SuperlinesTable  implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5976355639858306132L;
+
 	public void setWidth(int width){
 		m_width = width;
 		balls = new SuperlinesBall[width][];
@@ -69,19 +75,42 @@ public class SuperlinesTable {
 		return m_ctx;
 	}
         
-        public void incColoredCount(int value){
+/*    public void incColoredCount(int value){
             m_coloredCount+=value;
             
             if(m_coloredCount==m_width*m_width){
                 for(SuperlinesListener l : m_ctx.getListeners()){
-                    l.tableFilled();
+                    l.tableFilled(m_ctx.getScore());
                 }
             }
-        }
+        }*/
         
-        public boolean isFilled(){
-            return m_coloredCount==m_width*m_width;
-        }
+	public void checkFilled(){
+		boolean filled = true;
+		for(int i = 0; i<m_width; i++){
+			for(int j = 0; j<m_width; j++){
+				if(balls[i][j].getColor()==0){
+					filled = false; 
+				}
+			}
+		}		
+		
+		m_filled = filled;
+		if(m_filled){
+	        for(SuperlinesListener l : m_ctx.getListeners()){
+	            l.tableFilled(m_ctx.getScore());
+	        }
+		}
+		if(m_filled){
+	        for(SuperlinesListener l : m_ctx.getListeners()){
+	            l.postTableFilled();
+	        }			
+		}
+	}
+	
+    public boolean isFilled(){
+            return m_filled;
+    }
 	
 	@XmlElement(name="balls", nillable=true)
 	private SuperlinesBall[][] balls;
@@ -95,8 +124,11 @@ public class SuperlinesTable {
 	@XmlTransient
 	private SuperlinesContext m_ctx;
         
-        @XmlTransient
-        private int m_coloredCount = 0;
+    @XmlTransient
+    private int m_coloredCount = 0;
+    
+    @XmlTransient
+    private boolean m_filled;
         
         
 }

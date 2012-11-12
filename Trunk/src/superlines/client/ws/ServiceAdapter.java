@@ -14,9 +14,12 @@ import org.apache.commons.logging.LogFactory;
 
 import superlines.core.Authentication;
 import superlines.core.Configuration;
+import superlines.core.Rank;
 import superlines.core.SuperlinesContext;
 import superlines.core.SuperlinesRules;
 import superlines.core.Profile;
+import superlines.ws.BaseResponse;
+import superlines.ws.PromotionResponse;
 import superlines.ws.Response;
 import superlines.ws.ScoreData;
 import superlines.ws.ScoreParameters;
@@ -66,6 +69,13 @@ public class ServiceAdapter {
 	public SuperlinesWebservice getService(){
 		return webservice;
 	}
+	
+	public void acceptResult(final Authentication auth, final int score){
+		BaseResponse response = webservice.acceptResult(auth, score);
+		if(response.getMessage()!=null){
+			log.error(response.getMessage());
+		}
+	}
 
 	
 	public Profile getProfile(final Authentication auth){
@@ -111,6 +121,14 @@ public class ServiceAdapter {
             }
             
             return res.getData();     	
+        }
+        
+        public String getPromotionMessage(final Authentication auth, final Rank rank , final String locale){
+        	PromotionResponse response = webservice.getPromotionMessage(auth, rank, locale);
+        	if(response.getMessage()!=null){
+        		log.error(response.getMessage());
+        	}
+        	return response.getPromotionMessage();
         }
 	
 	public static void main(String[] argc) throws Exception{

@@ -5,6 +5,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import superlines.core.Rank;
+
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ScoreData {
@@ -25,6 +27,13 @@ public class ScoreData {
 		m_score= score;
 	}
 	
+	public void setRank(final Rank rank){
+		m_rank = rank;
+	}
+	
+	public Rank getRank(){
+		return m_rank;
+	}
 	
 	
 	@XmlElement(name="score")
@@ -32,4 +41,7 @@ public class ScoreData {
 	
 	@XmlElement(name="username")
 	private String m_username;
+	
+	@XmlElement(name="rank")
+	private Rank m_rank;
 }

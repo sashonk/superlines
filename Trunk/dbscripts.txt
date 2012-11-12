@@ -29,6 +29,7 @@ CREATE TABLE IF NOT EXISTS scoredata(
 	userid INT,
 	score INT NOT NULL,
 	crts TIMESTAMP,	
+	rankid INT,
 	FOREIGN KEY(userid) REFERENCES PROFILES(id) ON DELETE CASCADE
 );
 
