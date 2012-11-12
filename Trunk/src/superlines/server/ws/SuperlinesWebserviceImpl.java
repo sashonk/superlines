@@ -314,11 +314,7 @@ public class SuperlinesWebserviceImpl implements SuperlinesWebservice{
 
 			c = m_dataSource.getConnection();
 			st = c.createStatement();
-			String sql = "select sum(s.score) sum, " +
-					"p.name name, p.rankid rank from profiles p, " +
-					"scoredata s where s.userid = p.id " +
-					"and s.rankid = p.rankid " +
-					"group by name order by sum desc limit 10";
+			String sql = "select p.name name, p.rankid rank, (select sum(s.score) from scoredata s where s.userid = p.id and s.rankid = p.rankid) sum from profiles p order by rank desc, sum desc limit 10";
 			
 															
 			rs = st.executeQuery(sql);
