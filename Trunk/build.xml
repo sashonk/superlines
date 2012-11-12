@@ -7,6 +7,8 @@
 	                <classpath>
 	                         <pathelement path="lib/log4j.jar"/>
 				 <pathelement path="lib/commons-logging.jar"/>
+
+				<pathelement path="C:\\tomcat\lib\servlet-api.jar" />
 			</classpath>
 		</javac>
 		
