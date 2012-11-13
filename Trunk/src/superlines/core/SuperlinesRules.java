@@ -121,6 +121,22 @@ public class SuperlinesRules  implements Serializable{
 		m_progressiveThreshold2 = value;
 	}
 	
+	public int getProgressive1Multiplier(){
+		return m_multiplier1;
+	}
+	
+	public void setProgressive1Multiplier(final int value){
+		m_multiplier1 = value;
+	}
+	
+	public int getProgressive2Multiplier(){
+		return m_multiplier2;
+	}
+	
+	public void setProgressvive2Multiplier(final int value){
+		m_multiplier2 = value;
+	}
+	
 	@XmlAttribute(name="scatterBallsCount")
 	private int m_scatterBallsCount;
 	
@@ -159,5 +175,11 @@ public class SuperlinesRules  implements Serializable{
 	
 	@XmlAttribute(name="progressiveThreshold2")
 	private int m_progressiveThreshold2;
+	
+	@XmlAttribute(name="progressiveMultiplier1")
+	private int m_multiplier1;
+	
+	@XmlAttribute(name="progressiveMultiplier2")
+	private int m_multiplier2;
 	
 }

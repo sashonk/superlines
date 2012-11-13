@@ -144,10 +144,10 @@ public class RulesHelper {
 		if(r.isProgressiveEnabled()){
 			int currentScore = ctx.getScore();
 			if(currentScore>r.getProgressiveThreshold2()){
-				totalScore*=3;
+				totalScore*=r.getProgressive2Multiplier();
 			}
 			else if(currentScore>r.getProgressiveThreshold1()){
-				totalScore*=2;
+				totalScore*=r.getProgressive1Multiplier();
 			}
 		}
 								

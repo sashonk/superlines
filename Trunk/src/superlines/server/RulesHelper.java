@@ -45,6 +45,7 @@ public class RulesHelper {
 			rules.setTableWidth(10);
 			rules.setShowTip(true);
 			rules.setProgressiveEnabled(false);
+		
 
 		}
 		if(rank == Rank.AVERAGE){
@@ -79,6 +80,8 @@ public class RulesHelper {
 			rules.setProgressiveEnabled(true);
 			rules.setProgressiveThreshold1(10000);
 			rules.setProgressiveThreshold2(50000);
+			rules.setProgressive1Multiplier(2);
+			rules.setProgressvive2Multiplier(4);
 			
 		}
 		if(rank == Rank.ADEPT){
@@ -92,6 +95,8 @@ public class RulesHelper {
 			rules.setProgressiveEnabled(true);
 			rules.setProgressiveThreshold1(20000);
 			rules.setProgressiveThreshold2(100000);
+			rules.setProgressive1Multiplier(2);
+			rules.setProgressvive2Multiplier(4);			
 			
 		}
 		if(rank == Rank.MASTER){
