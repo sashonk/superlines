@@ -19,7 +19,7 @@ import superlines.client.Messages;
 import superlines.client.RateController;
 import superlines.client.RateControllerImpl;
 import superlines.client.RateListener;
-import superlines.ws.ScoreData;
+import superlines.ws.RateData;
 
 /**
  *
@@ -70,18 +70,18 @@ public class RatePanel extends javax.swing.JPanel implements RateListener{
     }
     
     @Override
-    public void updateData(final List<ScoreData> score){
+    public void updateData(final List<RateData> score){
     	StringBuilder sb = new StringBuilder(m_template.toString());
     	String html = sb.replace(sb.lastIndexOf("["), sb.lastIndexOf("]")+1, buildTableBody(score)).toString();
     	tableEditorPane.setText(html);
     }
     
     
-    private String buildTableBody(final List<ScoreData> score){
+    private String buildTableBody(final List<RateData> score){
     	StringBuilder sb= new StringBuilder();
     	
     	int id = 1;
-    	for(ScoreData data :score){
+    	for(RateData data :score){
     		sb.append("<tr>");
     		
     		sb.append("<td>");

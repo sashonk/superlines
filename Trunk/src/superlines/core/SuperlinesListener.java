@@ -23,5 +23,7 @@ public interface SuperlinesListener {
     
     public void nextColorsChanged(final List<Integer> data);
     
-    public void init();
+    public void init(final SuperlinesContext ctx);
+    
+    public void progressiveOpened(final int level);
 }

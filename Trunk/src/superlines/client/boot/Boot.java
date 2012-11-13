@@ -140,12 +140,14 @@ public class Boot {
                 c.registerListener(playPanel);
                 c.registerListener(profileCtr);
                 playPanel.setController(ctr);               
-                playPanel.init();
+                playPanel.init(c);
+                
 
                 
                 ScoreSender sender = new ScoreSender();
                 sender.setAuth(auth);
                 c.registerListener(sender);
+                sender.init(c);
                 
                 
                 RulesHelper.populateNextolors(ctr.getContext());    

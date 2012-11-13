@@ -24,7 +24,7 @@ public interface SuperlinesWebservice {
         public Response<SuperlinesRules> getRules(@WebParam(name="auth") final Authentication auth);
         
         @WebMethod
-        public ScoreResponse getScore(@WebParam(name="auth") final Authentication auth, @WebParam(name="params") final ScoreParameters params);
+        public RateResponse getRateData(@WebParam(name="auth") final Authentication auth, @WebParam(name="params") final RateParameters params);
 	
         @WebMethod
         public BaseResponse acceptResult(@WebParam(name="auth") final Authentication auth, @WebParam(name="score") final int score);

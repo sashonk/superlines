@@ -12,21 +12,29 @@
 		
 	}
 	
+
+	
 	td.content{
 		font-size: 14px;
 	}
 	
-	table{
-		
-		margin-top: 20px;
+	table{		
+		margin-bottom: 50px;
+	}
+	
+	div.title{
+		text-align: center;
+		margin-top: 40px;
+		margin-bottom: 5px;
+
 	}
 
 </style>
 
 </head>
 <body>
-	<table width="60%" border="1" align="center">
-		<tr><td align="center"><h1>superlines 2.0</h1></td></tr>
+	<table width="75%" border="1" align="center">
+		<tr ><td align="center" style="font-size: 48px; font-weight: bold;">superlines 2.0</td></tr>
 		<tr><td class="content">
 		
 			<% 
@@ -41,11 +49,11 @@
 			<%  if(p.equals("rules")){ %>
 				<%@ include file="rules.jsp" %>				
 				<% 	} 
-				else if(p.equals("rank")){ %>
-				<%@ include file="rank.jsp" %>
+				else if(p.equals("rate")){ %>
+				<%@ include file="rate.jsp" %>
 				<% 	}
-				else if(p.equals("standard")){ %>
-				<%@ include file="standard.jsp" %>				
+				else if(p.equals("registration")){ %>
+				<%@ include file="registration.jsp" %>
 				<% 	}
 				else{ %>
 				<%@ include file="index.jsp" %>			

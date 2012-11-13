@@ -2,8 +2,8 @@ package superlines.client;
 
 import java.util.List;
 
-import superlines.ws.ScoreData;
+import superlines.ws.RateData;
 
 public interface RateListener {
-	public void updateData(final List<ScoreData> data);
+	public void updateData(final List<RateData> data);
 }

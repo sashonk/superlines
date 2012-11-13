@@ -3,6 +3,7 @@ package superlines.server.ws;
 import superlines.Util;
 import superlines.server.Messages;
 import superlines.server.PromotionHelper;
+import superlines.server.RateDAO;
 import superlines.server.RulesHelper;
 import superlines.ws.ProfileResponse;
 
@@ -48,9 +49,9 @@ import superlines.ws.BaseResponse;
 import superlines.ws.Message;
 import superlines.ws.PromotionResponse;
 import superlines.ws.Response;
-import superlines.ws.ScoreData;
-import superlines.ws.ScoreParameters;
-import superlines.ws.ScoreResponse;
+import superlines.ws.RateData;
+import superlines.ws.RateParameters;
+import superlines.ws.RateResponse;
 import superlines.ws.SuperlinesContextResponse;
 import superlines.ws.SuperlinesWebservice;
 
@@ -257,16 +258,16 @@ public class SuperlinesWebserviceImpl implements SuperlinesWebservice{
 				int total = rs.getInt("total");
 				st.close();
 				
-				Rank qualifiedRank = PromotionHelper.getQualifiedRank(total, Rank.getRank(rank));
-				
-				if(qualifiedRank.getRank()!=rank){
+				Rank nextRank = Rank.getRank(rank).getNext();
+				int targetRate = PromotionHelper.getQualifiedRate(nextRank);
+				if(targetRate <= total ){
 					st = c.prepareStatement("update profiles set rankid = ? where id = ?");
-					st.setInt(1, qualifiedRank.getRank());
+					st.setInt(1, nextRank.getRank());
 					st.setInt(2, id);
-					st.executeUpdate();
+					st.executeUpdate();				
 				}
-				
 
+				st.close();
 				c.commit();
 		}
 		catch(Exception ex){
@@ -302,56 +303,22 @@ public class SuperlinesWebserviceImpl implements SuperlinesWebservice{
 
 	@Override
 	@WebMethod
-	public ScoreResponse getScore(@WebParam Authentication auth,
-			@WebParam ScoreParameters params) {
-		ScoreResponse response = new ScoreResponse();
-			
-		Connection c = null;
-		Statement st = null;
-		ResultSet rs = null;
+	public RateResponse getRateData(@WebParam Authentication auth,
+			@WebParam RateParameters params) {
+		RateResponse response = new RateResponse();
 		try{
 			auth(auth);
-
-			c = m_dataSource.getConnection();
-			st = c.createStatement();
-			String sql = "select p.name name, p.rankid rank, (select sum(s.score) from scoredata s where s.userid = p.id and s.rankid = p.rankid) sum from profiles p order by rank desc, sum desc limit 10";
-			
-															
-			rs = st.executeQuery(sql);
-			while(rs.next()){
-				ScoreData  data = new ScoreData();
-				data.setName(rs.getString("name"));
-				data.setScore(rs.getInt("sum"));
-				data.setRank(Rank.getRank(rs.getInt("rank")));
-				response.getData().add(data);
-			}
+			response.getData().addAll(RateDAO.get().getRateData(params)) ;
 					
-			
-			
 		}
 		catch(Exception ex){
 			Message m = new Message();
-			m.setText("error getting score");
+			m.setText("error getting rate data");
 			m.setDetails(Util.toString(ex));
 			response.setMessage(m);
 			return response;
 		}
-		finally{
-				try{
-					if(st!=null){
-						st.close();
-					}
-					if(c!=null){
-						c.close();
-					}
-				}catch(Exception ex){
-					log.error(ex);
-				
-				}
-		}
-	
-		
-		
+
 		return response;
 	}
 	

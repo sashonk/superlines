@@ -107,6 +107,7 @@ public class SuperlinesControllerImpl implements SuperlinesController {
             
             m_ctx.getTable().checkFilled();      
 	}
+
 	
 
 	public void start(){

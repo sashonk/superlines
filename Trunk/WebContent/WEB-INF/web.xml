@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app>
+	<welcome-file-list>
+	   <welcome-file>template.jsp</welcome-file>
+	</welcome-file-list>
+
     <listener>
         <listener-class>
                 com.sun.xml.ws.transport.http.servlet.WSServletContextListener

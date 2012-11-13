@@ -19,21 +19,21 @@ public enum Rank {
 		}
 		
 	},
-	SKILLED{
+/*	SKILLED{
+		public int getRank(){
+			return 4;
+		}
+		
+	},*/
+	ADEPT{
 		public int getRank(){
 			return 4;
 		}
 		
 	},
-	ADEPT{
-		public int getRank(){
-			return 5;
-		}
-		
-	},
 	MASTER{
 		public int getRank(){
-			return 6;
+			return 5;
 		}
 		
 	},
@@ -74,5 +74,9 @@ public enum Rank {
 		}
 		
 		return null;
+	}
+	
+	public Rank getNext(){
+		return getRank(this.getRank()+1);
 	}
 }

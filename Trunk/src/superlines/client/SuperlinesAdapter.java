@@ -2,6 +2,7 @@ package superlines.client;
 
 import java.util.List;
 
+import superlines.core.SuperlinesContext;
 import superlines.core.SuperlinesListener;
 import superlines.core.SuperlinesBall.State;
 
@@ -32,9 +33,12 @@ public class SuperlinesAdapter implements SuperlinesListener{
 	public void nextColorsChanged(List<Integer> data) {}
 
 	@Override
-	public void init() {}
+	public void init(final SuperlinesContext ctx) {}
 	
 	@Override
 	public void postTableFilled(){}
+
+	@Override
+	public void progressiveOpened(int level) {}
 
 }

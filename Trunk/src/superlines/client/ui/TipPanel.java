@@ -41,8 +41,7 @@ public class TipPanel extends JPanel{
     	}
     }
     
-    public void init(){
-        SuperlinesContext ctx = m_ctr.getContext();
+    public void init(final SuperlinesContext ctx){
         
         int count  = ctx.getNextColors().size();
         if(nextColorsCount!=count){
@@ -53,7 +52,10 @@ public class TipPanel extends JPanel{
                 panel.setPreferredSize(new Dimension(SIZE,SIZE));
                 add(panel);
                 m_panels.add(panel);
-            }       	
+            }    
+            
+            nextColorsCount = count;
+            this.doLayout();
         }
         
 
@@ -64,7 +66,7 @@ public class TipPanel extends JPanel{
 
          }
             
-        nextColorsCount = count;
+
         
         
     }

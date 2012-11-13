@@ -55,6 +55,22 @@ public class SuperlinesContext implements Serializable{
 			l.scoreChanged(m_score, oldval);
 		}
 
+		if(m_rules.isProgressiveEnabled()){
+			if(m_score > m_rules.getProgressive2Threshold() && !m_progressive2Notified){
+				m_progressive1Notified = true;
+				m_progressive2Notified = true;
+				for(SuperlinesListener l : m_listeners){
+					l.progressiveOpened(2);
+				}
+				
+			}
+			else if(m_score > m_rules.getProgressive1Threshold() && !m_progressive1Notified){
+				m_progressive1Notified = true;
+				for(SuperlinesListener l : m_listeners){
+					l.progressiveOpened(1);
+				}				
+			}
+		}
 	}
 	
 	public void setTable(final SuperlinesTable value){
@@ -74,7 +90,7 @@ public class SuperlinesContext implements Serializable{
     
     public void touch(){
     	for(SuperlinesListener l : m_listeners){
-    		l.init();
+    		l.init(this);
     	}
     }
 	
@@ -93,4 +109,10 @@ public class SuperlinesContext implements Serializable{
         @XmlElementWrapper(name="nextColors",nillable=true)
         @XmlElement(name="color", nillable=true)
         private List<Integer> m_nextColors = new LinkedList<Integer>();
+    
+    @XmlTransient
+    private boolean m_progressive1Notified;
+    
+    @XmlTransient
+    private boolean m_progressive2Notified;
 }

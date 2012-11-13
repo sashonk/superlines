@@ -71,6 +71,11 @@ public class PlayPanel extends javax.swing.JPanel implements SuperlinesListener,
         ((TipPanel)tipPanel).setController(ctr);
     }
     
+    @Override
+    public void progressiveOpened(final int level){
+    	Messages msg = level ==1 ? Messages.PROGRESSIVE1_OPENED : Messages.PROGRESSIVE2_OPENED;
+    	JOptionPane.showMessageDialog(this, msg);
+    }
     
     @Override
     public void rateChanged(final int rate){
@@ -152,16 +157,15 @@ public class PlayPanel extends javax.swing.JPanel implements SuperlinesListener,
     }
     
     @Override
-    public void init(){
+    public void init(final SuperlinesContext ctx){
 
-    	SuperlinesContext ctx = m_controller.getContext();
     	
     	if(ctx!=null){
     		scoreField.setText(Integer.valueOf(ctx.getScore()).toString());
     	}
     	
-    	m_superPanel.init();
-        ((TipPanel)tipPanel).init();
+    	m_superPanel.init(ctx);
+        ((TipPanel)tipPanel).init(ctx);
         if(!ctx.getRules().isShowTip()){
         	tipPanel.setVisible(false);
         }

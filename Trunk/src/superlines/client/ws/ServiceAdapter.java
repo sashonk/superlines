@@ -21,9 +21,9 @@ import superlines.core.Profile;
 import superlines.ws.BaseResponse;
 import superlines.ws.PromotionResponse;
 import superlines.ws.Response;
-import superlines.ws.ScoreData;
-import superlines.ws.ScoreParameters;
-import superlines.ws.ScoreResponse;
+import superlines.ws.RateData;
+import superlines.ws.RateParameters;
+import superlines.ws.RateResponse;
 import superlines.ws.SuperlinesContextResponse;
 import superlines.ws.SuperlinesWebservice;
 import superlines.ws.ProfileResponse;
@@ -114,8 +114,8 @@ public class ServiceAdapter {
             return res.getContext();          
         }
         
-        public List<ScoreData> getScore(final Authentication auth, final ScoreParameters params){
-        	ScoreResponse res = webservice.getScore(auth, params);
+        public List<RateData> getScore(final Authentication auth, final RateParameters params){
+        	RateResponse res = webservice.getRateData(auth, params);
             if(res.getMessage()!=null){
                 log.error(res.getMessage());                
             }

@@ -17,6 +17,7 @@ import superlines.core.Rank;
 public class PromotionHelper {
 	private static final Log log = LogFactory.getLog(PromotionHelper.class);
 	private static final Map<String, String> m_data = new HashMap<>();
+	private static final Map<Rank, Integer> m_standardRanks = new HashMap<>();
 	
 	public static void fillData(){
 		BufferedReader br = null;
@@ -54,6 +55,15 @@ public class PromotionHelper {
 				}
 			}
 		}
+		
+		m_standardRanks.put(Rank.NEWBIE, Integer.valueOf(0));
+		m_standardRanks.put(Rank.AVERAGE, Integer.valueOf(20000));
+		m_standardRanks.put(Rank.EXPERIENCED, Integer.valueOf(50000));
+		m_standardRanks.put(Rank.ADEPT, Integer.valueOf(100000));
+		m_standardRanks.put(Rank.MASTER, Integer.valueOf(500000));
+		m_standardRanks.put(Rank.GODLIKE, Integer.valueOf(1000000));
+		
+		
 	}
 	
 
@@ -100,6 +110,10 @@ public class PromotionHelper {
 		}
 		
 		return Rank.GODLIKE;
+	}
+	
+	public static int getQualifiedRate(final Rank rank){
+		return m_standardRanks.get(rank);
 	}
 	
 

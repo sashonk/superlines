@@ -73,9 +73,8 @@ public class SuperlinesPanel extends javax.swing.JPanel {
         m_ctr = ctr;
     }
     
-    public void init(){
+    public void init(final SuperlinesContext ctx){
         
-        SuperlinesContext ctx = m_ctr.getContext();
 
     	int size = ctx.getTable().getSize();
     	

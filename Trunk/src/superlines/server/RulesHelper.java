@@ -7,10 +7,10 @@ public class RulesHelper {
 	
 	public static int getAcceptableResult(final Rank rank){
 		if(rank == Rank.NEWBIE){
-			return 0;
+			return 1000;
 		}
 		if(rank == Rank.AVERAGE){
-			return 1000 ;			
+			return 3000 ;			
 		}
 		if(rank == Rank.EXPERIENCED){
 			return 5000;		
@@ -19,7 +19,7 @@ public class RulesHelper {
 			return  10000;		
 		}
 		if(rank == Rank.MASTER){
-			return 50000 ;		
+			return 10000 ;		
 		}		
 		if(rank == Rank.GODLIKE){
 			return 10000 ;		
@@ -34,9 +34,10 @@ public class RulesHelper {
 		rules.setAllowLeap(false);
 		rules.setCountFlat(true);
 		rules.setCountSkew(true);
-
+		rules.setMinScore(getAcceptableResult(rank));
 		
 		if(rank == Rank.NEWBIE){
+			
 			rules.setMinWinBalls(5);
 			rules.setExtraAward(50);
 			rules.setNormalAward(100);
@@ -44,7 +45,11 @@ public class RulesHelper {
 			rules.setColorCount(5);
 			rules.setTableWidth(10);
 			rules.setShowTip(true);
-			rules.setProgressiveEnabled(false);
+			rules.setProgressiveEnabled(true);
+			rules.setProgressive1Threshold(3000);
+			rules.setProgressive2Threshold(7000);
+			rules.setProgressive1Multiplier(2);
+			rules.setProgressvive2Multiplier(4);
 		
 
 		}
@@ -56,8 +61,11 @@ public class RulesHelper {
 			rules.setColorCount(7);
 			rules.setTableWidth(9);
 			rules.setShowTip(true);
-			rules.setProgressiveEnabled(false);
-			
+			rules.setProgressiveEnabled(true);
+			rules.setProgressive1Threshold(7000);
+			rules.setProgressive2Threshold(20000);
+			rules.setProgressive1Multiplier(2);
+			rules.setProgressvive2Multiplier(4);			
 		}
 /*		if(rank == Rank.SKILLED){
 			rules.setMinWinBalls(5);
@@ -78,8 +86,8 @@ public class RulesHelper {
 			rules.setTableWidth(9);
 			rules.setShowTip(true);
 			rules.setProgressiveEnabled(true);
-			rules.setProgressiveThreshold1(10000);
-			rules.setProgressiveThreshold2(50000);
+			rules.setProgressive1Threshold(10000);
+			rules.setProgressive2Threshold(25000);
 			rules.setProgressive1Multiplier(2);
 			rules.setProgressvive2Multiplier(4);
 			
@@ -93,8 +101,8 @@ public class RulesHelper {
 			rules.setTableWidth(9);
 			rules.setShowTip(true);
 			rules.setProgressiveEnabled(true);
-			rules.setProgressiveThreshold1(20000);
-			rules.setProgressiveThreshold2(100000);
+			rules.setProgressive1Threshold(15000);
+			rules.setProgressive2Threshold(30000);
 			rules.setProgressive1Multiplier(2);
 			rules.setProgressvive2Multiplier(4);			
 			
@@ -104,7 +112,7 @@ public class RulesHelper {
 			rules.setExtraAward(50);
 			rules.setNormalAward(100);
 			rules.setScatterBallsCount(4);
-			rules.setColorCount(10);
+			rules.setColorCount(9);
 			rules.setTableWidth(9);
 			rules.setShowTip(true);
 			rules.setProgressiveEnabled(false);
@@ -132,10 +140,10 @@ public class RulesHelper {
 		}*/
 		if(rank == Rank.GODLIKE){
 			rules.setMinWinBalls(6);
-			rules.setExtraAward(250);
-			rules.setNormalAward(500);
-			rules.setScatterBallsCount(5);
-			rules.setColorCount(10);
+			rules.setExtraAward(50);
+			rules.setNormalAward(100);
+			rules.setScatterBallsCount(4);
+			rules.setColorCount(9);
 			rules.setTableWidth(8);
 			rules.setShowTip(true);
 			rules.setProgressiveEnabled(false);

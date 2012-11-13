@@ -14,7 +14,7 @@ import org.apache.commons.logging.LogFactory;
 
 import superlines.client.ws.ServiceAdapter;
 import superlines.core.Authentication;
-import superlines.ws.ScoreData;
+import superlines.ws.RateData;
 
 
 public class RateControllerImpl implements RateController{
@@ -29,7 +29,7 @@ public class RateControllerImpl implements RateController{
 	
 	@Override
 	public void update() {
-		List<ScoreData> data = ServiceAdapter.get().getScore(m_auth, null);
+		List<RateData> data = ServiceAdapter.get().getScore(m_auth, null);
 		if(data==null){
 			log.error("failed get score data");
 			return;
