@@ -323,8 +323,6 @@ public class SuperlinesWebserviceImpl implements SuperlinesWebservice{
 	}
 	
 	private void auth(final Authentication auth) throws Exception{
-
-
 		
 		Connection c = null;
 		PreparedStatement st = null;
@@ -332,7 +330,7 @@ public class SuperlinesWebserviceImpl implements SuperlinesWebservice{
 		try{
 			
 			c = m_dataSource.getConnection();
-			st = c.prepareStatement("select count(0) as count from users where user_name = ? and user_password = ?");
+			st = c.prepareStatement("select count(0) count from users u, user_roles r where u.user_name = r.user_name and u.user_name = ? and u.user_password = ?  and r.role_name = 'user'");
 			st.setString(1, auth.getLogin());
 			st.setString(2, auth.getPassword());
 			 rs = st.executeQuery();

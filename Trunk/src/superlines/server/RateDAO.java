@@ -20,10 +20,8 @@ import superlines.ws.RateData;
 import superlines.ws.RateParameters;
 
 
-public class RateDAO {
-	private static final Log log = LogFactory.getLog(RateDAO.class);
+public class RateDAO extends DAO{
 	private static RateDAO instance;
-	private DataSource m_dataSource;
 	
 	public static RateDAO get(){
 		if(instance == null){
@@ -56,7 +54,7 @@ public class RateDAO {
 										
 		}
 		catch(Exception ex){
-			log.error(ex);
+			m_log.error(ex);
 		}
 		finally{
 				try{
@@ -67,7 +65,7 @@ public class RateDAO {
 						c.close();
 					}
 				}catch(Exception ex){
-					log.error(ex);
+					m_log.error(ex);
 				
 				}
 		}
@@ -78,14 +76,5 @@ public class RateDAO {
 	
 	}
 	
-	private RateDAO(){
-			  try {
-					Context ctx = new InitialContext();
-					m_dataSource = (DataSource)ctx.lookup("java:comp/env/jdbc/mysql");
-					
-				  } catch (NamingException e) {
-					  log.error(e);
-				 }
-	
-	}
+	private RateDAO(){}
 }

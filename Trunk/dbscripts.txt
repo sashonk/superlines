@@ -18,10 +18,12 @@ CREATE TABLE IF NOT EXISTS user_roles
 
 CREATE TABLE IF NOT EXISTS profiles (
 	id INT PRIMARY KEY AUTO_INCREMENT, 
-	name VARCHAR(100) NOT NULL, 
+	name VARCHAR(100), 
+	surname VARCHAR(120),
 	crts TIMESTAMP, 
 	accountid VARCHAR(30), 
 	rankid INT, 
+	email VARCHAR(100),
 	FOREIGN KEY(accountid) REFERENCES USERS(user_name) ON DELETE SET NULL
 );
 
@@ -30,12 +32,18 @@ CREATE TABLE IF NOT EXISTS scoredata(
 	score INT NOT NULL,
 	crts TIMESTAMP,	
 	rankid INT,
-	FOREIGN KEY(userid) REFERENCES PROFILES(id) ON DELETE CASCADE
+	FOREIGN KEY(userid) REFERENCES profiles(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS applications(
+	accountid VARCHAR(30),
+	token VARCHAR(100) NOT NULL,
+	FOREIGN KEY(accountid) REFERENCES users(user_name) ON DELETE CASCADE	
 );
 
 
 INSERT INTO roles (role_name) values ('user');
-INSERT INTO roles (role_name) values ('test');
+INSERT INTO roles (role_name) values ('unconfirmed');
 INSERT INTO roles (role_name) values ('admin');
 
 

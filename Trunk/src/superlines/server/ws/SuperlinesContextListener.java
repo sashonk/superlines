@@ -4,10 +4,16 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import superlines.server.PromotionHelper;
+import superlines.server.RateDAO;
 
 public class SuperlinesContextListener implements ServletContextListener{
 
+	private static final Log log = LogFactory.getLog(SuperlinesContextListener.class);
+	
 	@Override
 	public void contextDestroyed(ServletContextEvent event) {
 		// TODO Auto-generated method stub
@@ -17,12 +23,14 @@ public class SuperlinesContextListener implements ServletContextListener{
 	@Override
 	public void contextInitialized(ServletContextEvent event) {
 		
+		
 		  ServletContext servletCtx = event.getServletContext();
 		  String webContentFolder = servletCtx.getRealPath("/");
 		  System.setProperty("config.file.path", String.format("%s/%s", webContentFolder, "WEB-INF/config/config.properties"));
-		  System.setProperty("data.folder", String.format("%s/%s", webContentFolder, "WEB-INF/data"));
-		  
+		  System.setProperty("data.folder", String.format("%s/%s", webContentFolder, "WEB-INF/data"));		  
 		  PromotionHelper.fillData();
+
+		  log.debug("context initialized");
 	}	
 
 }

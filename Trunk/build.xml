@@ -1,16 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project name="Superlines" default="build" basedir=".">         	
+	<property name="builddir" value="classes"/>
+	<property  name="distdir" value="dist" />
+	<property name="tomcatdir" value="c:\\tomcat\" />
+
 	<target name="build">
 		<mkdir dir="classes"/>
-	        <javac srcdir="src" destdir="classes" encoding="utf-8">
+	        <javac srcdir="src" destdir="${builddir}" encoding="utf-8">
 	                <classpath>
 	                         <pathelement path="lib/log4j.jar"/>
 				 <pathelement path="lib/commons-logging.jar"/>
 
-				<pathelement path="C:\\tomcat\lib\servlet-api.jar" />
+				<pathelement path="${tomcatdir}\lib\servlet-api.jar" />
 			</classpath>
 		</javac>
+
+		<copy todir="WebContent\\WEB-INF\\classes">
+		       <fileset dir="${builddir}">
+			         
+				<exclude name="**\\superlines\\client" />
+				<exclude name="**\\superlines\\client\\**\\*" />
+				
+					
+				 
+			</fileset>
+		</copy>
+
+		<war destfile="${distdir}\\superlines.war" webxml="WebContent\\WEB-INF\\web.xml" basedir="WebContent" />
+
+		
+		<zip destfile="${distdir}\\superlines.zip">
+		      	<fileset dir=".">
+				<exclude name="${builddir}\\superlines\\server\\*" />
+				<exclude name="${builddir}\\superlines\\server\\**\\*" />
+				<include name="${builddir}\\**\\*" />
+
+				<include name="bin\\**\\*" />
+				<include name="config\\**\\*" />
+				<include name="data\\**\\*" />
+				<include name="lib\\**\\*" />
+		      	</fileset>
+			
+		      	
+			
+			
+		</zip>
 		
 	</target>
 	        
