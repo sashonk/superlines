@@ -30,7 +30,9 @@ public class Configuration {
 	
 	private Configuration() throws Exception{
 		m_props = new Properties();
-		FileInputStream ifstr = new FileInputStream(new File(System.getProperty("config.file.path")));
+		
+		String configFilePath = System.getProperty("config.file.path");
+		FileInputStream ifstr = new FileInputStream(new File(configFilePath));
 		
 		m_props.load(ifstr);
 		

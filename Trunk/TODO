@@ -2,3 +2,6 @@
 2. update functionality
 3. build.xml: copy classes to webapp, script output = webapp.war, client.zip
 4. new years decorations on site
+
+5. fix dist client : creates server dirs
+6 fix logging in ws : nothing in logs

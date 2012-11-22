@@ -10,8 +10,8 @@
 
 <%  
 
- String confirmed = request.getParameter("confirmed");
- String created = request.getParameter("created");
+ String confirmed = request.getParameter("confirm");
+ String created = request.getParameter("create");
  
  if(created!=null){
 	 %> 
@@ -22,12 +22,21 @@
 	 <% 
  }
  else if(confirmed!=null){
-	 %> 
 	 
-	 <div style="padding: 20px;">  Ваш аккаунт подтвержден!</div>
+	 String token = request.getParameter("token");
+	 int st =  AccountDAO.get().confirmAccount(token);
 	 
-	 
+	 if(st == 0) {
+	 %> 	 
+	 <div style="padding: 20px;">  Аккаунт подтвержден!</div>	 	 
 	 <%
+	 }
+	 else{
+		 %> 
+		 	<div style="padding: 20px; color: red'">  Аккаунт не подтвержден!</div>	 	 
+		 
+		 <%
+	 }
 
 
  }
@@ -122,7 +131,7 @@ String email = request.getParameter("email");
 		else{
 			AccountDAO.get().createAccount(login, password, name, surname, email);
 			
-			response.sendRedirect("?page=registration&confirmed");
+			response.sendRedirect("?page=registration&create");
 		}
 		
 	}

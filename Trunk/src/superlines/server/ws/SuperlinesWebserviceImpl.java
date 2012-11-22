@@ -1,38 +1,32 @@
 package superlines.server.ws;
 
 import superlines.Util;
-import superlines.server.Messages;
+
 import superlines.server.PromotionHelper;
 import superlines.server.RateDAO;
 import superlines.server.RulesHelper;
+import superlines.server.mail.MailHelper;
 import superlines.ws.ProfileResponse;
 
-import java.io.File;
-import java.io.PrintWriter;
-import java.io.StringWriter;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
-
-import javax.annotation.Resource;
-import javax.annotation.Resource.AuthenticationType;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
-import javax.servlet.ServletContext;
+
 import javax.sql.DataSource;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.ws.WebServiceContext;
-import javax.xml.ws.handler.MessageContext;
+
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -49,11 +43,12 @@ import superlines.ws.BaseResponse;
 import superlines.ws.Message;
 import superlines.ws.PromotionResponse;
 import superlines.ws.Response;
-import superlines.ws.RateData;
+
 import superlines.ws.RateParameters;
 import superlines.ws.RateResponse;
 import superlines.ws.SuperlinesContextResponse;
 import superlines.ws.SuperlinesWebservice;
+
 
 @WebService(endpointInterface="superlines.ws.SuperlinesWebservice")
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -65,9 +60,6 @@ public class SuperlinesWebserviceImpl implements SuperlinesWebservice{
  	private DataSource m_dataSource;
  	
 
-	@Resource
-	private WebServiceContext m_wsCtx;
-	
 	public SuperlinesWebserviceImpl(){
 		  try {
 				Context ctx = new InitialContext();
@@ -135,6 +127,10 @@ public class SuperlinesWebserviceImpl implements SuperlinesWebservice{
 			}
 				
 		}
+		
+		List<String> recipients = new LinkedList<>();
+		recipients.add("sashonk@yandex.ru");
+		MailHelper.mail("Потверждение", "You were successfully authenticated да", recipients);
 		
 		return r;
 	}
@@ -324,6 +320,8 @@ public class SuperlinesWebserviceImpl implements SuperlinesWebservice{
 	
 	private void auth(final Authentication auth) throws Exception{
 		
+		log.error("try auth!");
+		
 		Connection c = null;
 		PreparedStatement st = null;
 		ResultSet rs = null;
@@ -343,6 +341,8 @@ public class SuperlinesWebserviceImpl implements SuperlinesWebservice{
 			if(count != 1){
 				throw new Exception("authentication failed");
 			}
+			
+
 		}
 
 		finally{
