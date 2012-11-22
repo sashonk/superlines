@@ -58,7 +58,7 @@
 
 
 <div class="title"><b>нормативы</b></div>
-<table  border="1" align="center" width="100%" cellpadding="10">
+<table  border="1" align="center" width="100%" cellpadding="10" style="margin-bottom: 50px;">
 <tr>
 	<td>Ранг</td>
 <%	

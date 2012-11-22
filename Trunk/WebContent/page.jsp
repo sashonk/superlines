@@ -18,9 +18,7 @@
 		font-size: 14px;
 	}
 	
-	table{		
-		margin-bottom: 50px;
-	}
+
 	
 	div.title{
 		text-align: center;
@@ -33,7 +31,7 @@
 
 </head>
 <body>
-	<table width="75%" border="1" align="center">
+	<table width="75%" border="1" align="center" style="margin-bottom: 50px;">
 		<tr ><td align="center" style="font-size: 48px; font-weight: bold;">superlines 2.0</td></tr>
 		<tr><td class="content">
 		

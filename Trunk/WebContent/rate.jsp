@@ -12,7 +12,7 @@ import="superlines.ws.RateData"
 
 
 <div class="title"><b>рейтинги</b></div>
-<table border="1" cellpadding="5" width="40%" align="center">
+<table border="1" cellpadding="5" width="40%" align="center" style="margin-bottom: 50px;">
 	<tr>
 		<th></th>
 		<th>Имя</th>

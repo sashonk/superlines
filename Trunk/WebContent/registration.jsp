@@ -54,29 +54,39 @@ String email = request.getParameter("email");
 
 
 
-<div style="padding: 20px;">
 <form>
-	<div>имя</div>
-	<div><input type="text" name="name" value='<%= name == null ? "" : name %>'></div>
+<table cellpadding="5"  align="center" style="padding: 20px;">
+	<tr>
+			<td align="right">имя</td>
+			<td><input type="text" name="name" value='<%= name == null ? "" : name %>'></td>
+	</tr>
+	<tr>
+		<td align="right">фамилия</td>
+		<td><input type="text" name="surname" value='<%= surname == null ? "" : surname %>'></td>
+	</tr>	
+	<tr>
+		<td align="right">логин</td>
+		<td><input type="text" name="login" value='<%= login == null ? "" : login %>'></td>
+	</tr>
+	<tr>
+		<td align="right">пароль</td>
+		<td><input type="password" name="password"></td>
+	</tr>	
+	<tr>
+		<td align="right">почта</td>
+		<td><input type="text" name="email" value='<%= email == null ? "" : email %>'></td>
+	</tr>
+	<tr>
+	<td></td>	
+		<td><input type="submit" value="OK" style="width: 80px;"></td>
+	</tr>		
+</table>
 
-	<div>фамилия</div>
-	<div><input type="text" name="surname" value='<%= surname == null ? "" : surname %>'></div>
-
-	<div>логин</div>
-	<div><input type="text" name="login" value='<%= login == null ? "" : login %>'></div>
-
-	<div>пароль</div>
-	<div><input type="password" name="password"></div>
-	
-	<div>почта</div>
-	<div><input type="text" name="email" value='<%= email == null ? "" : email %>'></div>
-	
-	<div style="padding-top: 20px"><input type="submit" value="OK" style="width: 80px;"></div>
-	<input type="hidden"  name="register" value="true">
-	<input type="hidden"  name="page" value="registration">	
+<input type="hidden"  name="register" value="true">
+<input type="hidden"  name="page" value="registration">	
 </form>
 
-</div>
+
 
 <%
 	

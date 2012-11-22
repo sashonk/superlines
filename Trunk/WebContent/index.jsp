@@ -1,10 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
+<%@ page 
+	import="superlines.Configuration"
+%>
+
+
 <ul>
 				<li><div><b>описание</b></div>
 					<div style="padding: 10px;">
-					мы очень горды сообщить вам о том, что вышла новая версия игры Superlines! 					
+					мы очень рады сообщить вам о том, что вышла новая версия игры Superlines! 					
 					</div>
 				</li>
 					
@@ -31,7 +36,8 @@
 					
 					<div style="padding: 10px;"><a href="?page=rules">правила</a></div>				
 					<div style="padding: 10px;"><a href="?page=rate">рейтинги</a></div>
-					<div style="padding: 10px;"><a href="?page=registration">зарегаться</a></div>
+					<div style="padding: 10px;"><a href="?page=registration">создать аккаунт</a></div>
+					<div style="padding: 10px;"><a href='downloads/superlines2.zip'>загрузка</a></div>					
 	
 					
 					</li>
