@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Date;
 
 
 import javax.swing.UIManager;
@@ -27,6 +28,7 @@ import superlines.client.RatePanelModel;
 import superlines.client.ScoreSender;
 import superlines.client.SuperlinesController;
 import superlines.client.SuperlinesControllerImpl;
+import superlines.client.SuperlinesOfflineController;
 import superlines.client.ui.LoginDialog;
 import superlines.client.ui.MainFrame;
 import superlines.client.ui.PlayPanel;
@@ -34,6 +36,7 @@ import superlines.client.ui.RatePanel;
 import superlines.client.ws.ServiceAdapter;
 import superlines.core.Authentication;
 import superlines.core.Configuration;
+import superlines.core.Rank;
 import superlines.core.RulesHelper;
 import superlines.core.SuperlinesContext;
 import superlines.core.Profile;
@@ -130,7 +133,7 @@ public class Boot {
                 profileCtr.setModel(profile);
                 profile.registerListener(playPanel);
                 playPanel.setController(profileCtr);
-                playPanel.listenerInit();
+                playPanel.init(profile);
 
                 SuperlinesControllerImpl ctr = new SuperlinesControllerImpl();               
                 ctr.setAuth(auth);
@@ -155,26 +158,53 @@ public class Boot {
                 c.registerListener(sender);
                 sender.init(c);
                 
-                
-     
-                frame.setVisible(true);
-                frame.showPlayPanel();
-                
+
                 RatePanelModel scoreModel = new RatePanelModel();
                 scoreModel.registerListener(scorePanel);
                 RateControllerImpl scoreCtr = new RateControllerImpl();
                 scoreCtr.setAuth(auth);
                 scoreCtr.setModel(scoreModel);
                 scorePanel.setController(scoreCtr);
-                scoreCtr.update();
-                
+                scoreCtr.update();                                
                 d.dispose();
+                
+                frame.setVisible(true);
+                frame.showPlayPanel();
                 }
                 catch(Exception ex){
                     log.error(ex);
                     System.exit(1);
                 }
             }
+        });
+        
+        
+        loginFrame.getOfflineButton().addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				Profile profile = new Profile();
+				profile.setRate(0);
+				profile.setCreateDate(new Date());
+				profile.setRank(Rank.NEWBIE);
+				profile.setUsername("Anonimous");
+												
+				playPanel.init(profile);
+				
+				SuperlinesOfflineController ctr = new SuperlinesOfflineController();
+				ctr.start();
+				playPanel.setController(ctr);
+				
+				SuperlinesContext ctx = ctr.getContext();
+				ctx.registerListener(playPanel);
+				playPanel.init(ctx);
+				
+                loginFrame.dispose();
+                
+                frame.setVisible(true);
+                frame.showPlayPanel();			
+			}
+        	
         });
         
         loginFrame.setVisible(true);

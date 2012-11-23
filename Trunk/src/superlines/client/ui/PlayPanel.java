@@ -149,8 +149,7 @@ public class PlayPanel extends javax.swing.JPanel implements SuperlinesListener,
      }
      
      
-    public void listenerInit(){
-    	Profile p = m_profileCtr.getModel();
+    public void init(final Profile p){
     	playerNameField.setText(p.getUsername());
     	rankField.setText(p.getRank().toString());
     	rateField.setText(Integer.toString(p.getRate()));

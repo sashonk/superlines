@@ -8,5 +8,5 @@ public interface ProfileListener {
 	
 	public void rateChanged(final int newRate);
 	
-	public void listenerInit();
+	public void init(final Profile p);
 }

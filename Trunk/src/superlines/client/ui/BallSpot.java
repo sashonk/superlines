@@ -13,7 +13,8 @@ public class BallSpot extends JPanel{
 		super.paint(g);
 		if(m_clicked){
 			g.setColor(Color.black);
-			g.fillRect(this.getWidth()/10, this.getHeight()/10, this.getWidth()/5, this.getHeight()/5);
+			//g.fillRect(this.getWidth()/10, this.getHeight()/10, this.getWidth()/4, this.getHeight()/4);
+			g.fillArc(this.getWidth()/2 - this.getWidth()/8, this.getHeight()/2 - this.getHeight()/8, Math.min(this.getWidth()/3, this.getHeight()/3) , Math.min(this.getWidth()/3, this.getHeight()/3), 0, 360);
 		}
 	}
 
