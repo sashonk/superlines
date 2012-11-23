@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
-import superlines.Configuration;
+import superlines.core.Configuration;
 import superlines.server.mail.MailHelper;
 
 

@@ -1,4 +1,4 @@
-package superlines;
+package superlines.core;
 
 
 import java.io.PrintWriter;

@@ -14,11 +14,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 
-import superlines.Util;
 import superlines.client.Messages;
 import superlines.client.RateController;
 import superlines.client.RateControllerImpl;
 import superlines.client.RateListener;
+import superlines.core.Util;
 import superlines.ws.RateData;
 
 /**

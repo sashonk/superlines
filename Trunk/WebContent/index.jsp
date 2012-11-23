@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 
 <%@ page 
-	import="superlines.Configuration"
+	import="superlines.core.Configuration"
 %>
 
 

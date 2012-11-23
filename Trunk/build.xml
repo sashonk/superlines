@@ -3,7 +3,7 @@
 <project name="Superlines" default="build" basedir=".">         	
 	<property name="builddir" value="classes"/>
 	<property  name="distdir" value="dist" />
-	<property name="downloads" value="WebContent\\downloads" />
+	<!--<property name="downloads" value="WebContent\\downloads" />-->
 	<property name="tomcatdir" value="c:\\tomcat\" />
 
 	<target name="build">
@@ -31,8 +31,14 @@
 			</fileset>
 		</copy>
 
-		<war destfile="${distdir}\\superlines2.war" webxml="WebContent\\WEB-INF\\web.xml" basedir="WebContent" />
 
+
+		<!--<copy file="${distdir}\\superlines2.zip" todir="${downloads}" />-->
+				
+	</target>
+	
+	<target name="dist" depends="build">
+		<war destfile="${distdir}\\superlines2.war" webxml="WebContent\\WEB-INF\\web.xml" basedir="WebContent" />
 		
 		<zip destfile="${distdir}\\superlines2.zip">
 		      	<fileset dir=".">
@@ -47,10 +53,24 @@
 		      	</fileset>					      				
 			
 		</zip>
+		
+		<checksum file="${distdir}\\superlines2.zip" property="chsum"/>		
+		<echo>MD5: ${chsum}</echo>
+	</target>
+	
 
-		<copy file="${distdir}\\superlines2.zip" todir="${downloads}" />
+	        
+	<target name="clean">
+		<delete dir="classes"/>
+		
+		<delete>
+			<fileset dir="WebContent\\WEB-INF\\classes">
+				<include name="**\\*.class" />
+			</fileset>
+		</delete>
+		
 		
 	</target>
-	        
+
 
 </project>

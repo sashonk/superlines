@@ -1,6 +1,5 @@
 package superlines.server.ws;
 
-import superlines.Util;
 
 import superlines.server.PromotionHelper;
 import superlines.server.RateDAO;
@@ -43,6 +42,7 @@ import superlines.core.Localizer;
 import superlines.core.Rank;
 import superlines.core.SuperlinesContext;
 import superlines.core.SuperlinesRules;
+import superlines.core.Util;
 
 import superlines.core.Profile;
 
