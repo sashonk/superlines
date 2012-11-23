@@ -114,7 +114,7 @@ public class ServiceAdapter {
             return res.getContextBytes();          
         }
         
-        public List<RateData> getScore(final Authentication auth, final RateParameters params){
+        public List<RateData> getRateData(final Authentication auth, final RateParameters params){
         	RateResponse res = webservice.getRateData(auth, params);
             if(res.getMessage()!=null){
                 log.error(res.getMessage());                

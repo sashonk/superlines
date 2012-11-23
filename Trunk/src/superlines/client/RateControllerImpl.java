@@ -29,7 +29,7 @@ public class RateControllerImpl implements RateController{
 	
 	@Override
 	public void update() {
-		List<RateData> data = ServiceAdapter.get().getScore(m_auth, null);
+		List<RateData> data = ServiceAdapter.get().getRateData(m_auth, null);
 		if(data==null){
 			log.error("failed get score data");
 			return;
