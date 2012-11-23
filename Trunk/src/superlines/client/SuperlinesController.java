@@ -12,5 +12,5 @@ public interface SuperlinesController {
 	
     public SuperlinesContext getContext();
     
-    public void persist();
+
 }

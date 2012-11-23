@@ -9,6 +9,8 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -16,6 +18,7 @@ import javax.swing.JPanel;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import superlines.client.FrameListener;
 import superlines.client.SuperlinesController;
 import superlines.client.SuperlinesControllerImpl;
 
@@ -24,6 +27,12 @@ import superlines.client.SuperlinesControllerImpl;
  * @author Sashonk
  */
 public class MainFrame extends javax.swing.JFrame {
+	
+	public void registerListener(final FrameListener l){
+		m_listeners.add(l);
+	}
+	
+	private List<FrameListener> m_listeners = new LinkedList<>();
 	
 	private final static Log log = LogFactory.getLog(MainFrame.class);
 
@@ -69,6 +78,10 @@ public class MainFrame extends javax.swing.JFrame {
 					}
 					catch(Exception ex){
 						log.error("failed flushing settings", ex);
+					}
+					
+					for(FrameListener listener : m_listeners){
+						listener.frameClosing();
 					}
 					
 				log.debug("application terminate");

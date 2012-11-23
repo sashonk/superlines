@@ -6,14 +6,14 @@ import superlines.core.SuperlinesContext;
 
 public class SuperlinesContextResponse extends BaseResponse{
 
-	public void setContext(final SuperlinesContext value){
-		m_ctx = value;
+	public void setContextBytes(final byte[] value){
+		m_ctxBytes = value;
 	}
 	
-	public SuperlinesContext getContext(){
-		return m_ctx;
+	public byte[] getContextBytes(){
+		return m_ctxBytes;
 	}
 	
 	@XmlElement(name="context")
-	private SuperlinesContext m_ctx;
+	private byte[] m_ctxBytes;
 }

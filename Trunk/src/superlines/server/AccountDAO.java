@@ -92,6 +92,11 @@ public class AccountDAO extends DAO{
 				st.setString(2, accountid);
 				st.executeUpdate();
 				st.close();
+				
+				st = conn.prepareStatement("delete from applications where token = ?");
+				st.setString(1, token);			
+				st.executeUpdate();
+				st.close();
 
 				exitStatus = 0;
 			}

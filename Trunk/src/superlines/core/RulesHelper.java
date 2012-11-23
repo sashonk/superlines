@@ -2,6 +2,7 @@ package superlines.core;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -10,6 +11,8 @@ import superlines.deicstra.DeicstraArea;
 import superlines.deicstra.NoWayException;
 
 public class RulesHelper {
+	
+		private static long counter = 0;
 	
 		public static boolean checkWay(final SuperlinesContext ctx, final SuperlinesBall begin, final SuperlinesBall end, final List<SuperlinesBall> way){
 			if(ctx.getRules().isAllowLeap()){
@@ -55,7 +58,9 @@ public class RulesHelper {
                 if(ctx.getNextColors().size()==0){
                     populateNextolors(ctx);
                 }
+   
                 
+     
                 Random rnd = new Random(System.currentTimeMillis());
                 for(int i = 0;i<r.getScatterBallsCount(); i++){
                     if(balls.size()==0){
@@ -70,7 +75,6 @@ public class RulesHelper {
                 }
                 
                 populateNextolors(ctx);
-
                 return newBalls;
         }
         
@@ -80,7 +84,8 @@ public class RulesHelper {
             SuperlinesRules r = ctx.getRules();
             int count =r.getScatterBallsCount();
             
-            Random rnd = new Random(System.currentTimeMillis());
+   
+            Random rnd = new Random(System.currentTimeMillis()+(++counter));
             for(int i = 0; i<count ; i++){
                 int number = rnd.nextInt(r.getColorCount())+1; //ZERO-exclusive
                 nextColors.add(Integer.valueOf(number));                        

@@ -16,7 +16,7 @@
  if(created!=null){
 	 %> 
 	 
-	<div style="padding: 20px;"> На указанный вами почтовый адрес отправлен email с ссылкой для активации аккаунта.</div>
+	<div style="text-align:center; padding: 20px;"> На указанный вами почтовый адрес отправлен email с ссылкой для активации аккаунта.</div>
 	 
 	 
 	 <% 
@@ -28,12 +28,12 @@
 	 
 	 if(st == 0) {
 	 %> 	 
-	 <div style="padding: 20px;">  Аккаунт подтвержден!</div>	 	 
+	 <div style="text-align:center; padding: 20px;">  Аккаунт подтвержден!</div>	 	 
 	 <%
 	 }
 	 else{
 		 %> 
-		 	<div style="padding: 20px; color: red'">  Аккаунт не подтвержден!</div>	 	 
+		 	<div style="text-align:center; padding: 20px; color: red">  Аккаунт не подтвержден!</div>	 	 
 		 
 		 <%
 	 }

@@ -1,6 +1,10 @@
 package superlines.client;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -26,9 +30,7 @@ public class SuperlinesControllerImpl implements SuperlinesController {
 	
 	private  SuperlinesContext m_ctx;
 
-	public SuperlinesControllerImpl() throws Exception{
-		//restart();
-	}
+
 	
         public SuperlinesContext getContext(){
             return m_ctx;
@@ -47,7 +49,7 @@ public class SuperlinesControllerImpl implements SuperlinesController {
 			
 
         	if(!m_ctx.getRules().isAllowLeap()){
-            	List<SuperlinesBall> way = new LinkedList<SuperlinesBall>();
+            	List<SuperlinesBall> way = new LinkedList<>();
             	boolean checked = RulesHelper.checkWay(m_ctx, clickedBall, targetBall, way);
             	
             	if(!checked){
@@ -59,7 +61,7 @@ public class SuperlinesControllerImpl implements SuperlinesController {
 			clickedBall.setColor(0);
 			m_ctx.getTable().setClickedBall(null);
 			
-                        List<SuperlinesBall> winBalls = new LinkedList<SuperlinesBall>();
+                        List<SuperlinesBall> winBalls = new LinkedList<>();
                         int win = RulesHelper.countWin(m_ctx, targetBall, winBalls);
 
                         int score = m_ctx.getScore();
@@ -85,7 +87,7 @@ public class SuperlinesControllerImpl implements SuperlinesController {
 	@Override
 	public void scatter() {
             List<SuperlinesBall> newBalls = RulesHelper.scatter(m_ctx);		
-            List<SuperlinesBall> winBalls = new LinkedList<SuperlinesBall>();
+            List<SuperlinesBall> winBalls = new LinkedList<>();
             
             for(SuperlinesBall b : newBalls){
             	if(b.getColor()==0){
@@ -111,31 +113,49 @@ public class SuperlinesControllerImpl implements SuperlinesController {
 	
 
 	public void start(){
-        SuperlinesContext slctx = ServiceAdapter.get().createSuperlinesContext(m_auth);
-        if(slctx==null){
-        	log.error("failed to create superlines context!");
+		
+		try{
+        byte[] slctxBytes = ServiceAdapter.get().getSuperlinesContext(m_auth, false);
+        if(slctxBytes==null){
+        	log.error("failed to get superlines context!");
+        	return;
         }	
         
-        m_ctx = slctx;
+        ByteArrayInputStream bais = new ByteArrayInputStream(slctxBytes);
+        ObjectInputStream ois = new ObjectInputStream(bais);       
+        m_ctx =  (SuperlinesContext) ois.readObject();
         
         if(m_ctx.getTable()==null){
         	SuperlinesTable t = new SuperlinesTable();
         	t.setWidth(m_ctx.getRules().getTableWidth());
-        	m_ctx.setTable(t);
         	t.setContext(m_ctx);
+        	m_ctx.setTable(t);
+        	
+        	scatter();
+           // RulesHelper.populateNextolors(m_ctx);   
         }
+        
+		}
+		catch(Exception ex){
+			log.error(ex);
+		}
 
 	}
 
 	@Override
 	public void restart(){
 		
+		try{
 		int result = m_ctx.getTable().isFilled() ? JOptionPane.YES_OPTION : JOptionPane.showConfirmDialog(MainFrame.get(), Messages.SURE, "", JOptionPane.YES_NO_OPTION);
 		if(result == JOptionPane.YES_OPTION){
-	        SuperlinesContext slctx = ServiceAdapter.get().createSuperlinesContext(m_auth);
-	        if(slctx==null){
+	        byte[] slctxBytes = ServiceAdapter.get().getSuperlinesContext(m_auth, true);
+	        if(slctxBytes==null){
 	        	log.error("failed to create superlines context!");
 	        }
+	        
+	        ByteArrayInputStream bais = new ByteArrayInputStream(slctxBytes);
+	        ObjectInputStream ois = new ObjectInputStream(bais);       
+	        SuperlinesContext slctx =  (SuperlinesContext) ois.readObject();
 	        
 	        for(SuperlinesListener l : m_ctx.getListeners()){
 	        	slctx.registerListener(l);
@@ -146,21 +166,23 @@ public class SuperlinesControllerImpl implements SuperlinesController {
 	        if(m_ctx.getTable()==null){
 	        	SuperlinesTable t = new SuperlinesTable();
 	        	t.setWidth(m_ctx.getRules().getTableWidth());
-	        	m_ctx.setTable(t);
 	        	t.setContext(m_ctx);
+	        	m_ctx.setTable(t);
+
 	        }
 
 	        RulesHelper.populateNextolors(m_ctx);
 	        m_ctx.touch();
 	        
 	        scatter();
-	        RulesHelper.populateNextolors(m_ctx);		
+	      //  RulesHelper.populateNextolors(m_ctx);		
 		}
-		else{
-			
-		}
-       
 
+       
+		}
+		catch(Exception ex){
+			log.error(ex);
+		}
 
 	}
 	
@@ -168,11 +190,7 @@ public class SuperlinesControllerImpl implements SuperlinesController {
 		m_auth = auth;
 	}
 	
-	@Override
-	public void persist(){
-		File folder = Configuration.get().getDataFolder();
-		//File outFile = new File(folder, String.format("%s-%s", m_auth.getLogin(),f));
-	}
+
 	
 	private Authentication m_auth;
 	private static final Log log = LogFactory.getLog(SuperlinesControllerImpl.class);

@@ -105,13 +105,13 @@ public class ServiceAdapter {
             return res.getProfile();
         }
         
-        public SuperlinesContext createSuperlinesContext(final Authentication auth){
-        	SuperlinesContextResponse res = webservice.createSuperlinesContext(auth);
+        public byte[] getSuperlinesContext(final Authentication auth, final boolean createOnly){
+        	SuperlinesContextResponse res = webservice.getSuperlinesContext(auth, createOnly);
             if(res.getMessage()!=null){
                 log.error(res.getMessage());                
             }
             
-            return res.getContext();          
+            return res.getContextBytes();          
         }
         
         public List<RateData> getScore(final Authentication auth, final RateParameters params){
@@ -129,6 +129,14 @@ public class ServiceAdapter {
         		log.error(response.getMessage());
         	}
         	return response.getPromotionMessage();
+        }
+        
+        public void persist(final Authentication auth, final byte[] ctxBytes){
+        	BaseResponse response = webservice.persist(auth, ctxBytes);
+        	if(response.getMessage()!=null){
+        		log.error(response.getMessage());
+        	}
+        
         }
 	
 	public static void main(String[] argc) throws Exception{

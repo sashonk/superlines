@@ -9,9 +9,16 @@ import superlines.server.mail.MailHelper;
 import superlines.ws.ProfileResponse;
 
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -163,22 +170,33 @@ public class SuperlinesWebserviceImpl implements SuperlinesWebservice{
 
 
     @Override
-    public SuperlinesContextResponse createSuperlinesContext(Authentication auth) {
+    public SuperlinesContextResponse getSuperlinesContext(Authentication auth, final boolean createOnly) {
     	SuperlinesContextResponse response = new SuperlinesContextResponse();
        try{
     	   ProfileResponse p = getProfile(auth);
     	   Profile profile = p.getProfile();
     	   
-    	   SuperlinesRules rules =  RulesHelper.createRules(profile.getRank());
     	   
-           SuperlinesContext ctx = new SuperlinesContext();
-           ctx.setRules(rules);
-           ctx.setScore(0);
+    	   if(!createOnly){
+    		   SuperlinesContextResponse loadResponse =  loadSuperlinesContext(auth);
+    		   byte[] loadedCtxBytes  = loadResponse.getContextBytes();
+    		   if(loadedCtxBytes!= null){
+    			   response.setContextBytes(loadedCtxBytes);
+    		   }
+    	   }
+    	   
+    	   if(response.getContextBytes()==null){
+	    	   SuperlinesRules rules =  RulesHelper.createRules(profile.getRank());    	   
+	           SuperlinesContext ctx = new SuperlinesContext();
+	           ctx.setRules(rules);
+	           ctx.setScore(0);	    
+	           
+	           ByteArrayOutputStream baos = new ByteArrayOutputStream();
+	           ObjectOutputStream oos = new ObjectOutputStream(baos);
+	           oos.writeObject(ctx);
+	           response.setContextBytes(baos.toByteArray());    
+    	   }
            
-           
-           
-           response.setContext(ctx);           
-
        }
        catch(Exception ex){
            Message m = new Message();
@@ -318,6 +336,65 @@ public class SuperlinesWebserviceImpl implements SuperlinesWebservice{
 		return response;
 	}
 	
+	
+	@Override
+	@WebMethod
+	public BaseResponse persist(final Authentication auth , final byte[] ctxBytes){
+		BaseResponse response = new BaseResponse();
+		Connection conn = null;
+		PreparedStatement st = null;
+		
+		try{
+			auth(auth);
+		
+			conn = m_dataSource.getConnection();
+			conn.setAutoCommit(false);
+
+				st = conn.prepareStatement("delete from persistance where accountid = ? ");
+				st.setString(1, auth.getLogin());
+				st.executeUpdate();
+				st.close();
+								
+
+				ByteArrayInputStream bais = new ByteArrayInputStream(ctxBytes);										
+				st = conn.prepareStatement("insert into persistance (accountid, superlinescontext) values (?, ?)");
+				st.setString(1, auth.getLogin());
+				st.setBlob(2, bais);
+				st.executeUpdate();
+				
+				st.close();
+			
+					
+			
+			conn.commit();
+		}
+		catch(Exception ex){
+			try {
+				conn.rollback();
+			} catch (SQLException e) {
+				log.error(conn);
+			}
+			Message m = new Message();
+			m.setText("error persisting superlines context");
+			m.setDetails(Util.toString(ex));
+			response.setMessage(m);
+		}
+		finally{
+			try{
+				if(st!=null){
+					st.close();
+				}
+				if(conn!=null){
+					conn.close();
+				}
+			}catch(Exception ex){
+				log.error(ex);
+			}
+		}
+
+		return response;
+	}
+	
 	private void auth(final Authentication auth) throws Exception{
 		
 		log.error("try auth!");
@@ -358,6 +435,67 @@ public class SuperlinesWebserviceImpl implements SuperlinesWebservice{
 				
 				}
 		}		
+	}
+
+	@Override
+	@WebMethod
+	public SuperlinesContextResponse loadSuperlinesContext(
+			@WebParam(name = "auth") Authentication auth) {
+		SuperlinesContextResponse response = new SuperlinesContextResponse();
+		Connection conn = null;
+		PreparedStatement st = null;
+		
+		try{
+			
+			conn = m_dataSource.getConnection();
+			
+			
+			st = conn.prepareStatement("select superlinescontext ctx from persistance where accountid = ?");
+			st.setString(1, auth.getLogin());
+			
+			ResultSet rs = st.executeQuery();
+			if(rs.next()){
+				InputStream is = rs.getBinaryStream("ctx");				
+				ObjectInputStream ois = new ObjectInputStream(is);
+				SuperlinesContext ctx =  (SuperlinesContext) ois.readObject();
+				ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				ObjectOutputStream oos = new ObjectOutputStream(baos);
+				oos.writeObject(ctx);
+				
+				
+				response.setContextBytes(baos.toByteArray());
+			}
+
+						
+		}
+		catch(Exception ex){
+			try {
+				conn.rollback();
+			} catch (SQLException e) {
+				log.error(conn);
+			}
+			Message m = new Message();
+			m.setText("error loading superlines context");
+			m.setDetails(Util.toString(ex));
+			response.setMessage(m);
+		}
+		finally{
+
+			try{
+				if(st!=null){
+					st.close();
+				}
+				if(conn!=null){
+					conn.close();
+				}
+			}catch(Exception ex){
+				log.error(ex);
+			
+			}
+	
+		}
+			
+		return response;
 	}
 
 

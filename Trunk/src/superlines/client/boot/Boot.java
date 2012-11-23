@@ -18,6 +18,7 @@ import org.apache.log4j.PropertyConfigurator;
 
 
 import superlines.client.Messages;
+import superlines.client.Persister;
 import superlines.client.ProfileController;
 import superlines.client.ProfileControllerImpl;
 import superlines.client.RateController;
@@ -131,10 +132,10 @@ public class Boot {
                 playPanel.setController(profileCtr);
                 playPanel.listenerInit();
 
-                SuperlinesControllerImpl ctr = new SuperlinesControllerImpl();
+                SuperlinesControllerImpl ctr = new SuperlinesControllerImpl();               
                 ctr.setAuth(auth);
                 ctr.start();
-                ctr.scatter();
+
                                             
                 SuperlinesContext c = ctr.getContext();
                 c.registerListener(playPanel);
@@ -142,7 +143,12 @@ public class Boot {
                 playPanel.setController(ctr);               
                 playPanel.init(c);
                 
-
+                Persister persister = new Persister();
+                c.registerListener(persister);
+                persister.setAuth(auth);
+                persister.init(c);                
+                frame.registerListener(persister);
+    
                 
                 ScoreSender sender = new ScoreSender();
                 sender.setAuth(auth);
@@ -150,7 +156,7 @@ public class Boot {
                 sender.init(c);
                 
                 
-                RulesHelper.populateNextolors(ctr.getContext());    
+     
                 frame.setVisible(true);
                 frame.showPlayPanel();
                 

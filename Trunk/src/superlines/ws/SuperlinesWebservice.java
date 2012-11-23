@@ -18,7 +18,7 @@ public interface SuperlinesWebservice {
 	public ProfileResponse getProfile(@WebParam(name="auth") final Authentication auth);
 	
 	@WebMethod
-        public SuperlinesContextResponse createSuperlinesContext(@WebParam(name="auth") final Authentication auth);
+        public SuperlinesContextResponse getSuperlinesContext(@WebParam(name="auth") final Authentication auth, @WebParam(name="createOnly") final boolean createOnly);
         
         @WebMethod
         public Response<SuperlinesRules> getRules(@WebParam(name="auth") final Authentication auth);
@@ -33,4 +33,9 @@ public interface SuperlinesWebservice {
         public PromotionResponse getPromotionMessage(@WebParam(name="auth") final Authentication auth, @WebParam(name="rank") final  Rank rank, @WebParam(name="locale") final String locale);
         
 
+        @WebMethod
+        public BaseResponse persist(@WebParam(name="auth") final Authentication auth ,@WebParam(name="context") final byte[] ctxBytes);
+        
+    	@WebMethod
+        public SuperlinesContextResponse loadSuperlinesContext(@WebParam(name="auth") final Authentication auth);
 }

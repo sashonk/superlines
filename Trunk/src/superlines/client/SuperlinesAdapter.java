@@ -30,7 +30,7 @@ public class SuperlinesAdapter implements SuperlinesListener{
 	public void tableFilled(final int score) {}
 
 	@Override
-	public void nextColorsChanged(List<Integer> data) {}
+	public void nextColorsChanged(final List<Integer> data) {}
 
 	@Override
 	public void init(final SuperlinesContext ctx) {}

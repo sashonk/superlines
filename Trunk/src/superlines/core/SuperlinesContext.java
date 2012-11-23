@@ -19,18 +19,24 @@ import javax.xml.bind.annotation.XmlTransient;
 public class SuperlinesContext implements Serializable{
 	
 	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -5626972482701147748L;
 
 	public void registerListener(final SuperlinesListener l){
-		m_listeners.add(l);
+		getListeners().add(l);
 	}
 	
-	public List<SuperlinesListener> getListeners(){
+	public List<SuperlinesListener> getListeners(){		
+		if(m_listeners==null){
+			m_listeners = new LinkedList<>();
+		}
 		return m_listeners;
 	}
+	
+
 		
 	public void setRules(SuperlinesRules value){
 		m_rules = value;
@@ -51,7 +57,7 @@ public class SuperlinesContext implements Serializable{
 	public void setScore(int value){
 		int oldval = m_score;
 		m_score = value;		
-		for(SuperlinesListener l : m_listeners){
+		for(SuperlinesListener l : getListeners()){
 			l.scoreChanged(m_score, oldval);
 		}
 
@@ -59,14 +65,14 @@ public class SuperlinesContext implements Serializable{
 			if(m_score > m_rules.getProgressive2Threshold() && !m_progressive2Notified){
 				m_progressive1Notified = true;
 				m_progressive2Notified = true;
-				for(SuperlinesListener l : m_listeners){
+				for(SuperlinesListener l : getListeners()){
 					l.progressiveOpened(2);
 				}
 				
 			}
 			else if(m_score > m_rules.getProgressive1Threshold() && !m_progressive1Notified){
 				m_progressive1Notified = true;
-				for(SuperlinesListener l : m_listeners){
+				for(SuperlinesListener l : getListeners()){
 					l.progressiveOpened(1);
 				}				
 			}
@@ -83,13 +89,13 @@ public class SuperlinesContext implements Serializable{
     
     public void setNextColors(final List<Integer> nextColors){
     	m_nextColors = nextColors;
-    	for(SuperlinesListener l : m_listeners){
+    	for(SuperlinesListener l : getListeners()){
     		l.nextColorsChanged(m_nextColors);
     	}
     }
     
     public void touch(){
-    	for(SuperlinesListener l : m_listeners){
+    	for(SuperlinesListener l : getListeners()){
     		l.init(this);
     	}
     }
@@ -103,8 +109,8 @@ public class SuperlinesContext implements Serializable{
 	@XmlElement(name="score")
 	private int m_score;
 	
-	@XmlTransient
-	private List<SuperlinesListener> m_listeners = new LinkedList<SuperlinesListener>();
+
+	private transient List<SuperlinesListener> m_listeners;
 
         @XmlElementWrapper(name="nextColors",nillable=true)
         @XmlElement(name="color", nillable=true)
