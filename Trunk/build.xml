@@ -31,7 +31,7 @@
 			</fileset>
 		</copy>
 
-		<war destfile="${distdir}\\superlines.war" webxml="WebContent\\WEB-INF\\web.xml" basedir="WebContent" />
+		<war destfile="${distdir}\\superlines2.war" webxml="WebContent\\WEB-INF\\web.xml" basedir="WebContent" />
 
 		
 		<zip destfile="${distdir}\\superlines2.zip">
