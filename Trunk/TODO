@@ -1,7 +1,6 @@
-1. registration page
-2. update functionality
-3. build.xml: copy classes to webapp, script output = webapp.war, client.zip
-4. new years decorations on site
+1. offline mode
+2. update functionality (basic)
+3. new years decorations on site
 
-5. fix dist client : creates server dirs
-6 fix logging in ws : nothing in logs
+
+4. fix dist client : creates server dirs
