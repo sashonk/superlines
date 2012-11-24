@@ -27,8 +27,8 @@ public class SuperlinesContextListener implements ServletContextListener{
 		
 		  ServletContext servletCtx = event.getServletContext();
 		  String webContentFolder = servletCtx.getRealPath("/");
-		  System.setProperty("config.file.path", String.format("%s%s", webContentFolder, "WEB-INF\\config\\config.properties"));
-		  System.setProperty("data.folder", String.format("%s\\%s", webContentFolder, "WEB-INF\\data"));		  
+		  System.setProperty("config.file.path", String.format("%s%s", webContentFolder, "WEB-INF/config/config.properties"));
+		  System.setProperty("data.folder", String.format("%s/%s", webContentFolder, "WEB-INF/data"));		  
 		  PromotionHelper.fillData();
 		  MailHelper.initialize();
 
