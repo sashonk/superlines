@@ -45,6 +45,7 @@ CREATE TABLE IF NOT EXISTS applications(
 CREATE TABLE IF NOT EXISTS persistance(
   	accountid VARCHAR(30),
 	superlinescontext BLOB,
+	rankid INT,
 	FOREIGN KEY(accountid) REFERENCES users(user_name) ON DELETE CASCADE
 );
 

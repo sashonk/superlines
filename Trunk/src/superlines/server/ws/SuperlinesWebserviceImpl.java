@@ -346,20 +346,25 @@ public class SuperlinesWebserviceImpl implements SuperlinesWebservice{
 		
 		try{
 			auth(auth);
-		
+			
 			conn = m_dataSource.getConnection();
 			conn.setAutoCommit(false);
 
-				st = conn.prepareStatement("delete from persistance where accountid = ? ");
+			Profile p = getProfile(auth).getProfile();		
+			ByteArrayInputStream bais = new ByteArrayInputStream(ctxBytes);				
+
+			
+				st = conn.prepareStatement("delete from persistance where accountid = ? and rankid = ?");
 				st.setString(1, auth.getLogin());
+				st.setInt(2, p.getRank().getRank());
 				st.executeUpdate();
 				st.close();
 								
-
-				ByteArrayInputStream bais = new ByteArrayInputStream(ctxBytes);										
-				st = conn.prepareStatement("insert into persistance (accountid, superlinescontext) values (?, ?)");
+		
+				st = conn.prepareStatement("insert into persistance (accountid, superlinescontext, rankid) values (?, ?, ?)");
 				st.setString(1, auth.getLogin());
 				st.setBlob(2, bais);
+				st.setInt(3, p.getRank().getRank());
 				st.executeUpdate();
 				
 				st.close();
@@ -446,16 +451,18 @@ public class SuperlinesWebserviceImpl implements SuperlinesWebservice{
 		PreparedStatement st = null;
 		
 		try{
-			
+			auth(auth);
 			conn = m_dataSource.getConnection();
+			Profile p = getProfile(auth).getProfile();
 			
-			
-			st = conn.prepareStatement("select superlinescontext ctx from persistance where accountid = ?");
+			st = conn.prepareStatement("select accountid, rankid, superlinescontext ctx from persistance where accountid = ? and rankid = ?");
 			st.setString(1, auth.getLogin());
+			st.setInt(2, p.getRank().getRank());
 			
 			ResultSet rs = st.executeQuery();
 			if(rs.next()){
-				InputStream is = rs.getBinaryStream("ctx");				
+
+				InputStream is = rs.getBinaryStream("ctx");		
 				ObjectInputStream ois = new ObjectInputStream(is);
 				SuperlinesContext ctx =  (SuperlinesContext) ois.readObject();
 				ByteArrayOutputStream baos = new ByteArrayOutputStream();
