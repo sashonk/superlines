@@ -31,10 +31,16 @@
 	 <div style="text-align:center; padding: 20px;">  Аккаунт подтвержден!</div>	 	 
 	 <%
 	 }
-	 else{
+	 else if (st == 1){
 		 %> 
-		 	<div style="text-align:center; padding: 20px; color: red">  Аккаунт не подтвержден!</div>	 	 
+		 	 
+		 	<div style="text-align:center; padding: 20px; color: red"> Заявка не найдена</div>			 
+		 <%
+	 }
+	 else{
+		 %>
 		 
+		 	<div style="text-align:center; padding: 20px; color: red">  Аккаунт не подтвержден!</div>			 
 		 <%
 	 }
 
