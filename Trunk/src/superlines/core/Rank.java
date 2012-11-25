@@ -51,7 +51,7 @@ public enum Rank {
 	},*/
 	GODLIKE{
 		public int getRank(){
-			return 7;
+			return 6;
 		}
 		
 	};
