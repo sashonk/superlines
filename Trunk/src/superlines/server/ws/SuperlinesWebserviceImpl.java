@@ -13,12 +13,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -135,9 +133,7 @@ public class SuperlinesWebserviceImpl implements SuperlinesWebservice{
 				
 		}
 		
-		List<String> recipients = new LinkedList<>();
-		recipients.add("sashonk@yandex.ru");
-		MailHelper.mail("Потверждение", "You were successfully authenticated да", recipients);
+
 		
 		return r;
 	}
