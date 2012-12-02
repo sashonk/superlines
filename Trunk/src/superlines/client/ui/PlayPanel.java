@@ -169,7 +169,7 @@ public class PlayPanel extends javax.swing.JPanel implements SuperlinesListener,
         	tipPanel.setVisible(false);
         }
         
-        scatterButton.setEnabled(true);
+        scatterButton.setEnabled(ctx.getTable().isFilled()? false : true);
         restartBtn.setEnabled(true);
     }
     
