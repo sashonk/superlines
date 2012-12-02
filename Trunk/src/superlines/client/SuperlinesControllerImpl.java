@@ -25,6 +25,7 @@ import superlines.core.SuperlinesBall;
 import superlines.core.SuperlinesContext;
 import superlines.core.SuperlinesListener;
 import superlines.core.SuperlinesTable;
+import superlines.ws.BaseResponse;
 
 public class SuperlinesControllerImpl implements SuperlinesController {
 	
@@ -108,6 +109,10 @@ public class SuperlinesControllerImpl implements SuperlinesController {
             
             
             m_ctx.getTable().checkFilled();      
+            if(m_ctx.getTable().isFilled()){
+            	submitScore();
+            }
+
 	}
 
 	
@@ -141,6 +146,22 @@ public class SuperlinesControllerImpl implements SuperlinesController {
 		}
 
 	}
+	
+	private void submitScore(){
+
+		if(m_ctx.getRules().getMinScore()> m_ctx.getScore()){
+			JOptionPane.showMessageDialog(MainFrame.get(), String.format("%s %d", Messages.NOT_ENOUGH_SCORE, m_ctx.getRules().getMinScore()));
+			
+		}
+		else{
+			ServiceAdapter sa = ServiceAdapter.get();		
+			BaseResponse response = sa.getService().acceptResult(m_auth, m_ctx.getScore());
+			if(response.getMessage()!=null){
+				JOptionPane.showMessageDialog(MainFrame.get(), response.getMessage().getText());
+			}
+		}
+	
+	}
 
 	@Override
 	public void restart(){
@@ -148,6 +169,16 @@ public class SuperlinesControllerImpl implements SuperlinesController {
 		try{
 		int result = m_ctx.getTable().isFilled() ? JOptionPane.YES_OPTION : JOptionPane.showConfirmDialog(MainFrame.get(), Messages.SURE, "", JOptionPane.YES_NO_OPTION);
 		if(result == JOptionPane.YES_OPTION){
+			
+			int r2 = (m_ctx.getTable().isFilled() || m_ctx.getScore()==0 )? JOptionPane.NO_OPTION : JOptionPane.showConfirmDialog(MainFrame.get(), Messages.SUBMIT_RESULT, "", JOptionPane.YES_NO_OPTION);
+			if(r2 == JOptionPane.YES_OPTION){
+				
+				submitScore();
+				
+			}
+			
+			
+			
 	        byte[] slctxBytes = ServiceAdapter.get().getSuperlinesContext(m_auth, true);
 	        if(slctxBytes==null){
 	        	log.error("failed to create superlines context!");
