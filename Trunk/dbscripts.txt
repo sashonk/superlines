@@ -1,8 +1,11 @@
 	
 CREATE TABLE IF NOT EXISTS users  (
-	user_name VARCHAR(30) NOT NULL PRIMARY KEY,
+	user_name VARCHAR(30)  PRIMARY KEY,
 	user_password VARCHAR(30) NOT NULL
 );
+
+#CREATE INDEX users_user_name_Index ON users(user_name);
+
 
 CREATE TABLE IF NOT EXISTS roles(
 	role_name VARCHAR(15) NOT NULL PRIMARY KEY
@@ -23,8 +26,8 @@ CREATE TABLE IF NOT EXISTS profiles (
 	crts TIMESTAMP, 
 	accountid VARCHAR(30), 
 	rankid INT, 
-	email VARCHAR(100),
-	FOREIGN KEY(accountid) REFERENCES USERS(user_name) ON DELETE SET NULL
+	email VARCHAR(100)
+	#FOREIGN KEY(accountid) REFERENCES USERS(user_name) ON DELETE SET NULL
 );
 
 CREATE TABLE IF NOT EXISTS scoredata(
@@ -36,17 +39,17 @@ CREATE TABLE IF NOT EXISTS scoredata(
 );
 
 CREATE TABLE IF NOT EXISTS applications(
-	accountid VARCHAR(30),
+	accountid VARCHAR(30) NOT NULL,
 	token VARCHAR(100) NOT NULL,
-	crts TIMESTAMP,
-	FOREIGN KEY(accountid) REFERENCES users(user_name) ON DELETE CASCADE	
+	crts TIMESTAMP
+	#FOREIGN KEY(accountid) REFERENCES users(user_name) ON DELETE CASCADE	
 );
 
 CREATE TABLE IF NOT EXISTS persistance(
-  	accountid VARCHAR(30),
+  	accountid VARCHAR(30) NOT NULL,
 	superlinescontext BLOB,
-	rankid INT,
-	FOREIGN KEY(accountid) REFERENCES users(user_name) ON DELETE CASCADE
+	rankid INT
+	#FOREIGN KEY(accountid) REFERENCES users(user_name) ON DELETE CASCADE
 );
 
 

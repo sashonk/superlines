@@ -3,8 +3,8 @@
 <project name="Superlines" default="build" basedir=".">         	
 	<property name="builddir" value="classes"/>
 	<property  name="distdir" value="dist" />
-	<!--<property name="downloads" value="WebContent\\downloads" />-->
-	<property name="tomcatdir" value="c:\\tomcat\" />
+	<property name="downloads" value="/var/lib/tomcat6/webapps/ROOT/downloads" />
+	<property name="tomcatdir" value="/usr/share/tomcat6" />
 
 	<target name="build">
 		<mkdir dir="classes"/>
@@ -68,8 +68,14 @@
 				<include name="**\\*.class" />
 			</fileset>
 		</delete>
+
+		<delete dir="dist" />
 		
 		
+	</target>
+
+	<target name="update" depends="dist">
+	    <copy file="${distdir}\\superlines2.zip" todir="${downloads}" />
 	</target>
 
 
