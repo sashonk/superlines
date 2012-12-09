@@ -108,9 +108,14 @@ public class SuperlinesControllerImpl implements SuperlinesController {
             
             
             
-            m_ctx.getTable().checkFilled();      
+/*            m_ctx.getTable().checkFilled();      
             if(m_ctx.getTable().isFilled()){
             	submitScore();
+            }*/
+            
+            if(RulesHelper.isTableFilled(m_ctx.getTable())){
+            	JOptionPane.showMessageDialog(MainFrame.get(), Messages.GAME_OVER);
+            	m_ctx.getTable().setFilled(true);            	
             }
 
 	}
@@ -147,7 +152,7 @@ public class SuperlinesControllerImpl implements SuperlinesController {
 
 	}
 	
-	private void submitScore(){
+/*	private void submitScore(){
 
 		if(m_ctx.getRules().getMinScore()> m_ctx.getScore()){
 			JOptionPane.showMessageDialog(MainFrame.get(), String.format("%s %d", Messages.NOT_ENOUGH_SCORE, m_ctx.getRules().getMinScore()));
@@ -161,7 +166,7 @@ public class SuperlinesControllerImpl implements SuperlinesController {
 			}
 		}
 	
-	}
+	}*/
 
 	@Override
 	public void restart(){
@@ -173,7 +178,7 @@ public class SuperlinesControllerImpl implements SuperlinesController {
 			int r2 = (m_ctx.getTable().isFilled() || m_ctx.getScore()==0 )? JOptionPane.NO_OPTION : JOptionPane.showConfirmDialog(MainFrame.get(), Messages.SUBMIT_RESULT, "", JOptionPane.YES_NO_OPTION);
 			if(r2 == JOptionPane.YES_OPTION){
 				
-				submitScore();
+				m_ctx.getTable().setFilled(true);
 				
 			}
 			

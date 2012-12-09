@@ -76,7 +76,7 @@
 <%	
 for(Rank r : Rank.values()){
 	%> 
-		<td align="center"><b><%= PromotionHelper.getQualifiedRate(r) %></b></td>					
+		<td align="center"><b><%=PromotionHelper.getQualifiedRate(r)%></b></td>					
 	<%
 }	
 %>

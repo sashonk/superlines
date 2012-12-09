@@ -1,6 +1,5 @@
-1. offline mode
+
 2. update functionality (basic)
 3. new years decorations on site
-
-
-4. fix dist client : creates server dirs
+4. fix dist client : creates server dir
+5. put rules into the database ?

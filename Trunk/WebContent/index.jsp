@@ -7,13 +7,13 @@
 
 
 <ul>
-				<li><div><b>описание</b></div>
+				<li><div  style="background:#dddddd"><b>описание</b></div>
 					<div style="padding: 10px;">
 					мы очень рады сообщить вам о том, что вышла новая версия игры Superlines! 					
 					</div>
 				</li>
 					
-				<li><div><b>правила</b></div>
+				<li><div  style="background:#dddddd"><b>правила</b></div>
 					<div style="padding: 10px;">
 					основным нововведением является система "рангов". Ранг 
 					является показателем опытности игрока и влияет на 

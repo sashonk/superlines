@@ -84,18 +84,10 @@ public class SuperlinesTable  implements Serializable{
                 }
             }
         }*/
-        
-	public void checkFilled(){
-		boolean filled = true;
-		for(int i = 0; i<m_width; i++){
-			for(int j = 0; j<m_width; j++){
-				if(balls[i][j].getColor()==0){
-					filled = false; 
-				}
-			}
-		}		
-		
-		m_filled = filled;
+	
+	
+	public void setFilled(final boolean value){
+		m_filled = value;
 		if(m_filled){
 	        for(SuperlinesListener l : m_ctx.getListeners()){
 	            l.tableFilled(m_ctx.getScore());
@@ -105,8 +97,10 @@ public class SuperlinesTable  implements Serializable{
 	        for(SuperlinesListener l : m_ctx.getListeners()){
 	            l.postTableFilled();
 	        }			
-		}
+		}		
 	}
+        
+
 	
     public boolean isFilled(){
             return m_filled;

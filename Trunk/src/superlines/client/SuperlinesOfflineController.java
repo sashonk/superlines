@@ -87,8 +87,10 @@ public class SuperlinesOfflineController implements SuperlinesController{
         }
         
         
-        
-        m_ctx.getTable().checkFilled();      
+        if(RulesHelper.isTableFilled(m_ctx.getTable())){
+        	m_ctx.getTable().setFilled(true);
+        }
+   
 }
 
 	

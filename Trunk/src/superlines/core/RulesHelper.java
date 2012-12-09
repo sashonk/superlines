@@ -48,6 +48,18 @@ public class RulesHelper {
 
 			
 		}
+		
+		public static boolean isTableFilled(final SuperlinesTable table){
+			boolean filled = true;
+			for(int i = 0; i<table.getSize(); i++){
+				for(int j = 0; j<table.getSize(); j++){
+					if(table.getBall(i,j).getColor()==0){
+						filled = false; 
+					}
+				}
+			}		
+			return filled;
+		}
     
         public static List<SuperlinesBall> scatter(final SuperlinesContext ctx){
 			SuperlinesTable t = ctx.getTable();

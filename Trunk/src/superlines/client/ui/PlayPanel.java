@@ -139,7 +139,7 @@ public class PlayPanel extends javax.swing.JPanel implements SuperlinesListener,
      @Override
     public void tableFilled(final int score) {
     	 scatterButton.setEnabled(false);
-        JOptionPane.showMessageDialog(this, Messages.GAME_OVER);
+        //JOptionPane.showMessageDialog(this, Messages.GAME_OVER);
         
         //ServiceAdapter.get().getProfile(auth);
     }

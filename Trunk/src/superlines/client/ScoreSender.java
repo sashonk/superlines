@@ -27,7 +27,7 @@ public class ScoreSender extends SuperlinesAdapter{
 	@Override
 	public void tableFilled(final int score) {
 		
-/*		if(m_ctx.getRules().getMinScore()> score){
+		if(m_ctx.getRules().getMinScore()> score){
 			JOptionPane.showMessageDialog(MainFrame.get(), String.format("%s %d", Messages.NOT_ENOUGH_SCORE, m_ctx.getRules().getMinScore()));
 			return;
 		}
@@ -36,7 +36,7 @@ public class ScoreSender extends SuperlinesAdapter{
 		BaseResponse response = sa.getService().acceptResult(m_auth, score);
 		if(response.getMessage()!=null){
 			JOptionPane.showMessageDialog(MainFrame.get(), response.getMessage().getText());
-		}*/
+		}
 	
 		
 		

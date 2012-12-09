@@ -72,50 +72,14 @@ public class PromotionHelper {
 			return m_data.get(String.format("%s-%s.properties", newRank.name(), locale));
 	}
 
-	public static Rank getQualifiedRankTest(final int score, final Rank currentRank){
-		if(currentRank == Rank.NEWBIE){
-			return score > 100 ? Rank.AVERAGE : currentRank;
-		}
-		if(currentRank == Rank.AVERAGE){
-			return score > 300 ? Rank.EXPERIENCED : currentRank;			
-		}
-		if(currentRank == Rank.EXPERIENCED){
-			return score > 500 ? Rank.ADEPT : currentRank;			
-		}
-		if(currentRank == Rank.ADEPT){
-			return score > 1000 ? Rank.MASTER : currentRank;			
-		}
-		if(currentRank == Rank.MASTER){
-			return score > 5000 ? Rank.GODLIKE : currentRank;			
-		}
-		
-		return Rank.GODLIKE;
-	}
 
-	public static Rank getQualifiedRank(final int score, final Rank currentRank){
-		if(currentRank == Rank.NEWBIE){
-			return score > 20000 ? Rank.AVERAGE : currentRank;
-		}
-		if(currentRank == Rank.AVERAGE){
-			return score > 50000 ? Rank.EXPERIENCED : currentRank;			
-		}
-		if(currentRank == Rank.EXPERIENCED){
-			return score > 100000 ? Rank.ADEPT : currentRank;			
-		}
-		if(currentRank == Rank.ADEPT){
-			return score > 500000 ? Rank.MASTER : currentRank;			
-		}
-		if(currentRank == Rank.MASTER){
-			return score > 1000000 ? Rank.GODLIKE : currentRank;			
-		}
-		
-		return Rank.GODLIKE;
-	}
 	
 	public static int getQualifiedRate(final Rank rank){
 		return m_standardRanks.get(rank);
 	}
 	
-
+	public static int getQualifiedRateTest(final Rank rank){
+		return m_standardRanks.get(rank)/10;
+	}
 
 }
