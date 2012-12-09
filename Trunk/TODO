@@ -1,5 +1,6 @@
 
-2. update functionality (basic)
-3. new years decorations on site
-4. fix dist client : creates server dir
-5. put rules into the database ?
+- update functionality (basic)
+- new years decorations on site
+- fix dist client : creates server dir
+- put rules into the database ?
+- dbscripts: mysql error 150 
