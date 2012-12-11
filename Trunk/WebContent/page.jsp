@@ -31,7 +31,7 @@
 
 </head>
 <body>
-	<table width="75%" border="0" align="center" style="margin-bottom: 50px;">
+	<table width="50%" border="0" align="center" style="margin-bottom: 50px;">
 		<tr ><td align="center" style="font-size: 48px; font-weight: bold;"><img  src="tree.png" width="60" height="60">superlines 2.0<img src="tree.png" width="60" height="60"></td></tr>
 		<tr> <td align="center" style="font-size: 36px; font-weight: bold; color:red;"> новогоднее издание!</td> </tr>
 		<tr><td class="content">
