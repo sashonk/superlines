@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.UUID;
 
 import superlines.core.Configuration;
+import superlines.core.Util;
 import superlines.server.mail.MailHelper;
 
 
@@ -129,6 +130,66 @@ public class AccountDAO extends DAO{
 		}
 		
 		return exitStatus;
+	}
+	
+	/**
+	 * 
+	 * @param login
+	 * @return 0 - ok, 1 - user not found, 2 - valid email not found
+	 * @throws Exception
+	 */
+	
+	public int remindPassword(final String login) throws Exception{
+		Connection conn = null;
+		PreparedStatement st = null;
+		try{
+			conn = m_dataSource.getConnection();
+			
+			st = conn.prepareStatement("select u.user_password pass, p.email email from users u, profiles p where u.user_name = p.accountid and u.user_name = ?");			
+			st.setString(1, login);	
+			ResultSet rs = st.executeQuery();
+			
+			if(rs.next()){
+				String password = rs.getString("pass");
+				String email = rs.getString("email");
+				
+				if(Util.isValidEmailAddress(email)){
+					String body = String.format("Ваш пароль: %s", password);
+					List<String> recipients = new LinkedList<>();
+					recipients.add(email);
+					MailHelper.mail("Напоминание пароля", body, recipients);
+				}
+				else{
+					return 2;
+				}
+			}
+			else{
+				return 1;
+			}
+
+
+			
+		}
+		catch(Exception ex){
+			m_log.error(ex);
+			throw(ex);
+		}
+
+		finally{
+				try{
+					if(st!=null){
+						st.close();
+					}
+					if(conn!=null){
+						conn.close();
+					}
+				}catch(Exception ex){
+					m_log.error(ex);
+				
+				}
+		}		
+		
+		return 0;
 	}
 	
 	public void createAccount(final String login, final String password, final String name, final String surname, final String email) throws Exception{

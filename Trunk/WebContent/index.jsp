@@ -37,6 +37,7 @@
 					<div style="padding: 10px;"><a href="?page=rules">правила</a></div>				
 					<div style="padding: 10px;"><a href="?page=rate">рейтинги</a></div>
 					<div style="padding: 10px;"><a href="?page=registration">создать аккаунт</a></div>
+					<div style="padding: 10px;"><a href="?page=remind">напомнить пароль</a></div>					
 					<div style="padding: 10px;"><a href='downloads/superlines2.zip'>загрузка</a></div>					
 	
 					

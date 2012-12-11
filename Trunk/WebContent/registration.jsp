@@ -6,6 +6,7 @@
 	import="java.util.*" 
 	import="java.util.regex.Pattern"
 	import="superlines.server.AccountDAO"
+	import="superlines.core.Util"
 %>
 
 <%  
@@ -121,7 +122,7 @@ String email = request.getParameter("email");
 		
 		
 		if(messages.size()==0){
-			if(!isValidEmailAddress(email)){
+			if(!Util.isValidEmailAddress(email)){
 				messages.add("введен некорректный почтовый адрес");							
 			}
 			
@@ -162,16 +163,7 @@ String email = request.getParameter("email");
 		return param== null || param.equals("");
 	}
 
-	private static boolean isValidEmailAddress(final String str) {
-	    if (isBlank(str)) {
-	        return false;
-	    }
-	    return EMAIL_ADDRESS_PATTERN.matcher(str).matches();
-	}
 
-	private static final Pattern EMAIL_ADDRESS_PATTERN =
-			Pattern
-			.compile("([0-9A-Za-z-_]+\\.)*[0-9A-Za-z-_]+@((([0-9A-Za-z-_]+\\.)+[A-Za-z]+)|(\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}))"); 
 
 
 %>
