@@ -149,10 +149,11 @@ public class AccountDAO extends DAO{
 			st.executeUpdate();
 			
 			
-			st = conn.prepareStatement("insert into profiles (name, surname, crts, accountid, rankid) values (?, ? , CURRENT_TIMESTAMP, ?, 1)");
+			st = conn.prepareStatement("insert into profiles (name, surname, crts, accountid, rankid, email) values (?, ? , CURRENT_TIMESTAMP, ?, 1, ?)");
 			st.setString(1, name);
 			st.setString(2, surname);
 			st.setString(3, login);
+			st.setString(4, email);
 			st.executeUpdate();
 			
 			
