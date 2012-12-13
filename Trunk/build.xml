@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project name="Superlines" default="build" basedir=".">         	
+	<property name="zip_name" value="superlines2.zip" />
+	<property name="war_name" value="ROOT.war" />
 	<property name="builddir" value="classes"/>
 	<property  name="distdir" value="dist" />
 	<property name="downloads" value="/var/lib/tomcat6/webapps/ROOT/downloads" />
@@ -33,14 +35,16 @@
 
 
 
-		<!--<copy file="${distdir}\\superlines2.zip" todir="${downloads}" />-->
+		
 				
 	</target>
 	
 	<target name="dist" depends="build">
-		<war destfile="${distdir}\\superlines2.war" webxml="WebContent\\WEB-INF\\web.xml" basedir="WebContent" />
-		
-		<zip destfile="${distdir}\\superlines2.zip">
+		<delete file="${distdir}\\${war_file}" />
+		<delete file="${distdir}\\${zip_file}" />
+
+		<war destfile="${distdir}\\${war_name}" webxml="WebContent\\WEB-INF\\web.xml" basedir="WebContent" />		
+		<zip destfile="${distdir}\\${zip_name}">
 		      	<fileset dir=".">
 				<exclude name="${builddir}\\superlines\\server\\*" />
 				<exclude name="${builddir}\\superlines\\server\\**\\*" />
@@ -50,12 +54,8 @@
 				<include name="config\\**\\*" />
 				<include name="data\\**\\*" />
 				<include name="lib\\**\\*" />
-		      	</fileset>					      				
-			
+		      	</fileset>
 		</zip>
-		
-		<checksum file="${distdir}\\superlines2.zip" property="chsum"/>		
-		<echo>MD5: ${chsum}</echo>
 	</target>
 	
 
@@ -70,12 +70,11 @@
 		</delete>
 
 		<delete dir="dist" />
-		
-		
 	</target>
 
 	<target name="update" depends="dist">
-	    <copy file="${distdir}\\superlines2.zip" todir="${downloads}" />
+	    <delete file="${downloads}\\${zip_name}"/>
+	    <copy file="${distdir}\\${zip_name}" todir="${downloads}" />
 	</target>
 
 
