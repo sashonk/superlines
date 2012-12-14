@@ -138,7 +138,9 @@ public class Updater {
 					//Thread.sleep(1000);
 					
 					File fileToUpdateDir = new File(updatedDir, path);
+					fileToUpdateDir.mkdirs();
 					File fileToUpdate = new File(fileToUpdateDir,outdatedFileName );
+					
 					//fileToUpdate.delete();
 					
 					String fileName = String.format("%s/%s",updatedDir , Util.getRelativePath(updatedDir, fileToUpdate));
