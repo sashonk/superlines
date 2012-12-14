@@ -128,7 +128,7 @@
 	    <copy file="${distdir}/${zip_name}" todir="${downloads}" />
 	</target>
 
-	<target name="rebuild" depends="clean, dist" />
+	<target name="rebuild" depends="clean, build" />
 
 
 </project>
