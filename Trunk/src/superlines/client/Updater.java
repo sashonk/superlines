@@ -211,6 +211,7 @@ public class Updater {
 			Element root = doc.getDocumentElement();
 			
 			NodeList nodeList =  root.getChildNodes();
+			Set<File> dirsToDelete = new HashSet<>();
 			for(int i = 0; i<nodeList.getLength(); i++){
 				Node node = nodeList.item(i);
 				if(node.getNodeType()==Node.ELEMENT_NODE){
@@ -222,7 +223,8 @@ public class Updater {
 					Element ownDirectory = findAndRemove(path, own);
 					if(ownDirectory==null || !ownDirectory.getAttribute("chsum").equals(chsum)){
 						
-						deleteDirectoryRecursive(new File(dir, path)) ;
+						
+						dirsToDelete.add(new File(dir, path));
 						Set<String> set = ServiceAdapter.get().listFiles(String.format("%s/%s", dir.getName(), path));
 						result.put(path, set);
 						
@@ -230,6 +232,9 @@ public class Updater {
 				}
 			}
 			
+			for(File f : dirsToDelete){
+				deleteDirectoryRecursive(f);
+			}
 			deleteTheRest(own, dir);
 		}
 		catch(Exception ex){
@@ -241,12 +246,15 @@ public class Updater {
 	
 	private  void deleteDirectoryRecursive(final File dir){
 		File[] files = dir.listFiles();
-		for(File f : files){
-			if(f.isFile()){
-				f.delete();
-			}
-			else if(f.isDirectory()){
-				deleteDirectoryRecursive(f);
+		
+		if(files!=null){
+			for(File f : files){
+				if(f.isFile()){
+					f.delete();
+				}
+				else if(f.isDirectory()){
+					deleteDirectoryRecursive(f);
+				}
 			}
 		}
 		
