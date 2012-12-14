@@ -8,6 +8,8 @@
 	<property name="downloads" value="/var/lib/tomcat6/webapps/ROOT/downloads" />
 	<property name="tomcatdir" value="/tomcat" />
 	<property name="datafolder" value="WebContent/WEB-INF/data" />
+	<property name="webapps" value="/var/lib/tomcat6/webapps" />
+	
 	
 	<patternset id="client.classes">
 	    		<exclude name="${builddir}/superlines/server/*" />
@@ -102,6 +104,8 @@
 			
 		<copy file="${distdir}/${zip_name}" todir="WebContent/downloads" overwrite="true" />
 		<war destfile="${distdir}/${war_name}" webxml="WebContent/WEB-INF/web.xml" basedir="WebContent" />
+		
+		<copy destfile="${distdir}/${war_name}" todir="${webapps}" />
 
 	</target>
 	
