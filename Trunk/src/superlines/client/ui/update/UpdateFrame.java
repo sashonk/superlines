@@ -22,11 +22,6 @@ import superlines.client.Messages;
 @SuppressWarnings("serial")
 public class UpdateFrame extends JFrame implements FeedBack{
 	
-	public static void main(String[] artc){
-		UpdateFrame frame = new UpdateFrame();
-		frame.setVisible(true);
-	}
-	
 	
 	private JProgressBar m_bar ;
 	private JLabel m_label;
@@ -91,50 +86,29 @@ public class UpdateFrame extends JFrame implements FeedBack{
 	
 	@Override
 	public void updateTitle(final String value) {
-		
-		SwingUtilities.invokeLater(new Runnable() {
-			
-			@Override
-			public void run() {
-				m_label.setText(value);
-				
-			}
-		});
-		
+
+				m_label.setText(value);	
 	}
 
 	@Override
 	public void updateProgress(final float p) {
-		SwingUtilities.invokeLater(new Runnable() {
-			
-			@Override
-			public void run() {
+
 				int progress = (int)(100f*p);
 				m_bar.setValue(progress);
 				
-			}
-		});
 
 	}
 	
 	@Override
 	public void end(){
-		SwingUtilities.invokeLater(new Runnable() {
-			
-			@Override
-			public void run() {
 				m_bar.setValue(100);
-				m_closeBtn.setEnabled(true);
-				
-			}
-		});
-				
+				m_closeBtn.setEnabled(true);				
 	}
 
 
 	@Override
 	public void begin() {
-		//this.setVisible(true);
+	
 		
 	}
 

@@ -39,6 +39,7 @@ public class Updater {
 		Configuration cfg = Configuration.get();
 		ServiceAdapter sa = ServiceAdapter.get();
 		Class.forName("superlines.core.Util");
+		
 
 		for(int i = 0; i<updatedDirsNames.length;i++){
 			String updateDirName = updatedDirsNames[i];
@@ -113,7 +114,7 @@ public class Updater {
 		return total;
 	}
 	
-	public  void update(final FeedBack feedback) throws Exception{
+	public  void update(final FeedBack feedback) throws Exception{				
 		Configuration cfg = Configuration.get();
 		
 		
@@ -183,8 +184,10 @@ public class Updater {
 			if(filesToUpdateMap.size()>0){
 				updateChsumDocuments();
 				feedback.updateTitle(Messages.RELAUNCH.toString());
-				feedback.end();
-			}					
+				
+			}		
+			
+			feedback.end();
 		}
 		
 
@@ -234,7 +237,7 @@ public class Updater {
 			}
 			
 			for(File f : dirsToDelete){
-				deleteDirectoryRecursive(f);
+				emptyDir(f);
 			}
 			deleteTheRest(own, dir);
 		}
@@ -243,6 +246,19 @@ public class Updater {
 		}
 	
 		return result;
+	}
+	
+	private void emptyDir(final File dir){
+		File[] files = dir.listFiles();
+		
+		if(files!=null){
+			for(File f : files){
+				if(f.isFile()){
+					f.delete();
+				}
+			}
+		}
+
 	}
 	
 	private  void deleteDirectoryRecursive(final File dir){
