@@ -27,19 +27,16 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-
 import superlines.client.ws.ServiceAdapter;
+
 import superlines.core.Util;
 
-
 public class Updater {
-
-	private static final Log log = LogFactory.getLog(Updater.class);
 	
 	private  String[] updatedDirsNames = new String[] {"classes", "data", "config"};
 	
 	private Updater() throws Exception{
-		
+	
 		ServiceAdapter sa = ServiceAdapter.get();
 		Class.forName("superlines.core.Util");
 		
@@ -52,7 +49,7 @@ public class Updater {
 			chsumDocuments.put(updateDirName, (Document) ois.readObject());
 			
 			
-			File checkSumFile = new File(String.format("update/%s.xml", updateDirName));
+			File checkSumFile = new File("update", String.format("%s.xml", updateDirName));
 			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 			DocumentBuilder db = dbf.newDocumentBuilder();				
 			m_ownCheckDocuments.put(updateDirName, db.parse(checkSumFile));															
@@ -60,6 +57,7 @@ public class Updater {
 		}
 	}
 	
+	private static final Log log = LogFactory.getLog(Updater.class);
 	
 	private Map<String, Document> chsumDocuments = new HashMap<>();
 	private Map<String, Document> m_ownCheckDocuments = new HashMap<>(); 
@@ -88,7 +86,6 @@ public class Updater {
 			String chsum = doc.getDocumentElement().getAttribute("chsum");
 									
 			if(!ownChsum.equals(chsum)){
-				log.debug("updates available");
 				return true;
 			}
 		}
@@ -97,9 +94,9 @@ public class Updater {
 	}
 	
 	private void updateChsumDocuments(){
-		
+	
 		for(String updateDirName : chsumDocuments.keySet()){
-			File chsumFile = new File( String.format("update/%s.xml", updateDirName));
+			File chsumFile = new File("update", updateDirName+".xml");
 			chsumFile.delete();
 			
 			Util.writeXmlFile(chsumDocuments.get(updateDirName), chsumFile);
@@ -118,10 +115,11 @@ public class Updater {
 	}
 	
 	public  void update(final FeedBack feedback) throws Exception{				
+	
 		feedback.begin();
-
+		
 		for(String updatedDirName : updatedDirsNames){						
-			File checkSumFile = new File(String.format("update/%s.xml", updatedDirName));
+			File checkSumFile = new File("update", String.format("%s.xml", updatedDirName));
 			File updatedDir = new File(updatedDirName);
 			
 			 
@@ -144,9 +142,7 @@ public class Updater {
 					//fileToUpdate.delete();
 					
 					String fileName = String.format("%s/%s",updatedDir , Util.getRelativePath(updatedDir, fileToUpdate));
-					String msg = String.format("updating file: %s", fileName);
-					feedback.updateTitle(msg);
-					log.debug(msg);
+					feedback.updateTitle(String.format("updating file: %s", fileName));
 					byte[] b = ServiceAdapter.get().getFile(fileName);
 					ByteArrayInputStream bais = new ByteArrayInputStream(b);
 					
@@ -185,16 +181,16 @@ public class Updater {
 				}
 			}
 			
-			
-				updateChsumDocuments();
-				feedback.updateTitle(Messages.RELAUNCH.toString());
-				
-					
-			
-			feedback.end();
+
 		}
 		
-
+	
+			updateChsumDocuments();
+			feedback.updateTitle(Messages.RELAUNCH.toString());
+			
+			
+		
+		feedback.end();
 	}
 	
 	private  Map<String, Set<String>> getFilesToUpdate(final File dir, final File checkSumFile){

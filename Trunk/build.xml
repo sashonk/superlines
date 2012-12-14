@@ -85,6 +85,7 @@
 			</classpath>
 			<arg value="${arg}"/>
 			<arg value="superlines/server" />
+			<arg value=".svn" />
 		 </java>
 		 <copy file="${arg}.xml" todir="${datafolder}/update" overwrite="true" />
 		 <copy file="${arg}.xml" todir="update" overwrite="true" />

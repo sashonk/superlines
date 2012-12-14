@@ -48,12 +48,12 @@ public class CheckSumGenerator {
 		}
 		
 		String dirName = ar[0];
-		String ignoredPattern = null;
-		if(ar.length>1){
-			ignoredPattern = ar[1];
+		String[] ignoredPatterns = new String[ar.length-1];
+		for(int i = 0; i<ar.length-1 ;i++){
+			ignoredPatterns[i] = ar[i+1];
 		}
 					
-		Document doc =CheckSumGenerator.get().generate(new File(dirName), ignoredPattern);
+		Document doc =CheckSumGenerator.get().generate(new File(dirName), ignoredPatterns);
 		
 
 		Util.writeXmlFile(doc, new File(dirName+".xml"));
@@ -67,7 +67,7 @@ public class CheckSumGenerator {
 
 	
 	
-	public Document generate(final File parentDir, final String ignoredPattern) throws Exception{
+	public Document generate(final File parentDir, final String... ignoredPatterns) throws Exception{
 		
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		DocumentBuilder db = dbf.newDocumentBuilder();		
@@ -77,30 +77,36 @@ public class CheckSumGenerator {
 		doc.appendChild(root);
 		
 		MessageDigest rootDigest = MessageDigest.getInstance("MD5");
-		processDir(parentDir, parentDir, root, doc, ignoredPattern, rootDigest);
+		processDir(parentDir, parentDir, root, doc, rootDigest,  ignoredPatterns);
 		root.setAttribute("chsum",  digestToString(rootDigest.digest()));
 		
 		return doc;
 	}
 	
-	private  void processDir(final File dir, final File rootDir, final Element element, final Document doc, final String ignoredPattern, final MessageDigest rootDigest) throws Exception{		
+	private  void processDir(final File dir, final File rootDir, final Element element, final Document doc,  final MessageDigest rootDigest, final String... ignoredPatterns) throws Exception{		
 			Element root = doc.getDocumentElement();
 		File[] files = dir.listFiles();		
 		MessageDigest digest = MessageDigest.getInstance("MD5");
 	
 		for(File file : files){
 			if(file.isDirectory()){
-
 				
 				String path = Util.getRelativePath(rootDir, file);
-				if(ignoredPattern!=null && path.contains(ignoredPattern)){				
+				
+				boolean contains = false;
+				for(String pat : ignoredPatterns){
+					if(path.contains(pat)){
+						contains = true;
+					}
+				}
+				if(contains){				
 
 				}
 				else{
 					Element child = doc.createElement("directory");
 					child.setAttribute("path", path);
 					root.appendChild(child);				
-					processDir(file, rootDir,  child, doc, ignoredPattern, rootDigest);			
+					processDir(file, rootDir,  child, doc,rootDigest , ignoredPatterns );			
 				}
 			}
 			else if(file.isFile()){
