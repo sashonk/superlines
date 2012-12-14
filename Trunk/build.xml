@@ -23,6 +23,7 @@
 				<include name="config/**/*" />
 				<include name="data/**/*" />
 				<include name="lib/**/*" />
+				<include name="update/**/*"/>
 	</patternset>
 
 	<target name="build">
@@ -86,7 +87,7 @@
 			<arg value="superlines/server" />
 		 </java>
 		 <copy file="${arg}.xml" todir="${datafolder}/update" overwrite="true" />
-		 <copy file="${arg}.xml" todir="data/client" overwrite="true" />
+		 <copy file="${arg}.xml" todir="update" overwrite="true" />
 		 <delete file="${arg}.xml" />
 	</target>
 	
@@ -105,7 +106,7 @@
 		<copy file="${distdir}/${zip_name}" todir="WebContent/downloads" overwrite="true" />
 		<war destfile="${distdir}/${war_name}" webxml="WebContent/WEB-INF/web.xml" basedir="WebContent" />
 		
-		<copy destfile="${distdir}/${war_name}" todir="${webapps}" />
+		<copy file="${distdir}/${war_name}" todir="${webapps}" />
 
 	</target>
 	
