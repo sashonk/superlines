@@ -35,7 +35,7 @@ import superlines.client.ui.LoginDialog;
 import superlines.client.ui.MainFrame;
 import superlines.client.ui.PlayPanel;
 import superlines.client.ui.RatePanel;
-import superlines.client.ui.UpdateFrame;
+import superlines.client.ui.update.UpdateFrame;
 import superlines.client.ws.ServiceAdapter;
 import superlines.core.Authentication;
 import superlines.core.Configuration;

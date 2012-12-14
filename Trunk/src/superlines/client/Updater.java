@@ -38,6 +38,7 @@ public class Updater {
 	private Updater() throws Exception{
 		Configuration cfg = Configuration.get();
 		ServiceAdapter sa = ServiceAdapter.get();
+		Class.forName("superlines.core.Util");
 
 		for(int i = 0; i<updatedDirsNames.length;i++){
 			String updateDirName = updatedDirsNames[i];

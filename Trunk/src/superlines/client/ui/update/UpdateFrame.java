@@ -1,4 +1,4 @@
-package superlines.client.ui;
+package superlines.client.ui.update;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
