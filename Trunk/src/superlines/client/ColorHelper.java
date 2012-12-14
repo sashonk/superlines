@@ -26,9 +26,11 @@ public class ColorHelper {
 	}
 	
 	
-	public static Color number2Color(int num){
-		return m_colorMap.get(Integer.valueOf(num));
+	public static Color number2Color(int nums){
+		return m_colorMap.get(Integer.valueOf(nums));
 	}
+	
+
 	
 	public static int color2Number(final Color c){
 		for(Entry<Integer, Color> entry : m_colorMap.entrySet()){

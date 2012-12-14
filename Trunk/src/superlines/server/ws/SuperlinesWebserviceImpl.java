@@ -8,8 +8,11 @@ import superlines.server.mail.MailHelper;
 import superlines.ws.ProfileResponse;
 
 
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -17,8 +20,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
+import java.util.zip.ZipInputStream;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -27,15 +35,21 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
+
 import javax.sql.DataSource;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.w3c.dom.Document;
 
 import superlines.core.Authentication;
+import superlines.core.CheckSumGenerator;
+import superlines.core.Configuration;
 import superlines.core.Localizer;
 import superlines.core.Rank;
 import superlines.core.SuperlinesContext;
@@ -45,13 +59,14 @@ import superlines.core.Util;
 import superlines.core.Profile;
 
 import superlines.ws.BaseResponse;
+import superlines.ws.BinaryResponse;
+import superlines.ws.FilesResponse;
 import superlines.ws.Message;
 import superlines.ws.PromotionResponse;
 import superlines.ws.Response;
 
 import superlines.ws.RateParameters;
 import superlines.ws.RateResponse;
-import superlines.ws.SuperlinesContextResponse;
 import superlines.ws.SuperlinesWebservice;
 
 
@@ -116,7 +131,7 @@ public class SuperlinesWebserviceImpl implements SuperlinesWebservice{
                     m.setText("generic error");
                     m.setDetails(Util.toString(ex));
                     r.setMessage(m);
-                    
+                    log.error(ex);
 		}
 		finally{
 
@@ -157,6 +172,7 @@ public class SuperlinesWebserviceImpl implements SuperlinesWebservice{
 			m.setText("get promotion msg failed");
 			m.setDetails(Util.toString(x));
 			response.setMessage(m);
+			log.error(x);
 		}
 		
 		return response;
@@ -166,22 +182,22 @@ public class SuperlinesWebserviceImpl implements SuperlinesWebservice{
 
 
     @Override
-    public SuperlinesContextResponse getSuperlinesContext(Authentication auth, final boolean createOnly) {
-    	SuperlinesContextResponse response = new SuperlinesContextResponse();
+    public BinaryResponse getSuperlinesContext(Authentication auth, final boolean createOnly) {
+    	BinaryResponse response = new BinaryResponse();
        try{
     	   ProfileResponse p = getProfile(auth);
     	   Profile profile = p.getProfile();
     	   
     	   
     	   if(!createOnly){
-    		   SuperlinesContextResponse loadResponse =  loadSuperlinesContext(auth);
-    		   byte[] loadedCtxBytes  = loadResponse.getContextBytes();
+    		   BinaryResponse loadResponse =  loadSuperlinesContext(auth);
+    		   byte[] loadedCtxBytes  = loadResponse.getData();
     		   if(loadedCtxBytes!= null){
-    			   response.setContextBytes(loadedCtxBytes);
+    			   response.setData(loadedCtxBytes);
     		   }
     	   }
     	   
-    	   if(response.getContextBytes()==null){
+    	   if(response.getData()==null){
 	    	   SuperlinesRules rules =  RulesHelper.createRules(profile.getRank());    	   
 	           SuperlinesContext ctx = new SuperlinesContext();
 	           ctx.setRules(rules);
@@ -190,7 +206,7 @@ public class SuperlinesWebserviceImpl implements SuperlinesWebservice{
 	           ByteArrayOutputStream baos = new ByteArrayOutputStream();
 	           ObjectOutputStream oos = new ObjectOutputStream(baos);
 	           oos.writeObject(ctx);
-	           response.setContextBytes(baos.toByteArray());    
+	           response.setData(baos.toByteArray());    
     	   }
            
        }
@@ -199,6 +215,7 @@ public class SuperlinesWebserviceImpl implements SuperlinesWebservice{
            m.setText("failed to create context");
            m.setDetails(Util.toString(ex));
            response.setMessage(m);
+           log.error(ex);
        }
        
        return response;
@@ -292,6 +309,7 @@ public class SuperlinesWebserviceImpl implements SuperlinesWebservice{
 			m.setText("accept result failed");
 			m.setDetails(Util.toString(ex));
 			response.setMessage(m);
+			log.error(ex);
 		}
 		finally{
 			try{
@@ -326,6 +344,7 @@ public class SuperlinesWebserviceImpl implements SuperlinesWebservice{
 			m.setText("error getting rate data");
 			m.setDetails(Util.toString(ex));
 			response.setMessage(m);
+			log.error(ex);
 			return response;
 		}
 
@@ -379,6 +398,7 @@ public class SuperlinesWebserviceImpl implements SuperlinesWebservice{
 			m.setText("error persisting superlines context");
 			m.setDetails(Util.toString(ex));
 			response.setMessage(m);
+			log.error(ex);
 		}
 		finally{
 			try{
@@ -396,10 +416,92 @@ public class SuperlinesWebserviceImpl implements SuperlinesWebservice{
 		return response;
 	}
 	
+	
+	@WebMethod
+	public BinaryResponse getFile(@WebParam(name="directory") final String filePath){
+		BinaryResponse response = new BinaryResponse();
+		FileInputStream ifstr = null;
+		GZIPOutputStream gzip = null;
+		try{
+			File root =  new File(Configuration.get().getDataFolder(), "update");
+			File file = new File(root, filePath);
+			
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			 gzip = new GZIPOutputStream(baos);
+											
+			 ifstr = new FileInputStream(file);
+
+			
+			byte[] b = new byte[1024];
+			int read = 0;
+			
+			while((read = ifstr.read(b)) > 0){
+				gzip.write(b,0, read);
+			}
+			gzip.flush();
+			gzip.finish();
+			
+			response.setData(baos.toByteArray());
+			return response;						
+		}
+		catch(Exception ex){
+			log.error(ex);
+			Message m = new Message();
+			m.setText("exception occured!");
+			m.setDetails(Util.toString(ex));
+			response.setMessage(m);
+			return response;
+		}
+		finally{
+			try{
+				if(ifstr!=null){
+					ifstr.close();
+				}
+			}
+			catch(Exception ex){
+				log.error(ex);
+			}
+			
+			
+			try{
+				if(ifstr!=null){
+					gzip.close();
+				}
+			}
+			catch(Exception ex){
+				log.error(ex);
+			}
+			
+		}
+	}
+	
+	@WebMethod
+	public BinaryResponse getChecksumDocument(@WebParam(name="directory") final String dirName){
+		BinaryResponse response = new BinaryResponse();
+		try{
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			ObjectOutputStream ostr = new ObjectOutputStream(baos);
+			File update = new File(Configuration.get().getDataFolder(), "update");			
+			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+			DocumentBuilder db =  dbf.newDocumentBuilder();
+			Document doc = db.parse(new File(update, String.format("%s.xml", dirName)));
+			
+			ostr.writeObject(doc);
+			response.setData(baos.toByteArray());
+			return response;
+		}
+		catch(Exception ex){
+			log.error(ex);
+			Message m = new Message();
+			m.setText("exception occured!");
+			m.setDetails(Util.toString(ex));
+			response.setMessage(m);
+			return response;
+		}
+	}
+	
 	private void auth(final Authentication auth) throws Exception{
-		
-		log.error("try auth!");
-		
+				
 		Connection c = null;
 		PreparedStatement st = null;
 		ResultSet rs = null;
@@ -440,9 +542,9 @@ public class SuperlinesWebserviceImpl implements SuperlinesWebservice{
 
 	@Override
 	@WebMethod
-	public SuperlinesContextResponse loadSuperlinesContext(
+	public BinaryResponse loadSuperlinesContext(
 			@WebParam(name = "auth") Authentication auth) {
-		SuperlinesContextResponse response = new SuperlinesContextResponse();
+		BinaryResponse response = new BinaryResponse();
 		Connection conn = null;
 		PreparedStatement st = null;
 		
@@ -466,7 +568,7 @@ public class SuperlinesWebserviceImpl implements SuperlinesWebservice{
 				oos.writeObject(ctx);
 				
 				
-				response.setContextBytes(baos.toByteArray());
+				response.setData(baos.toByteArray());
 			}
 
 						
@@ -481,6 +583,7 @@ public class SuperlinesWebserviceImpl implements SuperlinesWebservice{
 			m.setText("error loading superlines context");
 			m.setDetails(Util.toString(ex));
 			response.setMessage(m);
+			log.error(ex);
 		}
 		finally{
 
@@ -498,6 +601,27 @@ public class SuperlinesWebserviceImpl implements SuperlinesWebservice{
 	
 		}
 			
+		return response;
+	}
+
+	@Override
+	@WebMethod
+	public FilesResponse listFiles(@WebParam(name = "directory") String dirPath) {
+		FilesResponse response = new FilesResponse();
+		Set<String> fileNames = new HashSet<>();
+		response.setFiles(fileNames);
+		
+		Configuration cfg = Configuration.get();
+		File updateFolder =  new File(cfg.getDataFolder(), "update");
+		File dir = new File(updateFolder, dirPath);
+		
+		File[] files = dir.listFiles();
+		for(File file : files){
+			if(file.isFile()){
+				fileNames.add( file.getName());
+			}
+		}
+		
 		return response;
 	}
 

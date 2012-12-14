@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -19,12 +20,13 @@ import superlines.core.SuperlinesContext;
 import superlines.core.SuperlinesRules;
 import superlines.core.Profile;
 import superlines.ws.BaseResponse;
+import superlines.ws.BinaryResponse;
+import superlines.ws.FilesResponse;
 import superlines.ws.PromotionResponse;
 import superlines.ws.Response;
 import superlines.ws.RateData;
 import superlines.ws.RateParameters;
 import superlines.ws.RateResponse;
-import superlines.ws.SuperlinesContextResponse;
 import superlines.ws.SuperlinesWebservice;
 import superlines.ws.ProfileResponse;
 
@@ -106,12 +108,12 @@ public class ServiceAdapter {
         }
         
         public byte[] getSuperlinesContext(final Authentication auth, final boolean createOnly){
-        	SuperlinesContextResponse res = webservice.getSuperlinesContext(auth, createOnly);
+        	BinaryResponse res = webservice.getSuperlinesContext(auth, createOnly);
             if(res.getMessage()!=null){
                 log.error(res.getMessage());                
             }
             
-            return res.getContextBytes();          
+            return res.getData();          
         }
         
         public List<RateData> getRateData(final Authentication auth, final RateParameters params){
@@ -139,14 +141,31 @@ public class ServiceAdapter {
         
         }
 	
-	public static void main(String[] argc) throws Exception{
-			Class.forName("com.mysql.jdbc.Driver");
-			Connection c = DriverManager.getConnection("jdbc:mysql://localhost:3306/superlines", "root", "8926sas");
-			
-			Statement st = c.createStatement();
-			ResultSet dataSet = st.executeQuery("select * from roles");
-			while(dataSet.next()){
-				System.out.println(dataSet.getString("role_name"));
-			}
-	}
+        
+        /////////////////  UPDATE ////////////////////
+        
+        public byte[] getChecksumDocument(final String dir){
+        	BinaryResponse response = webservice.getChecksumDocument(dir);
+        	if(response.getMessage()!=null){
+        		log.error(response.getMessage());
+        	}
+        	return response.getData();
+        }
+        
+        public byte[] getFile(final String filePath){
+        	BinaryResponse response = webservice.getFile(filePath);
+        	if(response.getMessage()!=null){
+        		log.error(response.getMessage());
+        	}
+        	return response.getData();
+        }
+        
+        public Set<String> listFiles(final String dirPath){
+        	FilesResponse response = webservice.listFiles(dirPath);
+        	if(response.getMessage()!=null){
+        		log.error(response.getMessage());
+        	}
+        	
+        	return response.getFiles();
+        }
 }

@@ -6,56 +6,103 @@
 	<property name="builddir" value="classes"/>
 	<property  name="distdir" value="dist" />
 	<property name="downloads" value="/var/lib/tomcat6/webapps/ROOT/downloads" />
-	<property name="tomcatdir" value="/usr/share/tomcat6" />
+	<property name="tomcatdir" value="/tomcat" />
+	<property name="datafolder" value="WebContent/WEB-INF/data" />
+	
+	<patternset id="client.classes">
+	    		<exclude name="${builddir}/superlines/server/*" />
+				<exclude name="${builddir}/superlines/server/**/*" />
+				<include name="${builddir}/**/*" />
+
+	</patternset>
+	
+	<patternset id="client.folders">
+				<include name="bin/**/*" />
+				<include name="config/**/*" />
+				<include name="data/**/*" />
+				<include name="lib/**/*" />
+	</patternset>
 
 	<target name="build">
 		<mkdir dir="classes"/>
 	        <javac srcdir="src" destdir="${builddir}" encoding="utf-8">
 	                <classpath>
-	                         <pathelement path="lib\\log4j.jar"/>
-				 <pathelement path="lib\\commons-logging.jar"/>
+	                         <pathelement path="lib/log4j.jar"/>
+				 <pathelement path="lib/commons-logging.jar"/>
 
-				<pathelement path="${tomcatdir}\\lib\\servlet-api.jar" />
-				<fileset dir="WebContent\\WEB-INF\\lib">
-				          <include name="**\\*.jar" />
+				<pathelement path="${tomcatdir}/lib/servlet-api.jar" />
+				<fileset dir="WebContent/WEB-INF/lib">
+				          <include name="**/*.jar" />
 				</fileset>
 			</classpath>
 		</javac>
 
-		<copy todir="WebContent\\WEB-INF\\classes">
+		<copy todir="WebContent/WEB-INF/classes">
 		       <fileset dir="${builddir}">
 			         
-				<exclude name="**\\superlines\\client" />
-				<exclude name="**\\superlines\\client\\**\\*" />
+				<exclude name="**/superlines/client" />
+				<exclude name="**/superlines/client/**/*" />
 				
 					
 				 
 			</fileset>
 		</copy>
 
+		<delete file="${datafolder}/update" />		
+		<copy todir="${datafolder}/update"  overwrite="true">
+		       <fileset dir="." >
+		            <patternset refid="client.classes" />
+			</fileset>
+		</copy>
+		<copy todir="${datafolder}/update/data" overwrite="true" >
+		       <fileset dir="data"/>
+		</copy>
+		<copy todir="${datafolder}/update/config" overwrite="true">
+	               <fileset dir="config" />
+		</copy>
 
-
+	
 		
-				
+		<antcall target="chsum-gen">
+		         <param name="arg" value="${builddir}" />
+		</antcall>
+		<antcall target="chsum-gen">
+		          <param name="arg" value="data" />
+		</antcall>
+		<antcall target="chsum-gen">
+		          <param name="arg" value="config" />
+		</antcall>
+		
+	</target>
+
+	<target name="chsum-gen" >
+	         <java classname="superlines.core.CheckSumGenerator">
+	                <classpath>
+	                       <pathelement path="${builddir}" />
+			</classpath>
+			<arg value="${arg}"/>
+			<arg value="superlines/server" />
+		 </java>
+		 <copy file="${arg}.xml" todir="${datafolder}/update" overwrite="true" />
+		 <copy file="${arg}.xml" todir="data/client" overwrite="true" />
+		 <delete file="${arg}.xml" />
 	</target>
 	
 	<target name="dist" depends="build">
-		<delete file="${distdir}\\${war_file}" />
-		<delete file="${distdir}\\${zip_file}" />
+		<delete file="${distdir}/${war_file}" />
+		<delete file="${distdir}/${zip_file}" />
 
-		<war destfile="${distdir}\\${war_name}" webxml="WebContent\\WEB-INF\\web.xml" basedir="WebContent" />		
-		<zip destfile="${distdir}\\${zip_name}">
-		      	<fileset dir=".">
-				<exclude name="${builddir}\\superlines\\server\\*" />
-				<exclude name="${builddir}\\superlines\\server\\**\\*" />
-				<include name="${builddir}\\**\\*" />
-
-				<include name="bin\\**\\*" />
-				<include name="config\\**\\*" />
-				<include name="data\\**\\*" />
-				<include name="lib\\**\\*" />
+		
+		<zip destfile="${distdir}/${zip_name}">
+		      	<fileset dir=".">                    
+				<patternset refid="client.classes" />
+		      		<patternset refid="client.folders" />
 		      	</fileset>
 		</zip>
+			
+		<copy file="${distdir}/${zip_name}" todir="WebContent/downloads" overwrite="true" />
+		<war destfile="${distdir}/${war_name}" webxml="WebContent/WEB-INF/web.xml" basedir="WebContent" />
+
 	</target>
 	
 
@@ -63,19 +110,25 @@
 	<target name="clean">
 		<delete dir="classes"/>
 		
-		<delete>
-			<fileset dir="WebContent\\WEB-INF\\classes">
-				<include name="**\\*.class" />
-			</fileset>
+		<delete includeEmptyDirs="true">
+			<fileset dir="WebContent/WEB-INF/classes" excludes="log4j.properties">
+				
+			
+			</fileset>											
 		</delete>
+		<delete dir="WebContent/WEB-INF/data/update" />
 
 		<delete dir="dist" />
+
+		
 	</target>
 
 	<target name="update" depends="dist">
-	    <delete file="${downloads}\\${zip_name}"/>
-	    <copy file="${distdir}\\${zip_name}" todir="${downloads}" />
+	    <delete file="${downloads}/${zip_name}"/>
+	    <copy file="${distdir}/${zip_name}" todir="${downloads}" />
 	</target>
+
+	<target name="rebuild" depends="clean, dist" />
 
 
 </project>

@@ -44,12 +44,7 @@ public class MainFrame extends javax.swing.JFrame {
      */
     public MainFrame() {
         initComponents();
-/*        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        int w = getSize().width;
-        int h = getSize().height;
-        int x = (dim.width-w)/2;
-        int y = (dim.height-h)/2;
-        setLocation(x, y); */
+
         try{
         	m_settings = new Settings(MainFrame.class.getName());
         	if(m_settings.getWidth()==0 || m_settings.getHeight()==0){

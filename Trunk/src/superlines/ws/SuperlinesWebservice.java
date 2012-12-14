@@ -1,8 +1,12 @@
 package superlines.ws;
 
+import java.io.File;
+
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
+
+import org.w3c.dom.Document;
 
 import superlines.core.Authentication;
 import superlines.core.Rank;
@@ -18,7 +22,7 @@ public interface SuperlinesWebservice {
 	public ProfileResponse getProfile(@WebParam(name="auth") final Authentication auth);
 	
 	@WebMethod
-        public SuperlinesContextResponse getSuperlinesContext(@WebParam(name="auth") final Authentication auth, @WebParam(name="createOnly") final boolean createOnly);
+        public BinaryResponse getSuperlinesContext(@WebParam(name="auth") final Authentication auth, @WebParam(name="createOnly") final boolean createOnly);
         
         @WebMethod
         public Response<SuperlinesRules> getRules(@WebParam(name="auth") final Authentication auth);
@@ -37,5 +41,20 @@ public interface SuperlinesWebservice {
         public BaseResponse persist(@WebParam(name="auth") final Authentication auth ,@WebParam(name="context") final byte[] ctxBytes);
         
     	@WebMethod
-        public SuperlinesContextResponse loadSuperlinesContext(@WebParam(name="auth") final Authentication auth);
+        public BinaryResponse loadSuperlinesContext(@WebParam(name="auth") final Authentication auth);
+    	
+    	
+    	//////////////////////  UPDATE  ////////////////////////
+    	
+    	////// example: dirName = classes
+    	@WebMethod
+    	public BinaryResponse getChecksumDocument(@WebParam(name="directory") final String dirName);
+    	
+    	////// example: dirName = classes\\superlines\\client\\ColorHelper.class
+    	@WebMethod
+    	public BinaryResponse getFile(@WebParam(name="directory") final String filePath);
+    	
+    	////// example: dirName = classes\\superlines\\client	
+    	@WebMethod
+    	public FilesResponse listFiles(@WebParam(name="directory") final String dirPath );
 }

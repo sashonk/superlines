@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Date;
+import java.util.concurrent.Executors;
 
 
 import javax.swing.UIManager;
@@ -29,10 +30,12 @@ import superlines.client.ScoreSender;
 import superlines.client.SuperlinesController;
 import superlines.client.SuperlinesControllerImpl;
 import superlines.client.SuperlinesOfflineController;
+import superlines.client.Updater;
 import superlines.client.ui.LoginDialog;
 import superlines.client.ui.MainFrame;
 import superlines.client.ui.PlayPanel;
 import superlines.client.ui.RatePanel;
+import superlines.client.ui.UpdateFrame;
 import superlines.client.ws.ServiceAdapter;
 import superlines.core.Authentication;
 import superlines.core.Configuration;
@@ -103,7 +106,7 @@ public class Boot {
             public void actionPerformed(ActionEvent ae) {
                 
                 try{
- 
+                	 
                 LoginDialog d =loginFrame;                
                 Authentication auth = new Authentication();
                 d.writeData(auth);
@@ -119,6 +122,33 @@ public class Boot {
                     d.setErrorMessage(Messages.SERVICE_UNAVAILABLE.toString());
                     return;
                 }
+                
+                final Updater up = Updater.get();
+                if(up.updatesAvailable()){
+                	d.dispose();
+                	final UpdateFrame upFrame = new UpdateFrame();
+                	upFrame.setVisible(true);
+                	
+                	Executors.newSingleThreadExecutor().execute(new Runnable() {
+						
+						@Override
+						public void run() {
+							try{
+							up.update(upFrame);
+							}
+							catch(Exception ex){
+								log.error(ex);
+							}
+							
+						}
+					});
+                	
+                	
+                	return;
+                }
+                
+                
+                                                
                 
                    
                 Profile profile = adapter.getProfile(auth);
@@ -183,6 +213,8 @@ public class Boot {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
+
+				
 				Profile profile = new Profile();
 				profile.setRate(0);
 				profile.setCreateDate(new Date());
