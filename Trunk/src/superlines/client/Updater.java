@@ -137,7 +137,7 @@ public class Updater {
 					
 					File fileToUpdateDir = new File(updatedDir, path);
 					File fileToUpdate = new File(fileToUpdateDir,outdatedFileName );
-					fileToUpdate.delete();
+					//fileToUpdate.delete();
 					
 					String fileName = String.format("%s/%s",updatedDir , Util.getRelativePath(updatedDir, fileToUpdate));
 					feedback.updateTitle(String.format("updating file: %s", fileName));
@@ -222,6 +222,7 @@ public class Updater {
 					Element ownDirectory = findAndRemove(path, own);
 					if(ownDirectory==null || !ownDirectory.getAttribute("chsum").equals(chsum)){
 						
+						deleteDirectoryRecursive(new File(dir, path)) ;
 						Set<String> set = ServiceAdapter.get().listFiles(String.format("%s/%s", dir.getName(), path));
 						result.put(path, set);
 						
