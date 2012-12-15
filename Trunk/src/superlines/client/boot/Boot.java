@@ -123,6 +123,14 @@ public class Boot {
                     return;
                 }
                 
+                              
+                Profile profile = adapter.getProfile(auth);
+                if(profile==null){                    
+                    d.setErrorMessage(Messages.AUTH_FAILED.toString());
+                    return;
+                }
+                
+                
                 final Updater up = Updater.get();
                 if(up.updatesAvailable()){
                 	d.dispose();
@@ -145,16 +153,6 @@ public class Boot {
                 	
                 	
                 	return;
-                }
-                
-                
-                                                
-                
-                   
-                Profile profile = adapter.getProfile(auth);
-                if(profile==null){                    
-                    d.setErrorMessage(Messages.AUTH_FAILED.toString());
-                    return;
                 }
                 
                 
