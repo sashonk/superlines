@@ -80,7 +80,7 @@ public class UpdateFrame extends JFrame implements FeedBack{
 				addComponent(m_bar,GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE));
 		
 		
-		
+		this.getRootPane().setDefaultButton(m_closeBtn);
 	}
 	
 	

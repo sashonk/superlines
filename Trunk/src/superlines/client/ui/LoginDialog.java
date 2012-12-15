@@ -40,6 +40,7 @@ public class LoginDialog extends javax.swing.JDialog {
         setLocation(x, y); 
         
         this.setTitle("superlines 2.0");
+        
     }
     
     public void setErrorMessage(final String error){
