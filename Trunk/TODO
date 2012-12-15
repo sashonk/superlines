@@ -1,5 +1,4 @@
 
-- update functionality (basic)
 - fix dist client : creates server dir
 - put rules into the database ?
 - dbscripts: mysql error 150 
