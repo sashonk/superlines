@@ -7,7 +7,7 @@ import javax.servlet.ServletContextListener;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import superlines.server.PromotionHelper;
+import superlines.server.PromotionDAO;
 import superlines.server.RateDAO;
 import superlines.server.mail.MailHelper;
 
@@ -28,8 +28,7 @@ public class SuperlinesContextListener implements ServletContextListener{
 		  ServletContext servletCtx = event.getServletContext();
 		  String webContentFolder = servletCtx.getRealPath("/");
 		  System.setProperty("config.file.path", String.format("%s%s", webContentFolder, "WEB-INF/config/config.properties"));
-		  System.setProperty("data.folder", String.format("%s/%s", webContentFolder, "WEB-INF/data"));		  
-		  PromotionHelper.fillData();
+		  System.setProperty("data.folder", String.format("%s/%s", webContentFolder, "WEB-INF/data"));		  	
 		  MailHelper.initialize();
 
 		  log.debug("superlines web application initialized");

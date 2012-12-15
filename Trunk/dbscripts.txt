@@ -52,6 +52,37 @@ CREATE TABLE IF NOT EXISTS persistance(
 	#FOREIGN KEY(accountid) REFERENCES users(user_name) ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS rankdata(
+    rankid INT PRIMARY KEY,
+    ballsCount INT,
+    normalAward INT,
+    extraAward INT,
+    scatterCount INT,
+    colorCount INT,
+    tableSize INT,
+    minScore INT,
+    progressiveEnabled BOOLEAN,
+    progressive1Threshold INT,
+    progressive2Threshold INT,
+    progressive1Mul INT,
+    progressive2Mul INT,
+	normative INT	
+);
+
+INSERT INTO rankdata (rankid, ballsCount, normalAward, extraAward, scatterCount, colorCount, tableSize, minScore, progressiveEnabled, progressive1Threshold, progressive2Threshold, progressive1Mul, progressive2Mul, normative) values
+(1, 5, 100, 50, 3, 5, 10, 1000, true, 3000, 7000, 2, 4, 0);
+INSERT INTO rankdata (rankid, ballsCount, normalAward, extraAward, scatterCount, colorCount, tableSize, minScore, progressiveEnabled, progressive1Threshold, progressive2Threshold, progressive1Mul, progressive2Mul, normative) values
+(2, 5, 100, 50, 3, 6, 9, 2000, true, 5000, 10000, 2, 4, 20000);
+INSERT INTO rankdata (rankid, ballsCount, normalAward, extraAward, scatterCount, colorCount, tableSize, minScore, progressiveEnabled, progressive1Threshold, progressive2Threshold, progressive1Mul, progressive2Mul, normative) values
+(3, 5, 100, 50, 3, 7, 9, 3000, true, 6000, 12000, 2, 4, 30000);
+INSERT INTO rankdata (rankid, ballsCount, normalAward, extraAward, scatterCount, colorCount, tableSize, minScore, progressiveEnabled, progressive1Threshold, progressive2Threshold, progressive1Mul, progressive2Mul, normative) values
+(4, 5, 100, 50, 3, 8, 9, 3000, true, 6000, 12000, 2, 4, 30000);
+INSERT INTO rankdata (rankid, ballsCount, normalAward, extraAward, scatterCount, colorCount, tableSize, minScore, progressiveEnabled, progressive1Threshold, progressive2Threshold, progressive1Mul, progressive2Mul, normative) values
+(5, 5, 100, 50, 3, 9, 9, 3000, true, 6000, 12000, 2, 4, 30000);
+INSERT INTO rankdata (rankid, ballsCount, normalAward, extraAward, scatterCount, colorCount, tableSize, minScore, progressiveEnabled, progressive1Threshold, progressive2Threshold, progressive1Mul, progressive2Mul, normative) values
+(6, 6, 100, 50, 3, 9, 9, 3000, true, 6000, 12000, 2, 4, 40000);
+
+
 
 INSERT INTO roles (role_name) values ('user');
 INSERT INTO roles (role_name) values ('unconfirmed');

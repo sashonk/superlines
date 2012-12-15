@@ -1,9 +1,9 @@
 package superlines.server.ws;
 
 
-import superlines.server.PromotionHelper;
+import superlines.server.PromotionDAO;
 import superlines.server.RateDAO;
-import superlines.server.RulesHelper;
+import superlines.server.RulesDAO;
 import superlines.server.mail.MailHelper;
 import superlines.ws.ProfileResponse;
 
@@ -163,7 +163,7 @@ public class SuperlinesWebserviceImpl implements SuperlinesWebservice{
 		
 		PromotionResponse response = new PromotionResponse();
 		try{
-			String message = PromotionHelper.getPromotionMessage(rank, locale);
+			String message = PromotionDAO.get().getPromotionMessage(rank, locale);
 			response.setPromotionMessage(message);
 			
 		}
@@ -198,7 +198,7 @@ public class SuperlinesWebserviceImpl implements SuperlinesWebservice{
     	   }
     	   
     	   if(response.getData()==null){
-	    	   SuperlinesRules rules =  RulesHelper.createRules(profile.getRank());    	   
+	    	   SuperlinesRules rules =  RulesDAO.get().createRules(profile.getRank());    	   
 	           SuperlinesContext ctx = new SuperlinesContext();
 	           ctx.setRules(rules);
 	           ctx.setScore(0);	    
@@ -260,7 +260,7 @@ public class SuperlinesWebserviceImpl implements SuperlinesWebservice{
 				}
 				st.close();
 				
-				int acceptableScore = RulesHelper.getAcceptableResult(Rank.getRank(rank));
+				int acceptableScore = RulesDAO.get().getAcceptableResult(Rank.getRank(rank));
 				if(acceptableScore>score){
 					Message m = new Message();
 					m.setText(String.format("%s %d", Localizer.getLocalizedString(superlines.server.Messages.NOT_ENOUGH_SCORE, auth.getLocale()), acceptableScore));
@@ -286,7 +286,7 @@ public class SuperlinesWebserviceImpl implements SuperlinesWebservice{
 				st.close();
 				
 				Rank nextRank = Rank.getRank(rank).getNext();
-				int targetRate = PromotionHelper.getQualifiedRate(nextRank);
+				int targetRate = PromotionDAO.get().getQualifiedRate(nextRank);
 				if(targetRate <= total ){
 					st = c.prepareStatement("update profiles set rankid = ? where id = ?");
 					st.setInt(1, nextRank.getRank());

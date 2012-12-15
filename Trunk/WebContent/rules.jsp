@@ -30,10 +30,9 @@
 	</tr>
 	
 	<%
-		for(Rank r : Rank.values()){
-			SuperlinesRules rules = superlines.server.RulesHelper.createRules(r);
-			
-			%> <tr> 
+			for(Rank r : Rank.values()){
+			SuperlinesRules rules = superlines.server.RulesDAO.get().createRules(r);
+		%> <tr> 
 				<td class="rulestd" align="center"><%= r %></td>			
 				<td class="rulestd" align="center"><%= rules.getMinWinBalls() %> </td>
 				<td class="rulestd" align="center"><%= rules.getNormalAward() %> </td>
@@ -76,7 +75,7 @@
 <%	
 for(Rank r : Rank.values()){
 	%> 
-		<td align="center"><b><%=PromotionHelper.getQualifiedRate(r)%></b></td>					
+		<td align="center"><b><%=PromotionDAO.get().getQualifiedRate(r)%></b></td>					
 	<%
 }	
 %>
