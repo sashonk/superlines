@@ -1,5 +1,7 @@
 package superlines.server.mail;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Properties;
 
@@ -61,9 +63,9 @@ public class MailHelper {
             
 
         	Transport.send(msg);
-        	log.debug("message sent");
+        	log.debug("message sent, recipients: " + Arrays.toString(recipients.toArray()));
         } catch (Throwable e) {
-        	log.error(e);
+        	log.error("failed send message, recipients: "+ Arrays.toString(recipients.toArray()) ,e);
         } 
 	}
 
