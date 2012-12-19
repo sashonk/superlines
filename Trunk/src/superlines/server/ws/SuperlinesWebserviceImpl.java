@@ -286,12 +286,15 @@ public class SuperlinesWebserviceImpl implements SuperlinesWebservice{
 				st.close();
 				
 				Rank nextRank = Rank.getRank(rank).getNext();
-				int targetRate = PromotionDAO.get().getQualifiedRate(nextRank);
-				if(targetRate <= total ){
-					st = c.prepareStatement("update profiles set rankid = ? where id = ?");
-					st.setInt(1, nextRank.getRank());
-					st.setInt(2, id);
-					st.executeUpdate();				
+				
+				if(nextRank!=null){
+					int targetRate = PromotionDAO.get().getQualifiedRate(nextRank);
+					if(targetRate <= total ){
+						st = c.prepareStatement("update profiles set rankid = ? where id = ?");
+						st.setInt(1, nextRank.getRank());
+						st.setInt(2, id);
+						st.executeUpdate();				
+					}
 				}
 
 				st.close();
