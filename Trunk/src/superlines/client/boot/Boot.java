@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.concurrent.Executors;
 
 
+import javax.swing.LookAndFeel;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.SwingUtilities;
@@ -54,6 +55,17 @@ public class Boot {
 	private static final String DATA_FOLDER = "data/client";
 	
 	private static final Log log = LogFactory.getLog(Boot.class);
+	
+	private static LookAndFeelInfo findLookAndFeel(final String name){
+		 for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+				// System.out.println(info.getName());
+	        if (name.equals(info.getName())) {
+	            return info;
+	        }
+	    }
+		 
+		 return null;
+	}
     
     public static void main(String[] argc) throws Exception{
         	Thread.currentThread().setName("main-thread");    	
@@ -64,18 +76,21 @@ public class Boot {
     	
     		log.debug("application start");
     		
-			        try {
-            // Set cross-platform Java L&F (also called "Metal")
-     			 for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-        if ("Nimbus".equals(info.getName())) {
-            UIManager.setLookAndFeel(info.getClassName());
-            break;
-        }
-    }
-    } 
-    catch (Exception e) {
-       log.error(e);
-    }
+    		Configuration cfg = Configuration.get();
+    		String lnfName = cfg.getProperty("preferred.lookandfeel.name");
+    		
+    		if(lnfName!=null){
+    			LookAndFeelInfo info = findLookAndFeel(lnfName);
+ 			   try {  
+ 				   UIManager.setLookAndFeel(info.getClassName());
+
+ 			   } 
+ 				catch (Exception e) {
+ 					log.error(e);
+ 				}
+    		}
+    		
+
         
             SwingUtilities.invokeAndWait(new Runnable(){
 
