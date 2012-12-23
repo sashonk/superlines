@@ -15,13 +15,16 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import superlines.client.Application;
 
 import superlines.client.FeedBack;
 import superlines.client.Messages;
 
 @SuppressWarnings("serial")
 public class UpdateFrame extends JFrame implements FeedBack{
-	
+	private static Log log = LogFactory.getLog(UpdateFrame.class);
 	
 	private JProgressBar m_bar ;
 	private JLabel m_label;
@@ -48,7 +51,7 @@ public class UpdateFrame extends JFrame implements FeedBack{
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				UpdateFrame.this.dispose();
-				System.exit(0);
+                                Application.exit(0);
 			}
 		});		
 		m_closeBtn.setEnabled(false);

@@ -20,6 +20,7 @@ import javax.swing.JFrame;
 import javax.swing.KeyStroke;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import superlines.client.Application;
 
 import superlines.client.Messages;
 import superlines.core.Authentication;
@@ -31,7 +32,6 @@ import superlines.core.Authentication;
 @SuppressWarnings("serial")
 public class LoginFrame extends javax.swing.JFrame {
 
-    private static Log log = LogFactory.getLog(LoginFrame.class);
 
     public LoginFrame() {
         initComponents();
@@ -53,8 +53,7 @@ public class LoginFrame extends javax.swing.JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 LoginFrame.this.dispose();       
-                log.debug("application terminate");
-                System.exit(0);
+                   Application.exit(0);
             }
         }; 
         getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(escapeKeyStroke, "ESCAPE");

@@ -17,6 +17,7 @@ import javax.swing.JPanel;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import superlines.client.Application;
 
 import superlines.client.FrameListener;
 import superlines.client.SuperlinesController;
@@ -79,8 +80,7 @@ public class MainFrame extends javax.swing.JFrame {
 						listener.frameClosing();
 					}
 					
-				log.debug("application terminate");
-				System.exit(0);
+				Application.exit(0);
 				}
 		});
        
