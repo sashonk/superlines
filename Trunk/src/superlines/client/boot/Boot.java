@@ -32,7 +32,7 @@ import superlines.client.SuperlinesController;
 import superlines.client.SuperlinesControllerImpl;
 import superlines.client.SuperlinesOfflineController;
 import superlines.client.Updater;
-import superlines.client.ui.LoginDialog;
+import superlines.client.ui.LoginFrame;
 import superlines.client.ui.MainFrame;
 import superlines.client.ui.PlayPanel;
 import superlines.client.ui.RatePanel;
@@ -103,7 +103,7 @@ public class Boot {
                 frame.add(scorePanel);
                 frame.add(playPanel);
                 
-                final LoginDialog loginFrame = new LoginDialog(frame, true);   
+                final LoginFrame loginFrame = new LoginFrame();   
                         loginFrame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent evt) {
@@ -122,7 +122,7 @@ public class Boot {
                 
                 try{
                 	 
-                LoginDialog d =loginFrame;                
+                LoginFrame d =loginFrame;                
                 Authentication auth = new Authentication();
                 d.writeData(auth);
                 auth.setLocale(Configuration.get().getProperty("locale"));
