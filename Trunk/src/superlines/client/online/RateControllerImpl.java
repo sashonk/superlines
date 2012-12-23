@@ -1,4 +1,4 @@
-package superlines.client;
+package superlines.client.online;
 
 import java.util.List;
 import java.util.Timer;
@@ -12,6 +12,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 
+import superlines.client.RateController;
+import superlines.client.RatePanelModel;
 import superlines.client.ws.ServiceAdapter;
 import superlines.core.Authentication;
 import superlines.ws.RateData;

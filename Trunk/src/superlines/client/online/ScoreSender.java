@@ -1,7 +1,9 @@
-package superlines.client;
+package superlines.client.online;
 
 import javax.swing.JOptionPane;
 
+import superlines.client.Messages;
+import superlines.client.SuperlinesAdapter;
 import superlines.client.ui.MainFrame;
 import superlines.client.ws.ServiceAdapter;
 import superlines.core.Authentication;

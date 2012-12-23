@@ -17,8 +17,8 @@ import org.apache.commons.logging.LogFactory;
 
 import superlines.client.Messages;
 import superlines.client.RateController;
-import superlines.client.RateControllerImpl;
 import superlines.client.RateListener;
+import superlines.client.online.RateControllerImpl;
 import superlines.core.Util;
 import superlines.ws.RateData;
 

@@ -20,7 +20,7 @@ import org.apache.commons.logging.LogFactory;
 
 import superlines.client.FrameListener;
 import superlines.client.SuperlinesController;
-import superlines.client.SuperlinesControllerImpl;
+import superlines.client.online.SuperlinesControllerImpl;
 
 /**
  *

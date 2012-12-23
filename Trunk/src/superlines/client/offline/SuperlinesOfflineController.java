@@ -1,4 +1,4 @@
-package superlines.client;
+package superlines.client.offline;
 
 
 import java.util.LinkedList;
@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
+import superlines.client.Messages;
+import superlines.client.SuperlinesController;
 import superlines.client.ui.MainFrame;
 import superlines.core.RulesHelper;
 import superlines.core.SuperlinesBall;

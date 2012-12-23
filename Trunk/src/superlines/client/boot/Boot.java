@@ -21,17 +21,17 @@ import org.apache.log4j.PropertyConfigurator;
 
 
 import superlines.client.Messages;
-import superlines.client.Persister;
 import superlines.client.ProfileController;
-import superlines.client.ProfileControllerImpl;
 import superlines.client.RateController;
-import superlines.client.RateControllerImpl;
 import superlines.client.RatePanelModel;
-import superlines.client.ScoreSender;
 import superlines.client.SuperlinesController;
-import superlines.client.SuperlinesControllerImpl;
-import superlines.client.SuperlinesOfflineController;
-import superlines.client.Updater;
+import superlines.client.offline.SuperlinesOfflineController;
+import superlines.client.online.Persister;
+import superlines.client.online.ProfileControllerImpl;
+import superlines.client.online.RateControllerImpl;
+import superlines.client.online.ScoreSender;
+import superlines.client.online.SuperlinesControllerImpl;
+import superlines.client.online.Updater;
 import superlines.client.ui.LoginFrame;
 import superlines.client.ui.MainFrame;
 import superlines.client.ui.PlayPanel;

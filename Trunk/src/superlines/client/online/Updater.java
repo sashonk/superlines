@@ -1,4 +1,4 @@
-package superlines.client;
+package superlines.client.online;
 
 
 import java.io.ByteArrayInputStream;
@@ -27,6 +27,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import superlines.client.FeedBack;
+import superlines.client.Messages;
 import superlines.client.ws.ServiceAdapter;
 
 import superlines.core.Util;

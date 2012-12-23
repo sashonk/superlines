@@ -1,4 +1,4 @@
-package superlines.client;
+package superlines.client.online;
 
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectOutputStream;
@@ -6,6 +6,8 @@ import java.io.ObjectOutputStream;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import superlines.client.FrameListener;
+import superlines.client.SuperlinesAdapter;
 import superlines.client.ws.ServiceAdapter;
 import superlines.core.Authentication;
 import superlines.core.SuperlinesContext;

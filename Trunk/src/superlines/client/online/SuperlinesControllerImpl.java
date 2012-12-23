@@ -1,4 +1,4 @@
-package superlines.client;
+package superlines.client.online;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -16,6 +16,8 @@ import javax.swing.JOptionPane;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import superlines.client.Messages;
+import superlines.client.SuperlinesController;
 import superlines.client.ui.MainFrame;
 import superlines.client.ws.ServiceAdapter;
 import superlines.core.Authentication;
