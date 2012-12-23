@@ -8,10 +8,18 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.KeyStroke;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import superlines.client.Messages;
 import superlines.core.Authentication;
@@ -23,7 +31,7 @@ import superlines.core.Authentication;
 @SuppressWarnings("serial")
 public class LoginFrame extends javax.swing.JFrame {
 
-
+    private static Log log = LogFactory.getLog(LoginFrame.class);
 
     public LoginFrame() {
         initComponents();
@@ -38,6 +46,19 @@ public class LoginFrame extends javax.swing.JFrame {
         this.setTitle("superlines 2.0");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.getRootPane().setDefaultButton(okBtn);
+        
+        KeyStroke escapeKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0, false);
+        Action escapeAction = new AbstractAction() {
+         // close the frame when the user presses escape
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                LoginFrame.this.dispose();       
+                log.debug("application terminate");
+                System.exit(0);
+            }
+        }; 
+        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(escapeKeyStroke, "ESCAPE");
+        getRootPane().getActionMap().put("ESCAPE", escapeAction);
     }
     
     public void setErrorMessage(final String error){
