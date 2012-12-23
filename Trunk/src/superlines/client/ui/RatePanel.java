@@ -26,7 +26,7 @@ import superlines.ws.RateData;
  *
  * @author Sashonk
  */
-public class RatePanel extends javax.swing.JPanel implements RateListener{
+public class RatePanel extends NamedPanel implements RateListener{
 
 	private static final Log log = LogFactory.getLog(RatePanel.class);
 	private final StringBuilder m_template = new StringBuilder();
@@ -123,7 +123,6 @@ public class RatePanel extends javax.swing.JPanel implements RateListener{
 
         tableScrollPane = new javax.swing.JScrollPane();
         tableEditorPane = new javax.swing.JEditorPane();
-        toGameBtn = new javax.swing.JButton();
 
         setLayout(new java.awt.GridBagLayout());
 
@@ -144,29 +143,15 @@ public class RatePanel extends javax.swing.JPanel implements RateListener{
         gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(11, 10, 0, 10);
         add(tableScrollPane, gridBagConstraints);
-
-        toGameBtn.setText(Messages.TOGAME.toString());
-        toGameBtn.setPreferredSize(new java.awt.Dimension(80, 23));
-        toGameBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                toGameBtnActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(6, 10, 11, 0);
-        add(toGameBtn, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void toGameBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toGameBtnActionPerformed
-        MainFrame.get().showPlayPanel();
-    }//GEN-LAST:event_toGameBtnActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JEditorPane tableEditorPane;
     private javax.swing.JScrollPane tableScrollPane;
-    private javax.swing.JButton toGameBtn;
     // End of variables declaration//GEN-END:variables
+
+	@Override
+	public String getName() {
+		return Messages.TOSCORE.toString();
+	}
 }

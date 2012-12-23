@@ -32,7 +32,7 @@ import superlines.core.Profile;
  *
  * @author Sashonk
  */
-public class PlayPanel extends javax.swing.JPanel implements SuperlinesListener, ProfileListener{
+public class PlayPanel extends NamedPanel implements SuperlinesListener, ProfileListener{
 
 	private SuperlinesController m_controller;
 	private final SuperlinesPanel m_superPanel; 
@@ -196,7 +196,6 @@ public class PlayPanel extends javax.swing.JPanel implements SuperlinesListener,
         scoreField = new javax.swing.JTextField();
         middlePanel = new javax.swing.JPanel();
         bottomPanel = new javax.swing.JPanel();
-        toScoreBtn = new javax.swing.JButton();
         scatterButton = new javax.swing.JButton();
         restartBtn = new javax.swing.JButton();
 
@@ -253,15 +252,6 @@ public class PlayPanel extends javax.swing.JPanel implements SuperlinesListener,
         bottomPanel.setMaximumSize(new java.awt.Dimension(32767, 100));
         bottomPanel.setPreferredSize(new java.awt.Dimension(495, 60));
 
-        toScoreBtn.setText(Messages.TOSCORE.toString() );
-        toScoreBtn.setPreferredSize(new java.awt.Dimension(80, 23));
-        toScoreBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                toScoreBtnActionPerformed(evt);
-            }
-        });
-        bottomPanel.add(toScoreBtn);
-
         scatterButton.setText(Messages.SCATTER.toString() );
         scatterButton.setPreferredSize(new java.awt.Dimension(80, 23));
         scatterButton.addActionListener(new java.awt.event.ActionListener() {
@@ -287,10 +277,6 @@ public class PlayPanel extends javax.swing.JPanel implements SuperlinesListener,
         m_controller.scatter();
     }//GEN-LAST:event_scatterButtonActionPerformed
 
-    private void toScoreBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toScoreBtnActionPerformed
-        MainFrame.get().showScorePanel();        // TODO add your handling code here:
-    }//GEN-LAST:event_toScoreBtnActionPerformed
-
     private void restartBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_restartBtnActionPerformed
 
     	
@@ -313,13 +299,17 @@ public class PlayPanel extends javax.swing.JPanel implements SuperlinesListener,
     private javax.swing.JLabel scoreLabel;
     private javax.swing.JPanel scorePanel;
     private javax.swing.JPanel tipPanel;
-    private javax.swing.JButton toScoreBtn;
     private javax.swing.JPanel topPanel;
     // End of variables declaration//GEN-END:variables
 	@Override
 	public void postTableFilled() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public String getName() {
+		return Messages.TOGAME.toString();
 	}
 
 

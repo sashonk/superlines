@@ -100,8 +100,8 @@ public class Boot {
                 final  MainFrame frame = MainFrame.get();
                 final RatePanel scorePanel = new RatePanel();
                 final PlayPanel playPanel = new PlayPanel();
-                frame.add(scorePanel);
-                frame.add(playPanel);
+                frame.addPanel(scorePanel);
+                frame.addPanel(playPanel);
                 
                 final LoginFrame loginFrame = new LoginFrame();   
                         loginFrame.addWindowListener(new WindowAdapter() {
@@ -212,7 +212,7 @@ public class Boot {
                 d.dispose();
                 
                 frame.setVisible(true);
-                frame.showPlayPanel();
+                frame.showNamedPanel(Messages.TOGAME.toString());
                 }
                 catch(Exception ex){
                     log.error(ex);
@@ -247,7 +247,7 @@ public class Boot {
                 loginFrame.dispose();
                 
                 frame.setVisible(true);
-                frame.showPlayPanel();			
+                frame.showNamedPanel(Messages.TOGAME.toString());		
 			}
         	
         });

@@ -4,14 +4,19 @@
  */
 package superlines.client.ui;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -40,6 +45,12 @@ public class MainFrame extends javax.swing.JFrame {
     private static MainFrame instance ;
     
     private static Settings m_settings;
+    
+    private JPanel m_mainPanel;
+    
+    private JPanel m_bottomPanel;
+    
+  
     /**
      * Creates new form MainFrame
      */
@@ -99,28 +110,44 @@ public class MainFrame extends javax.swing.JFrame {
     }
     
     
-    public void showScorePanel(){
-        showPanel(RatePanel.class);
-    }
-     public void showPlayPanel(){
-        showPanel(PlayPanel.class);
-    }   
+
 
     
-    void showPanel(Class<? extends JPanel> cls){
-        for(Component c : getContentPane().getComponents()){
-            if(c.getClass()==cls){
-                c.setVisible(true);                
-            }
-            else{
-                c.setVisible(false);
+    public void showNamedPanel(final String name){
+        for(Component c : m_mainPanel.getComponents()){
+            if(c instanceof NamedPanel){
+            	NamedPanel panel = (NamedPanel)c;
+            	if(panel.getName().equals(name)){
+            		panel.setVisible(true);            		            		
+            	}
+            	else{
+            		panel.setVisible(false);
+            	}
             }
         }
         
     }
     
-    void shutdown(){
-        System.exit(0);
+    public void addPanel(final NamedPanel panel){
+    	m_mainPanel.add(panel);
+    	
+    	JButton btn = new JButton(panel.getName());
+    	btn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				for(Component c : MainFrame.this.m_mainPanel.getComponents()){
+					c.setVisible(false);
+				}
+				
+				panel.setVisible(true);
+			}
+		});
+    	
+    	m_mainPanel.doLayout();
+    	m_bottomPanel.add(btn);
+    	m_bottomPanel.doLayout();
+    	
     }
     
 
@@ -132,9 +159,17 @@ public class MainFrame extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-
+    	    	
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.LINE_AXIS));
+        getContentPane().setLayout(new BorderLayout());
+        
+        m_mainPanel = new JPanel();
+        getContentPane().add(m_mainPanel, BorderLayout.CENTER);
+        m_mainPanel.setLayout(new javax.swing.BoxLayout(m_mainPanel, javax.swing.BoxLayout.LINE_AXIS));
+        
+        m_bottomPanel = new JPanel();
+        m_bottomPanel.setLayout(new FlowLayout(FlowLayout.LEADING));
+        getContentPane().add(m_bottomPanel, BorderLayout.AFTER_LAST_LINE);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
