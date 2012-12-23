@@ -37,6 +37,7 @@ public class LoginFrame extends javax.swing.JFrame {
         
         this.setTitle("superlines 2.0");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.getRootPane().setDefaultButton(okBtn);
     }
     
     public void setErrorMessage(final String error){
