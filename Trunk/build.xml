@@ -6,14 +6,14 @@
 	<property name="builddir" value="classes"/>
 	<property  name="distdir" value="dist" />
 	<property name="downloads" value="/var/lib/tomcat6/webapps/ROOT/downloads" />
-	<property name="ext_libs" value="/usr/share/tomcat6/lib" />
+	<property name="ext_libs" value="/tomcat/lib" />
 	<property name="datafolder" value="WebContent/WEB-INF/data" />
 	<property name="webapps" value="/var/lib/tomcat6/webapps" />
 	
 	
 	<patternset id="client.classes">
-	    		<exclude name="${builddir}/superlines/server/*" />
-				<exclude name="${builddir}/superlines/server/**/*" />
+	    		<exclude name="${builddir}/superlines/server" />
+				<exclude name="${builddir}/superlines/server/**/*" />  
 				<include name="${builddir}/**/*" />
 
 	</patternset>
@@ -128,13 +128,6 @@
 
 		
 	</target>
-
-	<target name="update" depends="dist">
-	    <delete file="${downloads}/${zip_name}"/>
-	    <copy file="${distdir}/${zip_name}" todir="${downloads}" />
-	</target>
-
-	<target name="rebuild" depends="clean, build" />
 
 
 </project>

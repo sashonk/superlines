@@ -1,4 +1,4 @@
 
-- fix dist client : creates server dir
 - dbscripts: mysql error 150 
+- autoReconnect problem
 
