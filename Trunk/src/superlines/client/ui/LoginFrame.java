@@ -35,6 +35,7 @@ public class LoginFrame extends javax.swing.JFrame {
 
     public LoginFrame() {
         initComponents();
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         int w = getSize().width;

@@ -20,6 +20,7 @@ import org.apache.commons.logging.*;
 import org.apache.log4j.PropertyConfigurator;
 
 
+import superlines.client.Application;
 import superlines.client.Messages;
 import superlines.client.ProfileController;
 import superlines.client.RateController;
@@ -97,20 +98,10 @@ public class Boot {
             @Override
             public void run() {
                 
-                final  MainFrame frame = MainFrame.get();
-                final RatePanel scorePanel = new RatePanel();
-                final PlayPanel playPanel = new PlayPanel();
-                frame.addPanel(scorePanel);
-                frame.addPanel(playPanel);
+
                 
-                final LoginFrame loginFrame = new LoginFrame();   
-                        loginFrame.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent evt) {
-            	log.debug("application terminate");
-                System.exit(0);
-            }
-        });
+               final LoginFrame loginFrame = new LoginFrame();   
+         
                         
                         
 
@@ -121,7 +112,7 @@ public class Boot {
             public void actionPerformed(ActionEvent ae) {
                 
                 try{
-                	 
+                	                	 
                 LoginFrame d =loginFrame;                
                 Authentication auth = new Authentication();
                 d.writeData(auth);
@@ -146,6 +137,14 @@ public class Boot {
                 }
                 
                 
+                // create GUI
+                final  MainFrame frame = MainFrame.get();
+                final RatePanel scorePanel = new RatePanel();
+                final PlayPanel playPanel = new PlayPanel();
+                frame.addPanel(scorePanel);
+                frame.addPanel(playPanel);
+                
+                
                 final Updater up = Updater.get();
                 if(up.updatesAvailable()){
                 	d.dispose();
@@ -157,7 +156,7 @@ public class Boot {
 						@Override
 						public void run() {
 							try{
-							up.update(upFrame);
+								up.update(upFrame);
 							}
 							catch(Exception ex){
 								log.error(ex);
@@ -216,7 +215,7 @@ public class Boot {
                 }
                 catch(Exception ex){
                     log.error(ex);
-                    System.exit(1);
+                    Application.exit(1);
                 }
             }
         });
@@ -226,6 +225,13 @@ public class Boot {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
+				
+				// create GUI
+                final  MainFrame frame = MainFrame.get();
+                final RatePanel scorePanel = new RatePanel();
+                final PlayPanel playPanel = new PlayPanel();
+                frame.addPanel(scorePanel);
+                frame.addPanel(playPanel);
 
 				
 				Profile profile = new Profile();
