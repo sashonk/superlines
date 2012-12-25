@@ -44,25 +44,25 @@ public class Updater {
 		
 
 		for(int i = 0; i<updatedDirsNames.length;i++){
-			String updateDirName = updatedDirsNames[i];
-			byte[] data  = sa.getChecksumDocument(updateDirName);
+			String updatedDirName = updatedDirsNames[i];
+			byte[] data  = sa.getChecksumDocument(updatedDirName);
 			ByteArrayInputStream bais = new ByteArrayInputStream(data);
 			ObjectInputStream ois = new ObjectInputStream(bais);
-			chsumDocuments.put(updateDirName, (Document) ois.readObject());
+			m_chsumDocuments.put(updatedDirName, (Document) ois.readObject());
 			
 			
-			File checkSumFile = new File("update", String.format("%s.xml", updateDirName));
+			File checkSumFile = new File("update", String.format("%s.xml", updatedDirName));
 			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 			DocumentBuilder db = dbf.newDocumentBuilder();				
-			m_ownCheckDocuments.put(updateDirName, db.parse(checkSumFile));															
+			m_ownChsumDocuments.put(updatedDirName, db.parse(checkSumFile));															
 
 		}
 	}
 	
 	private static final Log log = LogFactory.getLog(Updater.class);
 	
-	private Map<String, Document> chsumDocuments = new HashMap<>();
-	private Map<String, Document> m_ownCheckDocuments = new HashMap<>(); 
+	private Map<String, Document> m_chsumDocuments = new HashMap<>();
+	private Map<String, Document> m_ownChsumDocuments = new HashMap<>(); 
 	
 	private static Updater instance;
 	
@@ -81,8 +81,8 @@ public class Updater {
 	
 	public  boolean updatesAvailable() throws Exception{
 		for(String updatedDirName : updatedDirsNames){
-			Document ownDoc = m_ownCheckDocuments.get(updatedDirName);
-			Document doc = chsumDocuments.get(updatedDirName);
+			Document ownDoc = m_ownChsumDocuments.get(updatedDirName);
+			Document doc = m_chsumDocuments.get(updatedDirName);
 			
 			String ownChsum = ownDoc.getDocumentElement().getAttribute("chsum");
 			String chsum = doc.getDocumentElement().getAttribute("chsum");
@@ -97,11 +97,11 @@ public class Updater {
 	
 	private void updateChsumDocuments(){
 	
-		for(String updateDirName : chsumDocuments.keySet()){
+		for(String updateDirName : m_chsumDocuments.keySet()){
 			File chsumFile = new File("update", updateDirName+".xml");
 			chsumFile.delete();
 			
-			Util.writeXmlFile(chsumDocuments.get(updateDirName), chsumFile);
+			Util.writeXmlFile(m_chsumDocuments.get(updateDirName), chsumFile);
 			
 		}
 	}
@@ -121,11 +121,10 @@ public class Updater {
 		feedback.begin();
 		
 		for(String updatedDirName : updatedDirsNames){						
-			File checkSumFile = new File("update", String.format("%s.xml", updatedDirName));
 			File updatedDir = new File(updatedDirName);
 			
 			 
-			Map<String, Set<String>> filesToUpdateMap = getFilesToUpdate(updatedDir, checkSumFile);
+			Map<String, Set<String>> filesToUpdateMap = getFilesToUpdate(updatedDirName);
 			
 			
 			int total = totalCount(filesToUpdateMap);
@@ -195,25 +194,17 @@ public class Updater {
 		feedback.end();
 	}
 	
-	private  Map<String, Set<String>> getFilesToUpdate(final File dir, final File checkSumFile){
+	private  Map<String, Set<String>> getFilesToUpdate(final String dirName){
 		Map<String, Set<String>> result = new HashMap<>();
 		
-		Document own = null;
-		try{
-			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-			DocumentBuilder db = dbf.newDocumentBuilder();
-			own = db.parse(checkSumFile);
-												
-		}
-		catch(Exception ex){
-			log.error(ex);
-		}				
+		Document own = m_ownChsumDocuments.get(dirName);
+			
 		
 		Document doc = null;
 		
 		try{
 
-			doc = chsumDocuments.get(dir.getName());
+			doc = m_chsumDocuments.get(dirName);
 			Element root = doc.getDocumentElement();
 			
 			NodeList nodeList =  root.getChildNodes();
@@ -230,8 +221,8 @@ public class Updater {
 					if(ownDirectory==null || !ownDirectory.getAttribute("chsum").equals(chsum)){
 						
 						
-						dirsToDelete.add(new File(dir, path));
-						Set<String> set = ServiceAdapter.get().listFiles(String.format("%s/%s", dir.getName(), path));
+						dirsToDelete.add(new File(dirName, path));
+						Set<String> set = ServiceAdapter.get().listFiles(String.format("%s/%s", dirName, path));
 						result.put(path, set);
 						
 					}
@@ -241,7 +232,7 @@ public class Updater {
 			for(File f : dirsToDelete){
 				emptyDir(f);
 			}
-			deleteTheRest(own, dir);
+			deleteTheRest(own, dirName);
 		}
 		catch(Exception ex){
 			log.error(ex);
@@ -280,7 +271,7 @@ public class Updater {
 		dir.delete();
 	}
 	
-	private  void deleteTheRest(final Document doc, final File rootDir){
+	private  void deleteTheRest(final Document doc, final String rootDirName){
 		Element root = doc.getDocumentElement();
 		
 		NodeList nl = root.getChildNodes();
@@ -289,7 +280,7 @@ public class Updater {
 			if(nd.getNodeType()==Node.ELEMENT_NODE){
 				Element directory = (Element)nd;
 				String path = directory.getAttribute("path");
-				File dir = new File(rootDir, path);
+				File dir = new File(rootDirName, path);
 				deleteDirectoryRecursive(dir);
 			}
 		}
