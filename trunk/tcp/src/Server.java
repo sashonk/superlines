@@ -2,7 +2,6 @@ import java.io.*;
 import java.net.*;
 import java.sql.*;
 
-import com.ibm.db2.jcc.DB2Driver;
 
 public class Server {
 
