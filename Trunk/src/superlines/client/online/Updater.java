@@ -87,16 +87,18 @@ public class Updater {
 			String ownChsum = ownDoc.getDocumentElement().getAttribute("chsum");
 			String chsum = doc.getDocumentElement().getAttribute("chsum");
 									
-			if(!ownChsum.equals(chsum)){
+			if(!ownChsum.equals(chsum)){				
 				return true;
 			}
 		}
 		
+		log.debug("application is up to date, no update needed");
 		return false;
 	}
 	
 	private void updateChsumDocuments(){
 	
+		log.debug("update checksum documents");
 		for(String updateDirName : m_chsumDocuments.keySet()){
 			File chsumFile = new File("update", updateDirName+".xml");
 			chsumFile.delete();
@@ -118,6 +120,7 @@ public class Updater {
 	
 	public  void update(final FeedBack feedback) throws Exception{				
 	
+		log.debug("update started");
 		feedback.begin();
 		
 		for(String updatedDirName : updatedDirsNames){						
@@ -134,16 +137,17 @@ public class Updater {
 				
 				for(String outdatedFileName : filesToUpdate){	
 					
-					//Thread.sleep(1000);
 					
 					File fileToUpdateDir = new File(updatedDir, path);
 					fileToUpdateDir.mkdirs();
 					File fileToUpdate = new File(fileToUpdateDir,outdatedFileName );
 					
-					//fileToUpdate.delete();
 					
 					String fileName = String.format("%s/%s",updatedDir , Util.getRelativePath(updatedDir, fileToUpdate));
-					feedback.updateTitle(String.format("updating file: %s", fileName));
+
+					String message = String.format("download file: %s", fileName);
+					log.debug(message);
+					feedback.updateTitle(message);
 					byte[] b = ServiceAdapter.get().getFile(fileName);
 					ByteArrayInputStream bais = new ByteArrayInputStream(b);
 					
@@ -188,6 +192,7 @@ public class Updater {
 	
 			updateChsumDocuments();
 			feedback.updateTitle(Messages.RELAUNCH.toString());
+			log.debug("update complete");
 			
 			
 		
