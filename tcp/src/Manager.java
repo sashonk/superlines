@@ -5,30 +5,23 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.List;
-import java.util.ArrayList;
 import java.util.Vector;
 
-import javax.swing.JOptionPane;
-import javax.swing.JTable;
 
-import com.ibm.db2.jcc.DB2Driver;
 
-public class Manager implements Runnable  {
+
+public final class Manager implements Runnable  {
 	
 	private static void initConnection()
 	{
 		try {
 			Log.I().writeln("initilize db2driver");
 			//DB2Driver.class.newInstance();
-			DB2Driver.class.newInstance();
-		} catch (InstantiationException e1) {
+			Class.forName("com.ibm.db2.jcc.DB2Driver");
+		} catch (Exception e1) {
 			// TODO Auto-generated catch block
 			Log.I().writeln(e1.toString());
-		} catch (IllegalAccessException e1) {
-			// TODO Auto-generated catch block
-			Log.I().writeln(e1.toString());
-		}
+		} 
 		
 	    //Connection conn = null;
 
